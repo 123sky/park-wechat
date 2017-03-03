@@ -1,0 +1,8 @@
+extends layout
+
+block content
+    div.container
+        h1= title
+        p Welcome to #{title}s
+block scripts
+    script $(function(){console.log('node Blog admin is ready')})

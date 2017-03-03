@@ -1,0 +1,51 @@
+extend ../layout
+
+append css
+
+block main
+
+    style.
+        .post-title {
+            margin: 5px 15px;
+            padding: 10px 0;
+            border-bottom: 1px solid #ccc;
+            position:relative;
+        }
+        .post-content {
+            padding: 10px 15px;
+        }
+        .post-content p {
+            line-height: 25px;
+        }
+        .ctrlVoice{
+            font-size: 15px;
+            position: absolute;
+            top: 0;
+            right: 5px;
+        }
+        
+    div(class="am-slider am-slider-default",data-am-flexslider)
+        ul.am-slides
+            each image in scenic.images
+                li
+                    img(src="../../../uploads/image/"+image.filename)
+    div.post-title
+        h3= scenic.title
+        span.ctrlVoice.fa-stack.fa-lg.fa-spin
+            i.fa.fa-circle.fa-stack-2x
+            i.fa.fa-music.fa-stack-1x.fa-inverse
+        audio(id="voiceAudio" class="hide" autoplay="autoplay" controls="controls",loop="loop",preload="auto",src='../../../uploads/voice/'+scenic.voices[0].filename)
+    div.post-content
+        != scenic.content
+
+block scripts
+    script.
+        $(".ctrlVoice").on("click",function(){
+            if($(this).hasClass("fa-spin")){
+                $("#voiceAudio")[0].pause()
+                $(this).removeClass('fa-spin')
+            }else{
+                $("#voiceAudio")[0].play()
+                $(this).addClass('fa-spin')
+            }
+        })

@@ -1,0 +1,62 @@
+extend ../layout
+
+append css
+
+block main
+
+    style.
+        .part-title {
+            margin: 10px 15px;
+            display: flex;
+            align-items: flex-end;
+            border-left: 10px solid #fe9700;
+            border-bottom: 1px solid #fe9700;
+            padding: 5px;
+        }
+        
+        .list-wrap{
+            padding: 10px 15px;
+        }
+
+        .list-item {
+            overflow: hidden;
+            margin-bottom: 7px;
+            padding: 10px 0;
+            border-bottom: 1px solid #f1f1f1;
+        }
+
+        .list-item h3{
+            margin-bottom: 5px;
+        }
+
+        .list-item a{
+            color:#222;
+        }
+
+        .list-item img{
+            width:100%;
+        }
+
+    div(class="am-slider am-slider-default",data-am-flexslider)
+        ul.am-slides
+            li
+                img(src="http://s.amazeui.org/media/i/demos/bing-1.jpg")
+            li
+                img(src="http://s.amazeui.org/media/i/demos/bing-2.jpg")
+
+    div(class="part-title")
+        h3 景点列表
+
+    div(class="list-wrap")
+        ul.list-content
+            each scenic in scenics
+                li.list-item
+                    a(href="scenicIntroduction/"+scenic.id)
+                        .am-u-sm-7.no-padding-lr
+                            h3= scenic.title
+                            .am-list-item-text= scenic.info
+                        .am-u-sm-5.no-padding-r
+                            img(src='../../../uploads/image/'+scenic.images[0].filename)
+
+    
+block scripts

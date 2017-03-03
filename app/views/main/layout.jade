@@ -1,0 +1,18 @@
+doctype html
+html(lang='en')
+    head
+        meta(charset='UTF-8')
+        meta(name='viewport', content='width=device-width')
+        title= pageTitle
+        block css
+            link(rel='stylesheet',href='/components/amazeui/dist/css/amazeui.css')
+            link(rel='stylesheet',href='/components/font-awesome/css/font-awesome.css')
+            link(rel='stylesheet',href='/css/reset.css')
+    body
+        block main
+
+        block js
+            script(src='/components/jquery/dist/jquery.js')
+            script(src='/components/amazeui/dist/js/amazeui.js')
+        block scripts
+    

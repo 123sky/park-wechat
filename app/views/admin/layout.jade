@@ -1,0 +1,104 @@
+extend ./baseLayout
+
+append css
+    link(rel='stylesheet',href='/css/blogAdmin.css')
+    link(rel='stylesheet',href='/components/font-awesome/css/font-awesome.css')
+
+block main
+
+    block nav
+        nav.navbar.navbar-inverse.navbar-fixed-top
+            .container-fluid
+                .navbar-header
+                    button.navbar-toggle.collapsed(type='button', data-toggle='collapse', data-target='#navbar', aria-expanded='false', aria-controls='navbar')
+                        span.sr-only Toggle navigation
+                        span.icon-bar
+                        span.icon-bar
+                        span.icon-bar
+                    a.navbar-brand(href='#') 艾溪湖公园微信公众号后台管理系统
+                //- #navbar.navbar-collapse.collapse
+                //-     ul.nav.navbar-nav.navbar-right
+                //-         li
+                //-             a(href='/admin/users/layout')
+                //-                 i.fa.fa-sign-out
+                //-                 |&nbsp;注销
+                //-         li
+                //-             a(href='/admin/users/help')
+                //-                 i.fa.fa-question-circle-o
+                //-                 |&nbsp;帮助
+                //-     form.navbar-form.navbar-right
+                //-         input.form-control(type='text', placeholder='查找...')
+
+    .container-fluid
+        .row
+            .col-sm-3.col-md-2.sidebar
+                ul.nav.nav-sidebar
+                    li.nav-header 景点管理
+                    li(class={active: pageName==='/admin/scenicIntroduction'})
+                        a(href='/admin/scenicIntroduction')
+                            i.fa.fa-th-list
+                            |&nbsp;景点列表
+                            span.sr-only (current)
+                    li(class={active: pageName==='/admin/scenicIntroduction/add'})
+                        a(href='/admin/scenicIntroduction/add')
+                            i.fa.fa-plus
+                            |&nbsp;添加景点
+                ul.nav.nav-sidebar
+                    li.nav-header 推荐路线管理
+                    li(class={active: pageName==='/admin/routeRecommend'})
+                        a(href='/admin/routeRecommend')
+                            i.fa.fa-th-large
+                            |&nbsp;推荐路线列表
+                    li(class={active: pageName==='/admin/routeRecommend/add'})
+                        a(href='/admin/routeRecommend/add')
+                            i.fa.fa-plus
+                            |&nbsp;添加推荐路线
+                ul.nav.nav-sidebar
+                    li.nav-header 信息管理
+                    li(class={active: pageName==='/admin/information'})
+                        a(href='/admin/information')
+                            i.fa.fa-th-large
+                            |&nbsp;信息列表
+                    li(class={active: pageName==='/admin/information/add'})
+                        a(href='/admin/information/add')
+                            i.fa.fa-plus
+                            |&nbsp;添加信息
+                ul.nav.nav-sidebar
+                    li.nav-header 园区服务管理
+                    li(class={active: pageName==='/admin/parkService'})
+                        a(href='/admin/parkService')
+                            i.fa.fa-th-large
+                            |&nbsp;园区服务列表
+                    li(class={active: pageName==='/admin/parkService/add'})
+                        a(href='/admin/parkService/add')
+                            i.fa.fa-plus
+                            |&nbsp;添加园区服务
+                ul.nav.nav-sidebar
+                    li.nav-header 停车信息管理
+                    li(class={active: pageName==='/admin/parking'})
+                        a(href='/admin/parking')
+                            i.fa.fa-th-large
+                            |&nbsp;停车信息列表
+                    li(class={active: pageName==='/admin/parking/add'})
+                        a(href='/admin/parking/add')
+                            i.fa.fa-plus
+                            |&nbsp;添加停车信息
+                ul.nav.nav-sidebar
+                    li.nav-header 公厕管理
+                    li(class={active: pageName==='/admin/toilet'})
+                        a(href='/admin/toilet')
+                            i.fa.fa-th-large
+                            |&nbsp;公厕信息列表
+                    li(class={active: pageName==='/admin/toilet/add'})
+                        a(href='/admin/toilet/add')
+                            i.fa.fa-plus
+                            |&nbsp;添加公厕信息
+            .col-sm-9.col-sm-offset-3.col-md-10.col-md-offset-2.main
+                block content
+
+block scripts
+    
+
+                    
+
+    

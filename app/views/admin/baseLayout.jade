@@ -1,0 +1,46 @@
+doctype html
+html(lang='en')
+    head
+        meta(charset='UTF-8')
+        meta(name='viewport', content='width=device-width')
+        title= pageTitle
+        block css
+            link(rel='stylesheet', href='/components/bootstrap/dist/css/bootstrap.css')
+
+        style.
+            .alert-content{
+                position: absolute;
+                top: 57px;
+                right: 40px;
+                z-index: 100;
+            }
+            .alert-part{
+                background: rgba(255, 0, 0, 0.72);
+                color: white;
+                padding: 10px 20px;
+                font-size: 20px;
+                border-radius: 5px;
+                display:block;
+                max-width: 300px;
+            }
+    body
+        .alert-content
+            if errors&&errors.length
+                each error in errors
+                    a(href="javascript:;" class="alert-part")= error
+        block main
+
+        block js
+            script(src='/components/jquery/dist/jquery.js')
+            script(src='/components/bootstrap/dist/js/bootstrap.js')
+        if ENV_DEVELOPMENT
+            script(src='http://localhost:35729/livereload.js')
+
+        block scripts
+
+        script.
+            $("body").on("click",".alert-part",function(){
+                console.log("1111111111");
+                $(this).remove()
+            })
+            

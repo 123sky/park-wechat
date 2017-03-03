@@ -1,0 +1,41 @@
+extend ./layout
+
+append css
+    link(rel='stylesheet',href='/css/main/index.css')
+
+block main
+    .container
+        .container-bottom
+            ul.menu-part
+                li
+                    a(href="main/scenicIntroduction")
+                        .menu-icon.color-yellow
+                            i.fa.fa-binoculars
+                        span 景点介绍
+                li
+                    a(href="javascript:;")
+                        .menu-icon.color-pink
+                            i.fa.fa-envira
+                        span 路线攻略
+                li
+                    a(href="javascript:;")
+                        .menu-icon.color-Violet
+                            i.fa.fa-envelope-open-o
+                        span 信息发布
+            ul.menu-part
+                li
+                    a(href="javascript:;")
+                        .menu-icon.color-orange
+                            i.fa.fa-bullhorn
+                        span 园区服务
+                li
+                    a(href="javascript:;")
+                        .menu-icon.color-green
+                            i.fa.fa-cab 
+                        span 停车服务
+                li
+                    a(href="javascript:;")
+                        .menu-icon.color-blue
+                            i.fa.fa-child
+                        span 公厕服务
+block scripts
