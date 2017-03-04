@@ -51,6 +51,10 @@ router.get('/', function (req, res, next) {
     });
 });
 
+router.get('/view',function(req,res,next){
+
+})
+
 router.get('/add', function (req, res, next) {
   res.render('admin/scenicIntroduction/add', {
     pretty: true,
@@ -93,13 +97,13 @@ router.post('/add', function (req, res, next) {
 
         //保存文字信息
         var title = request.title.trim();
-        var info = request.info;
         var content = request.content;
+        var info = request.info;
         var favorite = request.favorite;
         var published = request.published;
         var scenicIntroduction = new ScenicIntroduction({
           title: title,
-          info:info,
+          info: info,
           content: content,
           published: published,
           favorite: favorite,
@@ -114,6 +118,8 @@ router.post('/add', function (req, res, next) {
           } else {
             console.log('文字信息添加成功');
             return res.send({code:1,msg:'文字信息添加成功'});
+
+            res.redirect('/admin/scenicIntroduction');
           }
         });
       }
@@ -161,6 +167,7 @@ router.get('/edit/:id', function (req, res, next) {
 router.post('/edit', function (req, res, next) {
   //关于图片文件的更新在delFile的接口中已经做了，所以这里不用更新了
   var request = req.body;
+  console.log(request);
   var scenicId = request.id;//景点ID
   var file = request.file;//新添加的文章数组
   var oldDelImage = request.oldDelImage;//被移除的旧的图片ID字符串数组
@@ -311,19 +318,19 @@ router.get('/recommend/:id/:status', function (req, res, next) {
   ScenicIntroduction.count({recommend:true}, function(err,count){
     var newRecommend = {recommend:req.params.status==="true"?true:false};
 
+
     if(count+1>3&&newRecommend.recommend===true){
       req.flash('error','推荐景点最多为三个')
       res.redirect('/admin/scenicIntroduction');
       return;
-    }
-
+    }      
     ScenicIntroduction.findByIdAndUpdate(req.params.id,{$set:newRecommend},function(err,newScenic){
       if(err){
         return next(err);
       }
       console.log('更新推荐状态成功');
       res.redirect('/admin/scenicIntroduction');
-    });
+    });   
   });
 });
 

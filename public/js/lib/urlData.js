@@ -3,5 +3,6 @@ var urlData = {
 		add : '/admin/scenicIntroduction/add',
 		edit : '/admin/scenicIntroduction/edit',
 		delFile : '/admin/scenicIntroduction/delFile'
-	}
+	}	
 }
+

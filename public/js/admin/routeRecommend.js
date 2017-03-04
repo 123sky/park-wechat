@@ -37,33 +37,7 @@ $(function () {
     });
 
     //音频文件上传
-    $("#voice").uploadFile({
-        url:"/fileupload2/",
-        fileName:"voiceFile",
-        preview:true,
-        allowedTypes : 'mp3',
-        acceptFiles:'mp3',
-        multiple:false,
-        dragDrop:true,
-        showDownload:false,
-        showDelete: true,
-        maxFileSize : 52428800,
-        maxFileCount: 1,
-        onSuccess: function (files, response, xhr, pd) {
-            //console.log(response);
-
-            $('#voice-preview').empty();
-            for(var i=0;i<response.length;i++){
-                fileArray.push(response[i]);
-                $('#voice-preview').append(' <audio controls="controls" loop="loop" '+
-                'preload="auto" src="../../../uploads/voice/'+response[i].filename+'">'+
-                '你的浏览器不支持audio标签</audio>')
-            }
-        },
-        deleteCallback: function (data, pd) {
-            removeFile(data,pd);
-        }
-    });
+    
 
     //修改时移除旧的图片
     $("#img-preview").on('click','.remove-image',function(){
@@ -77,7 +51,7 @@ $(function () {
             refreshFileArray (data[i].filename);
 
             file = {path:data[i].destination+data[i].filename}
-            $.postJSON(urlData.scenic.delFile,file,function(data){
+            $.postJSON(urlData.route.delFile,file,function(data){
                 if(data.code !== 1){
                     alert("移除文件出错");
                 }else{
@@ -106,7 +80,6 @@ $(function () {
             var newObj = {
                 obj:{
                     title:$("#title").val(),
-                    info:$("#info").val(),
                     content:CKEDITOR.instances.content.getData(),
                     favorite:$("#favorite").val(),
                     recommend:false,
@@ -121,13 +94,13 @@ $(function () {
                 newObj.oldDelImage.push($(n).attr("data-id"));
             });
             console.log(newObj);
-            $.postJSON(urlData.scenic.edit,newObj,function(result){
+            $.postJSON(urlData.route.edit,newObj,function(result){
                 if(result.code === 1){
-                    alert("景点更新成功");
+                    alert("路线更新成功");
 
-                    //location.pathname = '/admin/scenicIntroduction' 
+                    //location.pathname = '/admin/routeRecommend' 
                 }else{
-                    alert("景点更新失败");
+                    alert("路线更新失败");
                 }
             });
         }else{
@@ -135,22 +108,17 @@ $(function () {
             var obj={
                 _id:$("#_id").val(),
                 title:$("#title").val(),
-                info:$("#info").val(),
                 content:CKEDITOR.instances.content.getData(),
                 favorite:$("#favorite").val(),
                 published:$("#published").prop("checked"),
                 file:fileArray
             }
-            console.log(obj);
-            $.postJSON(urlData.scenic.add,obj,function(result){
-                console.log(obj);
-                console.log(urlData.scenic.add);
-
+            $.postJSON(urlData.route.add,obj,function(result){
                 if(result.code === 1){
-                    alert("景点添加成功");
-                    //location.pathname = '/admin/scenicIntroduction' 
+                    alert("路线添加成功");
+                    //location.pathname = '/admin/routeRecommend' 
                 }else{
-                    alert("景点添加失败");
+                    alert("路线添加失败");
                 }
 
             })

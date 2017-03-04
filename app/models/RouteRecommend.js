@@ -2,11 +2,12 @@ var mongoose = require('mongoose'),
   Schema = mongoose.Schema;
 
 var RouteRecommendSchema = new Schema({
-    tilte: {type:String,required:true},
+    title: {type:String,required:true},
     content: {type:String,required:true},
     image: {type:String,required:true},
     published: {type:Boolean,deafault:true},
-    comments: [{type:Schema.Types.Mixed}],
+    recommend: {type:Boolean,deafault:false},
+    favorite: {type: Number, deafault: 0},
     created: {type:Date}
 });
 
