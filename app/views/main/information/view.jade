@@ -1,0 +1,21 @@
+extend ../layout
+
+append css
+    link(rel='stylesheet',href='/css/main/index.css')
+
+block main
+
+    style.
+    
+    if info.images.length!==0
+        div(class="am-slider am-slider-default",data-am-flexslider)
+            ul.am-slides
+                each image in info.images
+                    li
+                        img(src="../../../uploads/image/"+image.filename)
+    div.post-title
+        h3= info.title
+    div.post-content
+        != info.content
+
+block scripts

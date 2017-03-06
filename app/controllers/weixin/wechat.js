@@ -29,6 +29,23 @@ var config = {
     appid: 'wx5c957ab9c6d5195f'
 };
 
+/*用户关注回复*/
+var subscribeReq = function (req, res, next){
+    var message = req.weixin;
+    var answer =
+        '<xml>'+
+        '<ToUserName><![CDATA['+message.FromUserName+']]></ToUserName>'+
+        '<FromUserName><![CDATA['+message.ToUserName+']]></FromUserName>'+
+        '<CreateTime>'+Math.round(Date.now()/1000)+'</CreateTime>'+
+        '<MsgType><![CDATA[text]]></MsgType>'+
+        '<Content><![CDATA[欢迎关注智慧艾溪湖微信公众号]]></Content>'+
+        '</xml>';
+
+    console.log(answer);
+    res.set('Content-Type','text/xml');
+    res.send(answer);
+};
+
 /*文字消息请求的处理*/
 var textReq = function (req, res, next){
 
@@ -132,6 +149,9 @@ var handleWechatRequest = wechat(config, function (req, res, next) {
                             return res.reply('无法处理的地址');
                             break;
                     }
+                    break;
+                case 'subscribe':
+                    subscribeReq(req,res,next);
                     break;
                 default :
                     return res.reply('无法处理的事件类型');

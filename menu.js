@@ -12,17 +12,17 @@ var menuItems = {
                 {    
                    "type":"view",
                    "name":"智慧首页",
-                   "url":"http://bf734694.ngrok.io/main"
+                   "url":"http://chenjp.ittun.com/main"
                 },
                 {
                    "type":"view",
                    "name":"景点推荐",
-                   "url":"http://bf734694.ngrok.io/main/scenicIntroduction"
+                   "url":"http://chenjp.ittun.com/main/scenicIntroduction"
                 },
                 {
                    "type":"view",
                    "name":"路线推荐",
-                   "url":"http://bf734694.ngrok.io/main/routeRecommend"
+                   "url":"http://chenjp.ittun.com/main/routeRecommend"
                 }
             ]
         },{
@@ -31,22 +31,22 @@ var menuItems = {
                 {    
                    "type":"view",
                    "name":"信息发布",
-                   "url":"http://bf734694.ngrok.io/main/information"
+                   "url":"http://chenjp.ittun.com/main/information"
                 },
                 {    
                    "type":"view",
                    "name":"园区服务",
-                   "url":"http://bf734694.ngrok.io/main/parkService"
+                   "url":"http://chenjp.ittun.com/main/parkService"
                 },
                 {
                    "type":"view",
                    "name":"停车服务",
-                   "url":"http://bf734694.ngrok.io/main/parking"
+                   "url":"http://chenjp.ittun.com/main/parking"
                 },
                 {
                    "type":"view",
                    "name":"公厕服务",
-                   "url":"http://bf734694.ngrok.io/main/toilet"
+                   "url":"http://chenjp.ittun.com/main/toilet"
                 }
             ]
         },{

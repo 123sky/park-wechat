@@ -1,28 +1,11 @@
 extend ../layout
 
 append css
+    link(rel='stylesheet',href='/css/main/index.css')
 
 block main
 
     style.
-        .post-title {
-            margin: 5px 15px;
-            padding: 10px 0;
-            border-bottom: 1px solid #ccc;
-            position:relative;
-        }
-        .post-content {
-            padding: 10px 15px;
-        }
-        .post-content p {
-            line-height: 25px;
-        }
-        .ctrlVoice{
-            font-size: 15px;
-            position: absolute;
-            top: 0;
-            right: 5px;
-        }
         
     div(class="am-slider am-slider-default",data-am-flexslider)
         ul.am-slides

@@ -15,18 +15,16 @@ block main
                 img(src="http://s.amazeui.org/media/i/demos/bing-2.jpg")
 
     div(class="part-title")
-        h3 景点列表
+        h3 信息发布
 
     div(class="list-wrap")
         ul.list-content
-            each scenic in scenics
+            each info in infos
                 li.list-item
-                    a(href="scenicIntroduction/"+scenic.id)
-                        .am-u-sm-7.no-padding-lr
-                            h3= scenic.title
-                            .am-list-item-text= scenic.info
-                        .am-u-sm-5.no-padding-r
-                            img(src='../../../uploads/image/'+scenic.images[0].filename)
-
+                    a(href="information/"+info.id)
+                        if info.images.length!==0
+                            img(src='../../../uploads/image/'+info.images[0].filename)
+                        h3= info.title
+                        .am-list-item-text.text-indent= info.info
     
 block scripts

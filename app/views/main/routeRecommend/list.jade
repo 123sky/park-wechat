@@ -1,0 +1,41 @@
+extend ../layout
+
+append css
+    link(rel='stylesheet',href='/css/main/index.css')
+
+block main
+
+    style.
+
+    div(class="am-slider am-slider-d2",data-am-widget="slider",data-am-slider='{&quot;directionNav&quot;:false}')
+        ul.am-slides
+            li
+                img(src="http://s.amazeui.org/media/i/demos/bing-1.jpg")
+                div.am-slider-desc
+                    div.am-slider-content
+                        h2.am-slider-title 远方 有一个地方 那里种有我们的梦想
+                        p 内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内
+                    a.am-slider-more 了解更多
+            li
+                img(src="http://s.amazeui.org/media/i/demos/bing-2.jpg")
+                div.am-slider-desc
+                    div.am-slider-content
+                        h2.am-slider-title 远方 有一个地方 那里种有我们的梦想
+                        p 内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内
+                    a.am-slider-more 了解更多
+
+    div(class="part-title")
+        h3 全部推荐路线
+
+    div(class="list-wrap")
+        ul.list-content
+            each route in routes
+                li.list-item
+                    a(href="routeRecommend/"+route.id)
+                        img(src='../../../uploads/image/'+route.images[0].filename)
+                        h3= route.title
+                        .am-list-item-text.text-indent= route.info
+                            
+
+    
+block scripts
