@@ -2,10 +2,12 @@ var mongoose = require('mongoose'),
   Schema = mongoose.Schema;
 
 var InformationSchema = new Schema({
-    tilte: {type:String,required:true},
+    title: {type:String,required:true},
+    info: {type:String,required:true},
     content: {type:String,required:true},
-    image: {type:String,required:true},
+    images: [{ type: Schema.Types.ObjectId, ref: 'File' }],
     published: {type:Boolean,deafault:true},
+    recommend: {type:Boolean,deafault:false},
     created: {type:Date}
 });
 

@@ -28,6 +28,7 @@ router.get('/', function (req, res, next) {
     .populate('images')
     .populate('voices')
     .exec(function (err, scenics) {
+      console.log(scenics);
       if (err) return next(err);
 
       var pageNum = Math.abs(parseInt(req.query.page || 1,10));

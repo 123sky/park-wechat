@@ -3,10 +3,10 @@ var express = require('express'),
   mongoose = require('mongoose'),
   fs = require('fs');
   path = require("path");
-  Information = mongoose.model('Information'),
+  Parking = mongoose.model('Parking'),
   File = mongoose.model('File');
 module.exports = function (app) {
-  app.use('/admin/information', router);
+  app.use('/admin/parking', router);
 };
 
 router.get('/', function (req, res, next) {
@@ -23,26 +23,26 @@ router.get('/', function (req, res, next) {
   var sortObj = {};
   sortObj[sortby] = sortdir;
   
-  Information.find()
+  Parking.find()
     .populate('images')
-    .exec(function (err, infors) {
+    .exec(function (err, parkings) {
       if (err) return next(err);      
-      res.render('admin/information/index', {
-        infors: infors,
-        pageTitle:'信息服务列表',
+      res.render('admin/Parking/index', {
+        parkings: parkings,
+        pageTitle:'停车服务列表',
         pretty: true
       });
     });
 });
 
 router.get('/view/:id',function (req, res, next){
-  Information.finndOne({_id: req.params.id}).ecec(function(err, infor){
+  Parking.finndOne({_id: req.params.id}).ecec(function(err, parking){
     if(err){
-      return next(new Error('no Information id'));
+      return next(new Error('no Parking id'));
     }
 
-    res.render('/admin/information/view', {
-      infor: infor,
+    res.render('/admin/parking/view', {
+      parking: parking,
     });
 
   });
@@ -50,10 +50,10 @@ router.get('/view/:id',function (req, res, next){
 });
 
 router.get('/add', function (req, res, next) {
-  res.render('admin/information/add', {
+  res.render('admin/parking/add', {
     pretty: true,
-    pageTitle:'添加信息公告',
-    information: {}
+    pageTitle:'添加停车信息',
+    parking: {}
   });
 });
 
@@ -61,7 +61,7 @@ router.post('/add', function (req, res, next) {
   var request = req.body;
 
   //后端校验
-  req.checkBody('title', '公告标题不能为空').notEmpty();
+  req.checkBody('title', '标题不能为空').notEmpty();
   req.checkBody('content', '内容不能为空').notEmpty();
   var errors = req.validationErrors();
   if (errors) {
@@ -95,7 +95,7 @@ router.post('/add', function (req, res, next) {
         var info = request.info;       
         var content = request.content;
         var published = request.published;
-        var information = new Information({
+        var parking = new Parking({
           title: title,
           info: info,
           content: content,
@@ -103,7 +103,7 @@ router.post('/add', function (req, res, next) {
           created: new Date(),
           image:images,
         });
-        information.save(function (err, information) {
+        parking.save(function (err, parking) {
           if (err) {
             console.log('文字信息添加失败:', err);
             return res.send({code:0,msg:'文字信息添加失败'});
@@ -140,15 +140,15 @@ router.get('/edit/:id', function (req, res, next) {
     _id: new mongoose.Types.ObjectId(req.params.id)
   }
 
-  Information.find(obj)
+  Parking.find(obj)
     .populate('images')
-    .exec(function (err, infors) {
+    .exec(function (err, parkings) {
       if (err) 
         return next(err);
-      res.render('admin/information/add', {
+      res.render('admin/parking/add', {
         pretty: true,
-        pageTitle:'修改公告信息',
-        information: infors[0]
+        pageTitle:'修改停车信息',
+        parking: parkings[0]
       });
     });
 });
@@ -174,9 +174,9 @@ router.post('/edit', function (req, res, next) {
   function removeImage(){
     //如果存在被删除的图片
     if(oldDelImage.length>0){
-      Information.findById(inforId)
+      Parking.findById(parkingId)
         .populate('images')
-        .exec(function (err, infor) {
+        .exec(function (err, parking) {
           if(err){
             return res.send({code:0,error:"没有查到相应内容"})
           }
@@ -253,17 +253,17 @@ router.post('/edit', function (req, res, next) {
           if(tempVoice.length>0){
             newObj.voices = tempVoice;
           }
-          updateInformation();
+          updateParking();
         }
       })
     }else{
-      updateInformation();
+      updateParking();
     }
   }
 
   //更新文章内容
-  function updateInformation(){
-    Information.findByIdAndUpdate(inforId,{$set:newObj},function(err,newInfor){
+  function updateParking(){
+    Parking.findByIdAndUpdate(inforId,{$set:newObj},function(err,newInfor){
       if(err){
         return res.send({code:0,error:"更新文章失败"})
       }
@@ -283,7 +283,7 @@ router.get('/delete/:id', function (req, res, next) {
     _id:new mongoose.Types.ObjectId(req.params.id)
   };
 
-  Information.remove(conditions).exec(function (err, rowsRemoved) {
+  Parking.remove(conditions).exec(function (err, rowsRemoved) {
     if (err) {
       return next(err);
     }
@@ -294,31 +294,31 @@ router.get('/delete/:id', function (req, res, next) {
       console.log('删除失败');
     }
 
-    res.redirect('/admin/information');
+    res.redirect('/admin/parking');
   });
 });
 
 router.get('/recommend/:id/:status', function (req, res, next) {
   if (!req.params.id||!req.params.status) {
     req.flash('error','缺少参数')
-    res.redirect('/admin/information');
+    res.redirect('/admin/parking');
   }
 
-  Information.count({recommend:true}, function(err,count){
+  Parking.count({recommend:true}, function(err,count){
     var newRecommend = {recommend:req.params.status==="true"?true:false};
 
 
     if(count+1>3&&newRecommend.recommend===true){
       req.flash('error','推荐景点最多为三个')
-      res.redirect('/admin/information');
+      res.redirect('/admin/parking');
       return;
     }      
-    Information.findByIdAndUpdate(req.params.id,{$set:newRecommend},function(err,newInfor){
+    Parking.findByIdAndUpdate(req.params.id,{$set:newRecommend},function(err,newInfor){
       if(err){
         return next(err);
       }
       console.log('更新推荐状态成功');
-      res.redirect('/admin/information');
+      res.redirect('/admin/parking');
     });   
   });
 });
@@ -326,15 +326,15 @@ router.get('/recommend/:id/:status', function (req, res, next) {
 router.get('/published/:id/:status', function (req, res, next) {
   if (!req.params.id||!req.params.status) {
     req.flash('error','缺少参数')
-    res.redirect('/admin/information');
+    res.redirect('/admin/parking');
   }
 
   var newPublished = {published:req.params.status==="true"?true:false};
-  Information.findByIdAndUpdate(req.params.id,{$set:newPublished},function(err,newInfor){
+  Parking.findByIdAndUpdate(req.params.id,{$set:newPublished},function(err,newInfor){
     if(err){
       return next(err);
     }
     console.log('更新发布状态成功');
-    res.redirect('/admin/information');
+    res.redirect('/admin/parking');
   });
 });

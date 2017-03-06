@@ -50,6 +50,20 @@ router.get('/', function (req, res, next) {
     });
 });
 
+router.get('/view/:id',function (req, res, next){
+  RouteRecommend.finndOne({_id: req.params.id}).ecec(function(err, route){
+    if(err){
+      return next(new Error('no route id'));
+    }
+
+    res.render('/admin/routeRecommend/view', {
+      route: route,
+    });
+
+  });
+
+});
+
 router.get('/add', function (req, res, next) {
   res.render('admin/routeRecommend/add', {
     pretty: true,
@@ -77,6 +91,7 @@ router.post('/add', function (req, res, next) {
         return res.send({code:0,msg:'文件信息添加失败'});
       } else {
         console.log('文件信息添加成功');
+        console.log(fileArray);
 
         //区分图片和语音
         var images = [];
@@ -90,19 +105,21 @@ router.post('/add', function (req, res, next) {
             }
         }
 
-
+        console.log(images);
         //保存文字信息
         var title = request.title.trim();
+        var info = request.info;
         var content = request.content;
         var favorite = request.favorite;
         var published = request.published;
         var routeRecommend = new RouteRecommend({
           title: title,
+          info: info,
           content: content,
           published: published,
           favorite: favorite,
           created: new Date(),
-          image:images,
+          images:images,
         });
         routeRecommend.save(function (err, routeRecommend) {
           if (err) {

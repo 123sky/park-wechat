@@ -83,16 +83,7 @@ block main
                         a(href='/admin/parking/add')
                             i.fa.fa-plus
                             |&nbsp;添加停车信息
-                ul.nav.nav-sidebar
-                    li.nav-header 公厕管理
-                    li(class={active: pageName==='/admin/toilet'})
-                        a(href='/admin/toilet')
-                            i.fa.fa-th-large
-                            |&nbsp;公厕信息列表
-                    li(class={active: pageName==='/admin/toilet/add'})
-                        a(href='/admin/toilet/add')
-                            i.fa.fa-plus
-                            |&nbsp;添加公厕信息
+                
             .col-sm-9.col-sm-offset-3.col-md-10.col-md-offset-2.main
                 block content
 

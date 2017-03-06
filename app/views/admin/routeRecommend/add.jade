@@ -16,6 +16,9 @@ block content
             input.form-control(name="title", id="title", required="true", placeholder="请输入景点名称...", value=routeRecommend.title)
 
         div.form-group
+            label(for="info") 简介：
+            textarea.form-control(name="info", id="info", required="true")= routeRecommend.info
+        div.form-group
             label(for="content") 内容：
             textarea.form-control(name="content", id="content", required="true")= routeRecommend.content
 

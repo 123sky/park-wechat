@@ -82,7 +82,6 @@ $(function () {
                     title:$("#title").val(),
                     info:$("#info").val(),
                     content:CKEDITOR.instances.content.getData(),
-                    favorite:$("#favorite").val(),
                     recommend:false,
                     published:$("#published").prop("checked")
                 },
@@ -95,32 +94,31 @@ $(function () {
                 newObj.oldDelImage.push($(n).attr("data-id"));
             });
             console.log(newObj);
-            $.postJSON(urlData.route.edit,newObj,function(result){
+            $.postJSON(urlData.service.edit,newObj,function(result){
                 if(result.code === 1){
-                    alert("路线更新成功");
+                    alert("信息更新成功");
 
-                    //location.pathname = '/admin/routeRecommend' 
+                    //location.pathname = '/admin/parkService' 
                 }else{
-                    alert("路线更新失败");
+                    alert("信息更新失败");
                 }
             });
         }else{
             //添加
             var obj={
                 _id:$("#_id").val(),
-                title:$("#title").val(),
                 info:$("#info").val(),
+                title:$("#title").val(),
                 content:CKEDITOR.instances.content.getData(),
-                favorite:$("#favorite").val(),
                 published:$("#published").prop("checked"),
                 file:fileArray
             }
-            $.postJSON(urlData.route.add,obj,function(result){
+            $.postJSON(urlData.service.add,obj,function(result){
                 if(result.code === 1){
-                    alert("路线添加成功");
-                    //location.pathname = '/admin/routeRecommend' 
+                    alert("信息添加成功");
+                    //location.pathname = '/admin/parkService' 
                 }else{
-                    alert("路线添加失败");
+                    alert("信息添加失败");
                 }
 
             })

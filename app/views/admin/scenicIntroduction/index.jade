@@ -16,6 +16,7 @@ block content
                                 i.fa.fa-arrow-up &nbsp;标题
                     else
                         a(href="/admin/scenicIntroduction?page="+pageNum+"&sortby=title&sortdir=desc") 标题
+                th 简介
                 th
                     if sortby === 'created'
                         if(sortdir === 'desc')
@@ -64,6 +65,7 @@ block content
             tr
                 td
                     a(href="/scenicIntroduction/view/",target="_blank")=scenic.title
+                td= scenic.info
                 td= moment(scenic.created).format("YYYY-MM-DD HH:mm:ss")
                 td= scenic.favorite || 0
                 td

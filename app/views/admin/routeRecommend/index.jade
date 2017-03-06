@@ -16,6 +16,7 @@ block content
                                 i.fa.fa-arrow-up &nbsp;标题
                     else
                         a(href="/admin/routeRecommend?page="+pageNum+"&sortby=title&sortdir=desc") 标题
+                th 简介
                 th
                     if sortby === 'created'
                         if(sortdir === 'desc')
@@ -64,6 +65,7 @@ block content
             tr
                 td
                     a(href="/routeRecommend/view/",target="_blank")=route.title
+                td= route.info
                 td= moment(route.created).format("YYYY-MM-DD HH:mm:ss")
                 td= route.favorite || 0
                 td

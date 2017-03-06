@@ -3,10 +3,10 @@ var express = require('express'),
   mongoose = require('mongoose'),
   fs = require('fs');
   path = require("path");
-  Information = mongoose.model('Information'),
+  ParkService = mongoose.model('ParkService'),
   File = mongoose.model('File');
 module.exports = function (app) {
-  app.use('/admin/information', router);
+  app.use('/admin/parkService', router);
 };
 
 router.get('/', function (req, res, next) {
@@ -23,26 +23,26 @@ router.get('/', function (req, res, next) {
   var sortObj = {};
   sortObj[sortby] = sortdir;
   
-  Information.find()
+  ParkService.find()
     .populate('images')
-    .exec(function (err, infors) {
+    .exec(function (err, services) {
       if (err) return next(err);      
-      res.render('admin/information/index', {
-        infors: infors,
-        pageTitle:'信息服务列表',
+      res.render('admin/ParkService/index', {
+        services: services,
+        pageTitle:'园区服务列表',
         pretty: true
       });
     });
 });
 
 router.get('/view/:id',function (req, res, next){
-  Information.finndOne({_id: req.params.id}).ecec(function(err, infor){
+  ParkService.finndOne({_id: req.params.id}).ecec(function(err, services){
     if(err){
-      return next(new Error('no Information id'));
+      return next(new Error('no ParkService id'));
     }
 
-    res.render('/admin/information/view', {
-      infor: infor,
+    res.render('/admin/parkService/view', {
+      services: services,
     });
 
   });
@@ -50,10 +50,10 @@ router.get('/view/:id',function (req, res, next){
 });
 
 router.get('/add', function (req, res, next) {
-  res.render('admin/information/add', {
+  res.render('admin/parkService/add', {
     pretty: true,
-    pageTitle:'添加信息公告',
-    information: {}
+    pageTitle:'添加园区服务',
+    parkService: {}
   });
 });
 
@@ -61,7 +61,8 @@ router.post('/add', function (req, res, next) {
   var request = req.body;
 
   //后端校验
-  req.checkBody('title', '公告标题不能为空').notEmpty();
+  req.checkBody('title', '园区服务名称不能为空').notEmpty();
+  req.checkBody('info', '简介不能为空').notEmpty();
   req.checkBody('content', '内容不能为空').notEmpty();
   var errors = req.validationErrors();
   if (errors) {
@@ -95,7 +96,7 @@ router.post('/add', function (req, res, next) {
         var info = request.info;       
         var content = request.content;
         var published = request.published;
-        var information = new Information({
+        var parkService = new ParkService({
           title: title,
           info: info,
           content: content,
@@ -103,7 +104,7 @@ router.post('/add', function (req, res, next) {
           created: new Date(),
           image:images,
         });
-        information.save(function (err, information) {
+        parkService.save(function (err, parkService) {
           if (err) {
             console.log('文字信息添加失败:', err);
             return res.send({code:0,msg:'文字信息添加失败'});
@@ -140,15 +141,15 @@ router.get('/edit/:id', function (req, res, next) {
     _id: new mongoose.Types.ObjectId(req.params.id)
   }
 
-  Information.find(obj)
+  ParkService.find(obj)
     .populate('images')
-    .exec(function (err, infors) {
+    .exec(function (err, services) {
       if (err) 
         return next(err);
-      res.render('admin/information/add', {
+      res.render('admin/parkService/add', {
         pretty: true,
-        pageTitle:'修改公告信息',
-        information: infors[0]
+        pageTitle:'修改园区服务',
+        parkService: services[0]
       });
     });
 });
@@ -156,8 +157,7 @@ router.get('/edit/:id', function (req, res, next) {
 router.post('/edit', function (req, res, next) {
   //关于图片文件的更新在delFile的接口中已经做了，所以这里不用更新了
   var request = req.body;
-  console.log(request);
-  var inforId = request.id;//路线ID
+  var serviceId = request.id;//服务ID
   var file = request.file;//新添加的文章数组
   var oldDelImage = request.oldDelImage;//被移除的旧的图片ID字符串数组
   var oldDelImageObjId = [];//被移除的旧的图片objectID数组
@@ -174,14 +174,14 @@ router.post('/edit', function (req, res, next) {
   function removeImage(){
     //如果存在被删除的图片
     if(oldDelImage.length>0){
-      Information.findById(inforId)
+      ParkService.findById(sericeId)
         .populate('images')
-        .exec(function (err, infor) {
+        .exec(function (err, service) {
           if(err){
             return res.send({code:0,error:"没有查到相应内容"})
           }
           //移除旧图片的关联
-          var images = infor.images;
+          var images = service.images;
           var newImageArray = [];
           for(var i=0;i<images.length;i++){
               if(oldDelImage.indexOf(images[i].id)<0){
@@ -253,17 +253,17 @@ router.post('/edit', function (req, res, next) {
           if(tempVoice.length>0){
             newObj.voices = tempVoice;
           }
-          updateInformation();
+          updateParkService();
         }
       })
     }else{
-      updateInformation();
+      updateParkService();
     }
   }
 
   //更新文章内容
-  function updateInformation(){
-    Information.findByIdAndUpdate(inforId,{$set:newObj},function(err,newInfor){
+  function updateParkService(){
+    ParkService.findByIdAndUpdate(serviceId,{$set:newObj},function(err,newService){
       if(err){
         return res.send({code:0,error:"更新文章失败"})
       }
@@ -283,7 +283,7 @@ router.get('/delete/:id', function (req, res, next) {
     _id:new mongoose.Types.ObjectId(req.params.id)
   };
 
-  Information.remove(conditions).exec(function (err, rowsRemoved) {
+  ParkService.remove(conditions).exec(function (err, rowsRemoved) {
     if (err) {
       return next(err);
     }
@@ -294,31 +294,31 @@ router.get('/delete/:id', function (req, res, next) {
       console.log('删除失败');
     }
 
-    res.redirect('/admin/information');
+    res.redirect('/admin/parkService');
   });
 });
 
 router.get('/recommend/:id/:status', function (req, res, next) {
   if (!req.params.id||!req.params.status) {
     req.flash('error','缺少参数')
-    res.redirect('/admin/information');
+    res.redirect('/admin/parkService');
   }
 
-  Information.count({recommend:true}, function(err,count){
+  ParkService.count({recommend:true}, function(err,count){
     var newRecommend = {recommend:req.params.status==="true"?true:false};
 
 
     if(count+1>3&&newRecommend.recommend===true){
       req.flash('error','推荐景点最多为三个')
-      res.redirect('/admin/information');
+      res.redirect('/admin/parkService');
       return;
     }      
-    Information.findByIdAndUpdate(req.params.id,{$set:newRecommend},function(err,newInfor){
+    ParkService.findByIdAndUpdate(req.params.id,{$set:newRecommend},function(err,newInfor){
       if(err){
         return next(err);
       }
       console.log('更新推荐状态成功');
-      res.redirect('/admin/information');
+      res.redirect('/admin/parkService');
     });   
   });
 });
@@ -326,15 +326,15 @@ router.get('/recommend/:id/:status', function (req, res, next) {
 router.get('/published/:id/:status', function (req, res, next) {
   if (!req.params.id||!req.params.status) {
     req.flash('error','缺少参数')
-    res.redirect('/admin/information');
+    res.redirect('/admin/parkService');
   }
 
   var newPublished = {published:req.params.status==="true"?true:false};
-  Information.findByIdAndUpdate(req.params.id,{$set:newPublished},function(err,newInfor){
+  ParkService.findByIdAndUpdate(req.params.id,{$set:newPublished},function(err,newInfor){
     if(err){
       return next(err);
     }
     console.log('更新发布状态成功');
-    res.redirect('/admin/information');
+    res.redirect('/admin/parkService');
   });
 });
