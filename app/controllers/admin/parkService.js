@@ -102,7 +102,7 @@ router.post('/add', function (req, res, next) {
           content: content,
           published: published,
           created: new Date(),
-          image:images,
+          images:images,
         });
         parkService.save(function (err, parkService) {
           if (err) {

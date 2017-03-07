@@ -16,9 +16,9 @@ block content
                                 i.fa.fa-arrow-up &nbsp;标题
                     else
                         a(href="/admin/parking?page="+pageNum+"&sortby=title&sortdir=desc") 标题
-                th 简介
+                th(width="30%") 简介
                 th 图片
-                th
+                th(width="200px")
                     if sortby === 'created'
                         if(sortdir === 'desc')
                             a(href="/admin/parking?page=" + pageNum + "&sortby=created&sortdir=asc")

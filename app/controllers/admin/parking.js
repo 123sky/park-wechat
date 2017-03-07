@@ -101,7 +101,7 @@ router.post('/add', function (req, res, next) {
           content: content,
           published: published,
           created: new Date(),
-          image:images,
+          images:images,
         });
         parking.save(function (err, parking) {
           if (err) {
