@@ -1,0 +1,27 @@
+extend ../baseLayout
+
+block main
+    block nav
+        nav.navbar.navbar-inverse.navbar-fixed-top
+            .container-fluid
+                .navbar-header
+                    button.navbar-toggle.collapsed(type='button', data-toggle='collapse', data-target='#navbar', aria-expanded='false', aria-controls='navbar')
+                        span.sr-only Toggle navigation
+                        span.icon-bar
+                        span.icon-bar
+                        span.icon-bar
+                    a.navbar-brand(href='#') 艾溪湖公园微信公众号后台管理系统
+    form.form-signin(method="post", action="/admin/users/signin")
+        h2.form-signin-heading 管理员登录
+
+        label.sr-only(for="username") 用户名
+
+        input.username.form-control(name="username",type="username", placeholder="Username", required="", autofocus="")
+
+        label.sr-only(for="password") 密码
+
+        input.password.form-control(name="password",type="password", placeholder="Password", required="")         
+
+
+       
+        button.btn.btn-lg.btn-primary.btn-block(type="submit") Sign in
