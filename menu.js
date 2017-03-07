@@ -4,6 +4,8 @@ var jssdk = require('./lib/jssdk');
 
 request.debug = true;
 
+var baseUrl = 'http://chenjp.ittun.com';
+
 var menuItems = {
     "button":[
         {
@@ -12,17 +14,17 @@ var menuItems = {
                 {    
                    "type":"view",
                    "name":"智慧首页",
-                   "url":"http://chenjp.ittun.com/main"
+                   "url":baseUrl+"/main"
                 },
                 {
                    "type":"view",
                    "name":"景点推荐",
-                   "url":"http://chenjp.ittun.com/main/scenicIntroduction"
+                   "url":baseUrl+"/main/scenicIntroduction"
                 },
                 {
                    "type":"view",
                    "name":"路线推荐",
-                   "url":"http://chenjp.ittun.com/main/routeRecommend"
+                   "url":baseUrl+"/main/routeRecommend"
                 }
             ]
         },{
@@ -31,22 +33,22 @@ var menuItems = {
                 {    
                    "type":"view",
                    "name":"信息发布",
-                   "url":"http://chenjp.ittun.com/main/information"
+                   "url":baseUrl+"/main/information"
                 },
                 {    
                    "type":"view",
-                   "name":"园区服务",
-                   "url":"http://chenjp.ittun.com/main/parkService"
+                   "name":"租车服务",
+                   "url":baseUrl+"/main/parkService/bike"
                 },
                 {
                    "type":"view",
                    "name":"停车服务",
-                   "url":"http://chenjp.ittun.com/main/parking"
+                   "url":baseUrl+"/main/parkService/parking"
                 },
                 {
                    "type":"view",
                    "name":"公厕服务",
-                   "url":"http://chenjp.ittun.com/main/toilet"
+                   "url":baseUrl+"/main/parkService/toilet"
                 }
             ]
         },{
@@ -94,3 +96,5 @@ jssdk.getAccessToken(function(err,token){
         })
     };
 })
+
+module.exports = menuItems;

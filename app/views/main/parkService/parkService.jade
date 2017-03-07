@@ -5,13 +5,20 @@ append css
 
 block main
 
-    style.
-        
-    div(class="map-content")
-        img(src="../../../uploads/image/"+service.images[0].filename)
-    
-    div.info-content
-        span.more-btn.twinkling.fa.fa-ellipsis-h
-        h3= service.title
-        p!= service.content
+    div.body-wrap
+        div(class="map-content")
+            img(src="../../../uploads/image/"+service.images[0].filename)
+
+        div.info-wrap
+            a.more-btn(href="javascript:;")
+                span.fa.fa-ellipsis-h
+            div.info-content.hide
+                h3= service.title
+                p!= service.content
 block scripts
+    script.
+        $(function(){
+            $(".more-btn").on("click",function(){
+                $(".info-content").slideToggle("fast");
+            })
+        })

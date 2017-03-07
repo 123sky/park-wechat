@@ -3,6 +3,7 @@ var express = require('express'),
     mongoose = require('mongoose'),
     wechat = require('wechat'),
     jssdk = require("../../../lib/jssdk.js"),
+    menu = require("../../../menu.js"),
     request = require('request');
 
 module.exports = function (app) {
@@ -29,19 +30,22 @@ var config = {
     appid: 'wx5c957ab9c6d5195f'
 };
 
-/*用户关注回复*/
-var subscribeReq = function (req, res, next){
-    var message = req.weixin;
-    var answer =
+var getTextResponse = function(message,text){
+    var msg = 
         '<xml>'+
         '<ToUserName><![CDATA['+message.FromUserName+']]></ToUserName>'+
         '<FromUserName><![CDATA['+message.ToUserName+']]></FromUserName>'+
         '<CreateTime>'+Math.round(Date.now()/1000)+'</CreateTime>'+
         '<MsgType><![CDATA[text]]></MsgType>'+
-        '<Content><![CDATA[欢迎关注智慧艾溪湖微信公众号]]></Content>'+
+        '<Content><![CDATA['+text+']]></Content>'+
         '</xml>';
+    return msg;
+}
 
-    console.log(answer);
+/*用户关注回复*/
+var subscribeReq = function (req, res, next){
+    var message = req.weixin;
+    var answer = getTextResponse(message,'欢迎关注艾溪湖微信公众号');
     res.set('Content-Type','text/xml');
     res.send(answer);
 };
@@ -52,78 +56,75 @@ var textReq = function (req, res, next){
     var message = req.weixin;
 
     if(!message.Content){
-        return res.reply('啥都不输入让我差个毛线:)');
+        return res.reply('消息为空');
+    }
+    res.set('Content-Type','text/xml');
+
+    /*找厕所*/
+    var toilet = new RegExp('厕|卫生|屎|尿');
+    if(toilet.test(message.Content)){
+        var text = '<a href="'+menu.button[1].sub_button[3].url+'">点击进入-'+menu.button[1].sub_button[3].name+'</a>';
+        res.send(getTextResponse(message,text));
+        return;
     }
 
-    var question = encodeURIComponent(message.Content);
-    request.get({
-        url:'https://www.baidu.com/s?ie=UTF-8&wd='+question,
-        headers:{
-            'User-Agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.87 Safari/537.36'
-        }
-    },function(searchErr,searchRes,searchBody){
+    /*找停车场*/
+    var parking = new RegExp('停|车');
+    if(parking.test(message.Content)){
+        var text = '<a href="'+menu.button[1].sub_button[2].url+'">点击进入-'+menu.button[1].sub_button[2].name+'</a>';
+        res.send(getTextResponse(message,text));
+        return;
+    }
 
-        if(searchErr){
-            console.error(searchErr);
-            return res.reply('妈蛋，竟然出错了！');
-        }
+    /*租自行车*/
+    var bike = new RegExp('租|自行|单车');
+    if(bike.test(message.Content)){
+        var text = '<a href="'+menu.button[1].sub_button[1].url+'">点击进入-'+menu.button[1].sub_button[1].name+'</a>';
+        res.send(getTextResponse(message,text));
+        return;
+    }
 
-        var $ = cheerio.load(searchBody);
-        var results = $(".result.c-container");
+    /*智慧首页*/
+    var index = new RegExp('智慧|首页|公园');
+    if(index.test(message.Content)){
+        var text = '<a href="'+menu.button[0].sub_button[0].url+'">点击进入-'+menu.button[0].sub_button[0].name+'</a>';
+        res.send(getTextResponse(message,text));
+        return;
+    }
 
-        if(results.length === 0){
-            return res.reply('啥都没找到啊！能再把问题描述好一点吗？');
-        }
+    /*景点*/
+    var scenic = new RegExp('景');
+    if(scenic.test(message.Content)){
+        var text = '<a href="'+menu.button[0].sub_button[1].url+'">点击进入-'+menu.button[0].sub_button[1].name+'</a>';
+        res.send(getTextResponse(message,text));
+        return;
+    }
 
-        var result = $(results.get(0));
-        var answer = result.find('.c-abstract').text();
+    /*推荐路线*/
+    var route = new RegExp('路');
+    if(route.test(message.Content)){
+        var text = '<a href="'+menu.button[0].sub_button[2].url+'">点击进入-'+menu.button[0].sub_button[2].name+'</a>';
+        res.send(getTextResponse(message,text));
+        return;
+    }
 
-        res.reply(answer?answer:'竟然能找到空的答案，奇了怪了，你问的啥啊');
-
-        /*保存会话历史*/
-        var conversation = new Conversation({
-            user:req.user,
-            question:message.Content,
-            answer:answer,
-            createdAt:new Date()
-        });
-        conversation.save(function(saveErr,conversation){
-            if(saveErr){
-                return console.error("conversation save error",saveErr)
-            };
-
-            req.user.conversationCount=req.user.conversationCount+1;
-            req.user.save(function(e,u){
-                if(e){
-                    return console.error("conversationCount of user save error",e);
-                }
-            })
-        })
-    });
+    res.send(getTextResponse(message,"您可以尝试输入‘智慧公园’"));
 };
 
-/*用户中心单击事件*/
-var personCenterReq = function(req,res,next){
+/*联系我们单击事件*/
+var contactUsReq = function(req,res,next){
 
     var message = req.weixin;
+    var text = '艾溪湖管理处联系方式\n电话：12345678910\n邮件：123456789@163.com'
     var answer =
-        '<xml>' +
+        '<xml>'+
         '<ToUserName><![CDATA['+message.FromUserName+']]></ToUserName>'+
         '<FromUserName><![CDATA['+message.ToUserName+']]></FromUserName>'+
         '<CreateTime>'+Math.round(Date.now()/1000)+'</CreateTime>'+
-        '<MsgType><![CDATA[news]]></MsgType>'+
-        '<ArticleCount>1</ArticleCount>'+
-        '<Articles>'+
-        '<item>'+
-        '<Title><![CDATA[用户注册]]></Title>'+
-        '<Description><![CDATA[点击此处立即出册]]></Description>'+
-        '<PicUrl><![CDATA[http://img.taopic.com/uploads/allimg/120301/6388-12030121462846.jpg]]></PicUrl>'+
-        '<Url><![CDATA[http://de5e0128.ngrok.io/main]]></Url>'+
-        '</item>'+
-        '</Articles>'+
+        '<MsgType><![CDATA[text]]></MsgType>'+
+        '<Content><![CDATA['+text+']]></Content>'+
         '</xml>';
 
-    console.log(answer);
     res.set('Content-Type','text/xml');
     res.send(answer);
 
@@ -142,8 +143,8 @@ var handleWechatRequest = wechat(config, function (req, res, next) {
             switch(message.Event){
                 case 'CLICK':
                     switch(message.EventKey){
-                        case 'person-center':
-                            personCenterReq(req,res,next);
+                        case 'contact-us':
+                            contactUsReq(req,res,next);
                             break;
                         default :
                             return res.reply('无法处理的地址');
