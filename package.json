@@ -20,6 +20,7 @@
     "express-validator": "^3.1.2",
     "fs": "0.0.1-security",
     "glob": "^6.0.4",
+    "http": "0.0.0",
     "jade": "^1.11.0",
     "koa-uploadify": "^1.0.3",
     "lorem-ipsum": "^1.0.3",

@@ -125,8 +125,8 @@
 			url:url,
 			type:type,
 			async:false,
-			//contentType:"application/json",
-			dataType:"text",
+			contentType:"application/html",
+			dataType:"html",
 			timeout:60000,
 			beforeSend:function(request){
 			},

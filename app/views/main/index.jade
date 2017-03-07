@@ -5,6 +5,19 @@ append css
 
 block main
     .container
+        .container-top
+            .weather-part.am-g
+                .am-u-sm-4.weather-part-left
+                    span= weather.qw+"°"
+                .am-u-sm-4.weather-part-right
+                    div
+                        i.fa.fa-map-marker
+                        span= weather.cityName
+                    div
+                        span= weather.tq
+                        i.fa.fa-leaf
+                        span= weather.fl
+
         .container-bottom
             ul.menu-part
                 li
@@ -39,3 +52,5 @@ block main
                             i.fa.fa-child
                         span 公厕服务
 block scripts
+
+    
