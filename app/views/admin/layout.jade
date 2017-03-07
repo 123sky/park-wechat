@@ -73,16 +73,6 @@ block main
                         a(href='/admin/parkService/add')
                             i.fa.fa-plus
                             |&nbsp;添加园区服务
-                ul.nav.nav-sidebar
-                    li.nav-header 停车信息管理
-                    li(class={active: pageName==='/admin/parking'})
-                        a(href='/admin/parking')
-                            i.fa.fa-th-large
-                            |&nbsp;停车信息列表
-                    li(class={active: pageName==='/admin/parking/add'})
-                        a(href='/admin/parking/add')
-                            i.fa.fa-plus
-                            |&nbsp;添加停车信息
                 
             .col-sm-9.col-sm-offset-3.col-md-10.col-md-offset-2.main
                 block content

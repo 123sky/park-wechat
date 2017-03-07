@@ -19,6 +19,14 @@ block content
             textarea.form-control(name="info", id="info", required="true")= parkService.info
 
         div.form-group
+            label(for="type") 类别：
+            select.form-control(name="type", id="type", required="true")
+                option 请选择服务类别
+                option(value="bike",selected=(parkService.type==='bike')) 自行车租赁
+                option(value="parking",selected=(parkService.type==='parking')) 停车服务
+                option(value="toilet",selected=(parkService.type==='toilet')) 公厕服务
+
+        div.form-group
             label(for="content") 内容：
             textarea.form-control(name="content", id="content", required="true")= parkService.content
 

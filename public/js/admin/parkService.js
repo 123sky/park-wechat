@@ -34,10 +34,7 @@ $(function () {
         deleteCallback: function (data, pd) {
             removeFile(data,pd);
         }
-    });
-
-    //音频文件上传
-    
+    });  
 
     //修改时移除旧的图片
     $("#img-preview").on('click','.remove-image',function(){
@@ -81,6 +78,7 @@ $(function () {
                 obj:{
                     title:$("#title").val(),
                     info:$("#info").val(),
+                    type:$("#type").val(),
                     content:CKEDITOR.instances.content.getData(),
                     recommend:false,
                     published:$("#published").prop("checked")
@@ -108,6 +106,7 @@ $(function () {
             var obj={
                 _id:$("#_id").val(),
                 info:$("#info").val(),
+                type:$("#type").val(),
                 title:$("#title").val(),
                 content:CKEDITOR.instances.content.getData(),
                 published:$("#published").prop("checked"),

@@ -93,12 +93,14 @@ router.post('/add', function (req, res, next) {
 
         //保存文字信息
         var title = request.title.trim();
-        var info = request.info;       
+        var info = request.info;
+        var type = request.type;        
         var content = request.content;
         var published = request.published;
         var parkService = new ParkService({
           title: title,
           info: info,
+          type: type,
           content: content,
           published: published,
           created: new Date(),
@@ -272,7 +274,6 @@ router.post('/edit', function (req, res, next) {
     }); 
   }      
 });
-
 
 router.get('/delete/:id', function (req, res, next) {
   if (!req.params.id) {
