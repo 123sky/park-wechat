@@ -15,8 +15,11 @@ var validator = require('express-validator');
 var uploadify = require('uploadify');
 var session = require('express-session');
 var flash = require('connect-flash');
+var MongoStore = require('connect-mongo')(session);
 
-module.exports = function(app, config) {
+var User = mongoose.model('User');
+
+module.exports = function(app, config, connection) {
   var env = process.env.NODE_ENV || 'development';
   app.locals.ENV = env;
   app.locals.ENV_DEVELOPMENT = env == 'development';
@@ -28,14 +31,35 @@ module.exports = function(app, config) {
     secret: 'nodeblog',
     resave: false,
     saveUninitialized: true,
-    cookie: { secure: false }
+    cookie: { secure: false },
+    store: new MongoStore({mongooseConnection: connection})
   }));
   app.use(passport.initialize());
   app.use(passport.session());
+
+  app.use(function(req, res, next){
+    req.user = null;
+    if(req.session.passport && req.session.passport.user){
+      User.findById(req.session.passport.user, function(err, user){
+        if(err) return next(err);
+        user.password = null;
+        req.user = user;
+        next();
+      })
+    }else{
+      next();
+    }
+  });
+
+
+
   app.use(flash());
   app.use(function (req, res, next) {
       res.locals.errors = req.flash('error');
       res.locals.infos = req.flash('info');
+      app.locals.user = req.user;
+      //console.log(req.session, app.locals.user);
+
       next();
   });
 

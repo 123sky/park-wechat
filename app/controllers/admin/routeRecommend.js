@@ -5,11 +5,13 @@ var express = require('express'),
   path = require("path");
   RouteRecommend = mongoose.model('RouteRecommend'),
   File = mongoose.model('File');
+  user = require('./user');
+  
 module.exports = function (app) {
   app.use('/admin/routeRecommend', router);
 };
 
-router.get('/', function (req, res, next) {
+router.get('/', user.requireLogin, function (req, res, next) {
   var sortby = req.query.sortby?req.query.sortby:"created";
   var sortdir = req.query.sortdir?req.query.sortdir:"desc";
 
@@ -50,7 +52,7 @@ router.get('/', function (req, res, next) {
     });
 });
 
-router.get('/view/:id',function (req, res, next){
+router.get('/view/:id',user.requireLogin, function (req, res, next){
   RouteRecommend.finndOne({_id: req.params.id}).ecec(function(err, route){
     if(err){
       return next(new Error('no route id'));
@@ -64,7 +66,7 @@ router.get('/view/:id',function (req, res, next){
 
 });
 
-router.get('/add', function (req, res, next) {
+router.get('/add', user.requireLogin, function (req, res, next) {
   res.render('admin/routeRecommend/add', {
     pretty: true,
     pageTitle:'添加路线',
@@ -72,7 +74,7 @@ router.get('/add', function (req, res, next) {
   });
 });
 
-router.post('/add', function (req, res, next) {
+router.post('/add', user.requireLogin, function (req, res, next) {
   var request = req.body;
 
   //后端校验
@@ -134,7 +136,7 @@ router.post('/add', function (req, res, next) {
     })
 });
 
-router.post('/delFile', function (req, res, next) {
+router.post('/delFile', user.requireLogin, function (req, res, next) {
   var filePath = req.body.path;
 
   //移除服务器路径下文件
@@ -149,7 +151,7 @@ router.post('/delFile', function (req, res, next) {
   }) ;
 });
 
-router.get('/edit/:id', function (req, res, next) {
+router.get('/edit/:id', user.requireLogin, function (req, res, next) {
   if (!req.params.id) {
     return next(new Error('删除id不存在'));
   }
@@ -171,7 +173,7 @@ router.get('/edit/:id', function (req, res, next) {
     });
 });
 
-router.post('/edit', function (req, res, next) {
+router.post('/edit', user.requireLogin, function (req, res, next) {
   //关于图片文件的更新在delFile的接口中已经做了，所以这里不用更新了
   var request = req.body;
   console.log(request);
@@ -292,7 +294,7 @@ router.post('/edit', function (req, res, next) {
 });
 
 
-router.get('/delete/:id', function (req, res, next) {
+router.get('/delete/:id', user.requireLogin, function (req, res, next) {
   if (!req.params.id) {
     return next(new Error('删除id不存在'));
   }
@@ -316,7 +318,7 @@ router.get('/delete/:id', function (req, res, next) {
   });
 });
 
-router.get('/recommend/:id/:status', function (req, res, next) {
+router.get('/recommend/:id/:status', user.requireLogin, function (req, res, next) {
   if (!req.params.id||!req.params.status) {
     req.flash('error','缺少参数')
     res.redirect('/admin/routeRecommend');
@@ -335,7 +337,7 @@ router.get('/recommend/:id/:status', function (req, res, next) {
   });
 });
 
-router.get('/published/:id/:status', function (req, res, next) {
+router.get('/published/:id/:status', user.requireLogin, function (req, res, next) {
   if (!req.params.id||!req.params.status) {
     req.flash('error','缺少参数')
     res.redirect('/admin/routeRecommend');

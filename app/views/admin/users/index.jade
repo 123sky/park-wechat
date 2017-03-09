@@ -1,0 +1,56 @@
+extends ../layout
+
+block content
+    h2.page-header 用户列表
+
+    table.table.table-bordered
+        thead
+            tr
+                th(width="30%")
+                    if sortby === 'username'
+                        if(sortdir === 'desc')
+                            a(href="/admin/users?page="+pageNum+"&sortby=username&sortdir=asc")
+                                i.fa.fa-arrow-down &nbsp;账号
+                        else
+                            a(href="/admin/users?page="+pageNum+"&sortby=username&sortdir=desc")
+                                i.fa.fa-arrow-up &nbsp;账号
+                    else
+                        a(href="/admin/users?page="+pageNum+"&sortby=username&sortdir=desc") 账号
+                th 密码
+                th
+                    if sortby === 'created'
+                        if(sortdir === 'desc')
+                            a(href="/admin/users?page=" + pageNum + "&sortby=created&sortdir=asc")
+                                i.fa.fa-arrow-down &nbsp;创建时间
+                        else
+                            a(href="/admin/users?page=" + pageNum + "&sortby=created&sortdir=desc")
+                                i.fa.fa-arrow-up &nbsp;创建时间
+                    else
+                        a(href="/admin/users?page=" + pageNum + "&sortby=created&sortdir=desc") 创建时间
+                
+                th(width="150px") 管理
+        tbody
+        each user in users
+            tr
+                td
+                    a(href="/users/view/",target="_blank")=user.username
+                td= user.password
+                td= moment(user.created).format("YYYY-MM-DD HH:mm:ss")
+                td
+                    a(href="/admin/users/edit/"+user._id,class="btn btn-sm btn-default",target="_blank") 编辑
+                    span &nbsp;&nbsp;
+                    a(href="/admin/users/delete/"+user._id,class="btn btn-sm btn-default") 删除
+
+    if pageCount>1
+        nav
+            ul.pagination
+                -var currentPage = 1
+                while currentPage <= pageCount
+                    if(currentPage === pageNum)
+                        li.active
+                            a(href="/admin/users?page="+currentPage+"&sortby="+sortby+"&sortdir="+sortdir)= currentPage++
+                    else
+                        li
+                            a(href="/admin/users?page="+currentPage+"&sortby="+sortby+"&sortdir="+sortdir)= currentPage++
+block scripts
+    script $(function(){console.log('node Blog is ready')})

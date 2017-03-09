@@ -19,10 +19,14 @@ block main
                     a.navbar-brand(href='#') 艾溪湖公园微信公众号后台管理系统
                 #navbar.navbar-collapse.collapse
                     ul.nav.navbar-nav.navbar-right
-                        li
-                            a(href='/admin/users/signin')
-                                 i.fa.fa-sign-out
-                                 |&nbsp;注销
+                        if user
+                            li
+                                a= user.username
+                                    |&nbsp;用户，您好！
+                            li
+                                a(href='/admin/users/logout')
+                                     i.fa.fa-sign-out
+                                     |&nbsp;注销
                         li
                             a(href='/admin/users/help')
                                  i.fa.fa-question-circle-o
@@ -74,6 +78,17 @@ block main
                         a(href='/admin/parkService/add')
                             i.fa.fa-plus
                             |&nbsp;添加园区服务
+                //
+                    ul.nav.nav-sidebar
+                        li.nav-header 用户管理
+                        li(class={active: pageName==='/admin/users'})
+                            a(href='/admin/users')
+                                i.fa.fa-th-large
+                                |&nbsp;用户列表
+                        li(class={active: pageName==='/admin/users/add'})
+                            a(href='/admin/users/add')
+                                i.fa.fa-plus
+                                |&nbsp;添加用户
                 
             .col-sm-9.col-sm-offset-3.col-md-10.col-md-offset-2.main
                 block content
