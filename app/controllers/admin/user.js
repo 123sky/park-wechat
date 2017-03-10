@@ -14,9 +14,8 @@ module.exports.requireLogin = function(req, res, next){
     if (req.user){
         next();
     }else {
-        req.flash('error', '登录用户才能使用');
-        //next(new Error("登录用户才能使用"));
-        res.render('admin/users/signin');
+      req.flash('error','登录用户才能使用')
+      res.redirect('/admin/users/signin');  
     }
 };
 
