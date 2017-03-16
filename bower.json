@@ -9,6 +9,7 @@
   "dependencies": {
     "bootstrap": "^3.3.7",
     "font-awesome": "^4.7.0",
-    "amazeui": "^2.7.2"
+    "amazeui": "^2.7.2",
+    "jquery-validation": "^1.16.0"
   }
 }

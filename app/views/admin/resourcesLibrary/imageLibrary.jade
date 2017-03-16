@@ -1,0 +1,89 @@
+extends ../layout
+
+append css
+    style.
+
+        .content-part img {
+            width: 100%;
+            height: 150px;
+        }
+
+        .header-part{
+            padding: 0 30px;
+            overflow: hidden;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .image-item-wrap{
+            margin: 10px 0;
+            padding: 15px;
+            height:250px;
+        }
+
+        .image-item-wrap:hover {
+            -webkit-box-shadow: 0 0 10px rgba(100,100,100, 0.5);
+            -moz-box-shadow: 0 0 10px rgba(100,100,100, 0.5);
+            box-shadow: 0 0 10px rgba(100,100,100, 0.5);
+            padding:10px;
+        }
+
+        .image-item-wrap:hover{
+            
+        }
+
+        .info-part {
+            border: 1px solid #eee;
+            height: 35px;
+            line-height: 25px;
+            padding: 5px 10px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .item-tools-part {
+            height: 35px;
+            background: #eee;
+            text-align: center;
+            line-height: 35px;
+        }
+
+        .item-tools-part a {
+            color: #999;
+        }
+
+        .item-tools-part .col-sm-6:hover{
+            background:#ccc;
+        }
+      
+block content
+    div.content-wrap
+        div.header-part
+            h2 图片素材管理
+            div.tools-part
+                label(for="published") 全选
+                    input(type="checkbox",id="checked-all")
+                button.btn.btn-info 删除所选
+                button.btn.btn-success 上传图片
+        div.col-sm-12
+            each image in images
+                .col-sm-2.image-item-wrap
+                    .content-part
+                        img(src='../../../uploads/image/'+image.filename)
+                    .info-part
+                        input(type="checkbox",id="checked-all",name="image-item")
+                        span(title=image.originalname)= image.originalname
+                    .item-tools-part
+                        .col-sm-6
+                            a(href="javascript:;")
+                                i.glyphicon.glyphicon-pencil
+                        .col-sm-6
+                            a(href="javascript:;")
+                                i.glyphicon.glyphicon-trash
+    
+            
+
+   
+            

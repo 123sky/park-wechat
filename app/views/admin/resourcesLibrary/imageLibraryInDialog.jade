@@ -1,0 +1,185 @@
+doctype html
+html(lang='en')
+    head
+        meta(charset='UTF-8')
+        meta(name='viewport', content='width=device-width')
+        title= pageTitle
+        block css
+            link(rel='stylesheet', href='/components/bootstrap/dist/css/bootstrap.css')
+
+        style.
+
+            .content-part img {
+                width: 100%;
+                height: 150px;
+            }
+
+            .header-part{
+                padding: 0 30px;
+                overflow: hidden;
+                height: 70px;
+                width: 100%;
+                line-height: 70px;
+                position: fixed;
+                z-index: 10;
+                top: 0;
+                left: 0;
+                right: 0;
+                background: #bfbfbf;
+                border-bottom: 1px solid #ccc;
+            }
+
+            .header-part span{
+                font-size:30px;
+            }
+
+            .tools-part{
+                float: right;
+            }
+
+            .center-part{
+                margin: 70px 0;
+            }
+
+            .image-item-wrap{
+                margin: 10px 0;
+                padding: 15px;
+                height:215px;
+            }
+
+            .image-item-wrap:hover {
+                -webkit-box-shadow: 0 0 10px rgba(100,100,100, 0.5);
+                -moz-box-shadow: 0 0 10px rgba(100,100,100, 0.5);
+                box-shadow: 0 0 10px rgba(100,100,100, 0.5);
+                padding:10px;
+            }
+
+            .image-item-content{
+                position:relative;
+            }
+
+            .select-cover {
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: rgba(0, 0, 0, 0.5);
+            }
+
+            .select-cover a{
+                display: block;
+                width: 100%;
+                height: 100%;
+                text-align: center;
+                line-height: 185px;
+                font-size: 40px;
+                color: white;
+            }
+
+            .info-part {
+                border: 1px solid #eee;
+                height: 35px;
+                line-height: 25px;
+                padding: 5px 10px;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+            }
+
+            .item-tools-part {
+                height: 35px;
+                background: #eee;
+                text-align: center;
+                line-height: 35px;
+            }
+
+            .item-tools-part a {
+                color: #999;
+            }
+
+            .item-tools-part .col-sm-6:hover{
+                background:#ccc;
+            }
+
+            .foot-part {
+                position: fixed;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                background: #bfbfbf;
+                border-top: 1px solid #ccc;
+                height: 50px;
+                line-height: 34px;
+                padding: 8px 30px;
+            }
+
+            .foot-part a{
+                float:right;
+            }
+
+
+    body
+        block main
+            div.content-wrap
+                div.header-part
+                    span 图片素材管理
+                    div.tools-part
+                        label(for="published") 全选
+                            input(type="checkbox",id="checked-all")
+                        a.btn.btn-info 删除所选
+                        a.btn.btn-success 上传图片
+                div.col-sm-12.center-part
+                    each image in images
+                        .col-sm-2.image-item-wrap
+                            .image-item-content
+                                .select-cover.hide(data-name=image.originalname,data-url='../../../uploads/image/'+image.filename)
+                                    a(href="javascript:;")
+                                        span.glyphicon.glyphicon-ok
+                                .content-part
+                                    img(src='../../../uploads/image/'+image.filename)
+                                .info-part
+                                    input(type="checkbox",id="checked-all",name="image-item")
+                                    span(title=image.originalname)= image.originalname
+                div.col-sm-12.foot-part.hide
+                    span#select-img-name
+                    a.btn.btn-danger#submit 确定                     
+
+
+        block js
+            script(src='/components/jquery/dist/jquery.js')
+            script(src='/components/bootstrap/dist/js/bootstrap.js')
+        if ENV_DEVELOPMENT
+            script(src='http://localhost:35729/livereload.js')
+
+        block scripts
+            script.
+                $(function(){
+                    $(".image-item-wrap").on("click",function(){
+                        
+                        //清除其他选中的效果
+                        $(".select-cover").addClass("hide");
+                        //显示底部工具栏
+                        $(".foot-part").removeClass("hide");
+                        
+                        var thisClick = $(this).find('.select-cover');
+                        //在确定按钮存储选中的url
+                        $("#submit").attr("data-url",thisClick.attr("data-url"));
+                        //切换选中效果
+                        if(thisClick.hasClass("hide")){
+                            thisClick.removeClass("hide");
+                        }else{
+                            thisClick.addClass("hide");
+                        }
+                        //填充底部信息
+                        $("#select-img-name").html(thisClick.attr("data-name"));
+                    })
+
+                    //确定选中
+                    $("#submit").on("click",function(){
+                        console.log($(this).attr("data-url"));
+                        window.top.opener.CKEDITOR.tools.callFunction(1, $(this).attr("data-url"));
+                        window.top.close();
+                    })
+                })
+            
