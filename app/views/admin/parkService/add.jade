@@ -6,7 +6,7 @@ append css
 block content
     h2.page-header= parkService._id?'修改园区服务':'保存园区服务'
 
-    form.vertical-form
+    form.vertical-form#service-form
         div.form-group.hide
             label(for="title") ID
             input.form-control(name="_id", id="_id", value=parkService.id)
@@ -26,14 +26,6 @@ block content
                 option(value="parking",selected=(parkService.type==='parking')) 停车服务
                 option(value="toilet",selected=(parkService.type==='toilet')) 公厕服务
 
-        div.form-group
-            label(for="content") 内容：
-            textarea.form-control(name="content", id="content", required="true")= parkService.content
-
-        div.form-group
-            label(for="published") 是否发布：
-            input(name="published", id="published", type="checkbox", checked=parkService.published)
-
         div.form-group.image-part
             label(for="image") 图片：
             #image
@@ -46,6 +38,13 @@ block content
                                 span= image.originalname
                                 a(href='javascript:;',data-destination=image.destination,data-filename=image.filename,data-id=image.id,class='remove-image',title='移除')
                                     span.fa.fa-times-circle 移除
+        div.form-group
+            label(for="content") 内容：
+            textarea.form-control(name="content", id="content", required="true")= parkService.content
+
+        div.form-group
+            label(for="published") 是否发布：
+            input(name="published", id="published", type="checkbox", checked=parkService.published)
 
         div.form-group
             a.btn.btn-info(type="submit",id='submit-btn',href="javascript:;")= parkService._id?'修改园区服务':'保存园区服务'

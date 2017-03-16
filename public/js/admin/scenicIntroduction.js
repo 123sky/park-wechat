@@ -1,5 +1,7 @@
 $(function () {
 
+    //前端校验
+    $("#scenic-form").validate();
     //富文本编辑器
     if (typeof CKEDITOR !== 'undefined') {
         CKEDITOR.replace('content');
@@ -19,7 +21,7 @@ $(function () {
         showDownload:false,
         showDelete: true,
         maxFileSize : 52428800,
-        statusBarWidth:600,
+        statusBarWidth:280,
         dragdropWidth:600,
         onSuccess: function (files, response, xhr, pd) {
             //console.log(response);

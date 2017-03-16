@@ -1,6 +1,8 @@
-$(functoin (){
+$(function () {
 
-	//提交表单
+	//前端校验
+    $("#user-form").validate();
+    //提交表单
     $("#submit-btn").on('click',function(){
 
         if($("#_id").val()){
@@ -49,4 +51,4 @@ $(functoin (){
             })
         }
     }); 
-})
+});

@@ -1,5 +1,6 @@
 var mongoose = require('mongoose'),
   	Schema = mongoose.Schema;
+var md5 = require('md5');
 
 var UserSchema = new Schema({
     username: {type:String,required:true},
@@ -8,7 +9,7 @@ var UserSchema = new Schema({
 });
 
 UserSchema.methods.validPassword = function(password){
-	var isMatch =  password === this.password;
+	var isMatch =  md5(password) === this.password;
 	console.log('UserSchema.methods.validPassword:', password, this.password, isMatch);
 
 	return isMatch;

@@ -30,7 +30,7 @@ router.get('/', user.requireLogin,function (req, res, next) {
     .populate('images')
     .populate('voices')
     .exec(function (err, scenics) {
-      console.log(scenics);
+      //console.log(scenics);
       if (err) return next(err);
 
       var pageNum = Math.abs(parseInt(req.query.page || 1,10));
@@ -170,7 +170,7 @@ router.get('/edit/:id', user.requireLogin, function (req, res, next) {
 router.post('/edit', user.requireLogin, function (req, res, next) {
   //关于图片文件的更新在delFile的接口中已经做了，所以这里不用更新了
   var request = req.body;
-  console.log(request);
+  //console.log(request);
   var scenicId = request.id;//景点ID
   var file = request.file;//新添加的文章数组
   var oldDelImage = request.oldDelImage;//被移除的旧的图片ID字符串数组
@@ -303,7 +303,7 @@ router.get('/delete/:id', user.requireLogin, function (req, res, next) {
     }
 
     if (rowsRemoved) {
-      console.log('删除成功');
+      console.log('删除成功');      
     } else {
       console.log('删除失败');
     }

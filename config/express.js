@@ -15,6 +15,7 @@ var validator = require('express-validator');
 var uploadify = require('uploadify');
 var session = require('express-session');
 var flash = require('connect-flash');
+var messages = require('express-messages');
 var MongoStore = require('connect-mongo')(session);
 
 var User = mongoose.model('User');
@@ -57,6 +58,7 @@ module.exports = function(app, config, connection) {
   app.use(function (req, res, next) {
       res.locals.errors = req.flash('error');
       res.locals.infos = req.flash('info');
+      res.locals.messages = require('express-messages')(req, res);
       app.locals.user = req.user;
       //console.log(req.session, app.locals.user);
 

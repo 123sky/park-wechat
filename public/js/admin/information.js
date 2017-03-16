@@ -1,5 +1,42 @@
 $(function () {
 
+    //前端校验
+    $("#info-form").validate();
+    /*var validator = $(".vertical-form").validate({
+        rules: {
+            title: {
+                required:true,
+                maxlengh:5
+            },
+            info: {
+                required:true,
+                maxlengh:140
+            }
+        },
+        messages: {
+            title: "标题不能为空,最多5字",
+            info: "标题不能为空,最多140字"
+        },
+    // the errorPlacement has to take the table layout into account
+    errorPlacement: function(error, element) {
+      if ( element.is(":radio") )
+        error.appendTo( element.parent().next().next());
+      else if ( element.is(":checkbox") )
+        error.appendTo ( element.next());
+      else
+        error.appendTo( element.parent().next());
+    },
+    },
+    // set this class to error-labels to indicate valid fields
+    success: function(label) {
+      // set   as text for IE
+      label.html(" ").addClass("checked");
+    },
+    highlight: function(element, errorClass) {
+      $(element).parent().next().find("." + errorClass).removeClass("checked");
+    }
+    });*/
+
     //富文本编辑器
     if (typeof CKEDITOR !== 'undefined') {
         CKEDITOR.replace('content');
@@ -19,7 +56,7 @@ $(function () {
         showDownload:false,
         showDelete: true,
         maxFileSize : 52428800,
-        statusBarWidth:600,
+        statusBarWidth:280,
         dragdropWidth:600,
         onSuccess: function (files, response, xhr, pd) {
             //console.log(response);
@@ -35,9 +72,6 @@ $(function () {
             removeFile(data,pd);
         }
     });
-
-    //音频文件上传
-    
 
     //修改时移除旧的图片
     $("#img-preview").on('click','.remove-image',function(){

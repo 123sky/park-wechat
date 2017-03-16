@@ -6,7 +6,7 @@ append css
 block content
     h2.page-header= scenicIntroduction._id?'修改景点信息':'保存景点信息'
 
-    form.vertical-form
+    form.vertical-form#scenic-form
         div.form-group.hide
             label(for="title") ID
             input.form-control(name="_id", id="_id", value=scenicIntroduction.id)
@@ -19,18 +19,6 @@ block content
             label(for="info") 简介：
             textarea.form-control(name="info", id="info", required="true")= scenicIntroduction.info
 
-        div.form-group
-            label(for="content") 内容：
-            textarea.form-control(name="content", id="content", required="true")= scenicIntroduction.content
-
-        div.form-group
-            label(for="favorite") 点赞人数：
-            input.form-control(name="favorite", id="favorite", required="true", type="number", value=scenicIntroduction.favorite)
-
-        div.form-group
-            label(for="published") 是否发布：
-            input(name="published", id="published", type="checkbox", checked=scenicIntroduction.published)
-
         div.form-group.image-part
             label(for="image") 图片：
             #image
@@ -40,9 +28,23 @@ block content
                         .image-item(data-id=image.id)
                             img(src='../../../uploads/image/'+image.filename)
                             .image-info
-                                span= image.originalname
+                                span= image.filename
                                 a(href='javascript:;',data-destination=image.destination,data-filename=image.filename,data-id=image.id,class='remove-image',title='移除')
                                     span.fa.fa-times-circle 移除
+        div.form-group
+            label(for="content") 内容：
+            textarea.form-control(name="content", id="content", required="true")= scenicIntroduction.content
+
+        //
+            div.form-group
+                label(for="favorite") 点赞人数：
+                input.form-control(name="favorite", id="favorite", required="true", type="number", value=scenicIntroduction.favorite)
+
+        div.form-group
+            label(for="published") 是否发布：
+            input(name="published", id="published", type="checkbox", checked=scenicIntroduction.published)
+
+        
         div.form-group
             label(for="voice") 语音：
             #voice

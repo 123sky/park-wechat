@@ -4,6 +4,13 @@
  */
 
 CKEDITOR.editorConfig = function( config ) {
+	config.width = 325;
+	config.height = 400;
+	config.image_previewText = '';//清空预览区域显示内容
+	//config.filebrowserUploadUrl = '/upload/mgmt?type=image';
+	//config.filebrowserBrowseUrl = '/upload/mgmt?type=image';//设置
+	//config.filebrowserImageUploadUrl = '/upload/mgmt?type=image';//配置图片上传的路径
+	
 	// Define changes to default configuration here.
 	// For complete reference see:
 	// http://docs.ckeditor.com/#!/api/CKEDITOR.config
