@@ -1,8 +1,9 @@
 extends ../layout
 
 append css
-    style.
+    link(rel='stylesheet',href='/components/jquery-upload-file/css/uploadfile.css')
 
+    style.
         .content-part img {
             width: 100%;
             height: 150px;
@@ -14,6 +15,10 @@ append css
             display: flex;
             justify-content: space-between;
             align-items: center;
+        }
+
+        .tools-part a,.tools-part label{
+            margin:0 10px;
         }
 
         .image-item-wrap{
@@ -65,8 +70,8 @@ block content
             div.tools-part
                 label(for="published") 全选
                     input(type="checkbox",id="checked-all")
-                button.btn.btn-info 删除所选
-                button.btn.btn-success 上传图片
+                a.btn.btn-info 删除所选
+                a.btn.btn-success#add-img 添加图片
         div.col-sm-12
             each image in images
                 .col-sm-2.image-item-wrap
@@ -82,8 +87,62 @@ block content
                         .col-sm-6
                             a(href="javascript:;")
                                 i.glyphicon.glyphicon-trash
-    
-            
 
-   
-            
+block scripts
+    script.
+
+        $("#add-img").on("click",function(){
+
+            var div = '<div id="image-upload"></div>'
+
+            BootstrapDialog.show({
+                title: '添加图片',
+                message: div,
+                onshown: function(dialogRef){
+                    initImageUpload();
+                },
+                buttons: [{
+                    label: '关闭',
+                    action: function(dialogItself){
+                        dialogItself.close();
+                    }
+                }]
+            });
+        })
+
+        function initImageUpload(){
+            $("#image-upload").uploadFile({
+                url:"/fileupload1/",
+                fileName:"imageFile",
+                preview:true,
+                allowedTypes : 'gif,jpg,png',
+                acceptFiles:'gif,jpg,png',
+                allowDuplicates:false,
+                multiple:true,
+                dragDrop:true,
+                showDownload:false,
+                showDelete: true,
+                maxFileSize : 52428800,
+                statusBarWidth:"100%",
+                dragdropWidth:"100%",
+                showPreview:true,
+                onSuccess: function (files, response, xhr, pd) {
+                    var fileArray = [];
+                    for(var i=0;i<response.length;i++){
+                        fileArray.push(response[i]);
+                    }
+
+                    $.postJSON(urlData.file.add,fileArray,function(result){
+                        if(result.code === 1){
+                            alert("图片添加成功");
+                            //location.pathname = '/admin/resourcesLibrary/imageLibrary' 
+                        }else{
+                            alert(result.msg);
+                        }
+                    });
+                },
+                deleteCallback: function (data, pd) {
+                    removeFile(data,pd);
+                }
+            });
+        }

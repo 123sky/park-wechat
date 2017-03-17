@@ -1,0 +1,17 @@
+/*公共样式库*/
+
+/*添加推荐图片*/
+.Recommend-image{
+	display: block;
+	width: 400px;
+	height: 250px;
+	border: 1px solid #ccc;
+	border-radius: 5px;
+	background: #eee;
+	line-height: 250px;
+	text-align: center;
+	color: #bbb;
+	font-size: 50px;
+	background-repeat: no-repeat;
+    background-size: cover;
+}

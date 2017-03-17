@@ -1,10 +1,5 @@
 extend ./baseLayout
 
-append css
-    link(rel='stylesheet',href='/css/blogAdmin.css')
-    link(rel='stylesheet',href='/components/font-awesome/css/font-awesome.css')
-    
-
 block main
 
     block nav
@@ -97,10 +92,7 @@ block main
             .col-sm-9.col-sm-offset-3.col-md-10.col-md-offset-2.main
                 != messages()
                 block content
-
-
-block scripts
-    script(src="/components/jquery-validation/dist/jquery.validate.js")
+    
     
 
                     

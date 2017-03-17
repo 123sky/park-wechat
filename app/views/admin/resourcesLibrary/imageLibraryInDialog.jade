@@ -8,7 +8,6 @@ html(lang='en')
             link(rel='stylesheet', href='/components/bootstrap/dist/css/bootstrap.css')
 
         style.
-
             .content-part img {
                 width: 100%;
                 height: 150px;
@@ -133,7 +132,7 @@ html(lang='en')
                     each image in images
                         .col-sm-2.image-item-wrap
                             .image-item-content
-                                .select-cover.hide(data-name=image.originalname,data-url='../../../uploads/image/'+image.filename)
+                                .select-cover.hide(data-name=image.originalname,data-url=image.destination+image.filename)
                                     a(href="javascript:;")
                                         span.glyphicon.glyphicon-ok
                                 .content-part
@@ -164,7 +163,8 @@ html(lang='en')
                         
                         var thisClick = $(this).find('.select-cover');
                         //在确定按钮存储选中的url
-                        $("#submit").attr("data-url",thisClick.attr("data-url"));
+                        var url = location.origin+'/'+thisClick.attr("data-url").replace('public/','');
+                        $("#submit").attr("data-url",url);
                         //切换选中效果
                         if(thisClick.hasClass("hide")){
                             thisClick.removeClass("hide");
@@ -177,8 +177,18 @@ html(lang='en')
 
                     //确定选中
                     $("#submit").on("click",function(){
-                        console.log($(this).attr("data-url"));
-                        window.top.opener.CKEDITOR.tools.callFunction(1, $(this).attr("data-url"));
+
+                        var that = $(this);
+
+                        if(!(location.search.indexOf('from')>0)){
+                            //给CKEDITOR返回值
+                            window.top.opener.CKEDITOR.tools.callFunction(1, that.attr("data-url"));
+                        }else{
+                            //给其他返回值
+                            var id = location.search.split(":")[1];
+                            console.log($('#'+id, window.top.opener.document));
+                            $('#'+id, window.top.opener.document).css({"background-image":'url('+that.attr("data-url")+')'});
+                        }
                         window.top.close();
                     })
                 })
