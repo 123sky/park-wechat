@@ -10,7 +10,8 @@ var FileSchema = new Schema({
     originalname: {type:String,required:true},
     path: {type:String,required:true},
     size: {type:Number,required:true,max:10485170,min:0},
-    created: {type:Date}
+    created: {type:Date},
+    quote:[{ type: Schema.Types.ObjectId }]
 });
 
 mongoose.model('File', FileSchema);

@@ -1,64 +1,50 @@
 extends ../layout
 
-append css
-    link(rel='stylesheet',href='/components/jquery-upload-file/css/uploadfile.css')
-
 block content
     h2.page-header= scenicIntroduction._id?'修改景点信息':'保存景点信息'
 
     form.vertical-form#scenic-form
-        div.form-group.hide
-            label(for="title") ID
-            input.form-control(name="_id", id="_id", value=scenicIntroduction.id)
+        .col-lg-6
+            div.form-group.hide
+                label(for="title") ID
+                input.form-control(name="_id", id="_id", value=scenicIntroduction.id)
 
-        div.form-group
-            label(for="title") 景点名称：
-            input.form-control(name="title", id="title", required,data-rule-maxlength=20, placeholder="请输入景点名称...", value=scenicIntroduction.title)
-
-        div.form-group
-            label(for="info") 简介：
-            textarea.form-control(name="info", id="info", required,data-rule-maxlength=140)= scenicIntroduction.info
-
-        div.form-group.image-part
-            label(for="image") 图片：
-            #image
-            #img-preview
-                if !!scenicIntroduction.images
-                    each image in scenicIntroduction.images
-                        .image-item(data-id=image.id)
-                            img(src='../../../uploads/image/'+image.filename)
-                            .image-info
-                                span= image.filename
-                                a(href='javascript:;',data-destination=image.destination,data-filename=image.filename,data-id=image.id,class='remove-image',title='移除')
-                                    span.fa.fa-times-circle 移除
-        div.form-group
-            label(for="content") 内容：
-            textarea.form-control(name="content", id="content", required="true")= scenicIntroduction.content
-
-        //
             div.form-group
-                label(for="favorite") 点赞人数：
-                input.form-control(name="favorite", id="favorite", required="true", type="number", value=scenicIntroduction.favorite)
+                label(for="title") 景点名称：
+                input.form-control(name="title", id="title", required="true", placeholder="请输入景点名称...", value=scenicIntroduction.title)
 
-        div.form-group
-            label(for="published") 是否发布：
-            input(name="published", id="published", type="checkbox", checked=scenicIntroduction.published)
+            div.form-group
+                label(for="info") 简介：
+                textarea.form-control(name="info", id="info", required="true")= scenicIntroduction.info
 
+            div.form-group
+                label(for="info") 封面图片：
+                a.Recommend-image#add-cover(title="单击添加图片")
+                    span.fa.fa-plus
+            
+            //- div.form-group
+            //-     label(for="favorite") 点赞人数：
+            //-     input.form-control(name="favorite", id="favorite", required="true", type="number", value=scenicIntroduction.favorite)
+
+            div.form-group
+                label(for="published") 是否发布：
+                input(name="published", id="published", type="checkbox", checked=scenicIntroduction.published)
+            
+            //- div.form-group
+            //-     label(for="voice") 语音：
+            //-     #voice
+            //-     #voice-preview
+            //-         if !!scenicIntroduction.voices
+            //-             div(class="voice-item" data-id=scenicIntroduction.voices[0]._id)= scenicIntroduction.voices[0].originalname
+            //-             audio(controls="controls",loop="loop",preload="auto",src='../../../uploads/voice/'+scenicIntroduction.voices[0].filename) 你的浏览器不支持audio标签
+        .col-lg-5.col-lg-offset-1
+            div.form-group
+                label(for="content") 内容：
+                textarea.form-control(name="content", id="content", required="true")= scenicIntroduction.content
         
-        div.form-group
-            label(for="voice") 语音：
-            #voice
-            #voice-preview
-                if !!scenicIntroduction.voices
-                    div(class="voice-item" data-id=scenicIntroduction.voices[0]._id)= scenicIntroduction.voices[0].originalname
-                    audio(controls="controls",loop="loop",preload="auto",src='../../../uploads/voice/'+scenicIntroduction.voices[0].filename) 你的浏览器不支持audio标签
-        div.form-group
-            a.btn.btn-info(type="submit",id='submit-btn',href="javascript:;")= scenicIntroduction._id?'修改景点信息':'保存景点信息'
+        .col-lg-12
+            div.form-group
+                a.btn.btn-info(type="submit",id='submit-btn',href="javascript:;")= scenicIntroduction._id?'修改景点信息':'保存景点信息'
 
 block scripts
-    script(src="/js/ckeditor/ckeditor.js")
-    script(src="/components/jquery-upload-file/js/jquery.form.js")
-    script(src="/components/jquery-upload-file/js/jquery.uploadfile.js")
-    script(src="/js/lib/ajaxUtil.js")
-    script(src='/js/lib/urlData.js')
     script(src="/js/admin/scenicIntroduction.js")

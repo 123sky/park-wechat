@@ -1,0 +1,148 @@
+extends ../layout
+
+append css
+    link(rel='stylesheet',href='/components/jquery-upload-file/css/uploadfile.css')
+
+    style.
+        .content-part img {
+            width: 100%;
+            height: 150px;
+        }
+
+        .header-part{
+            padding: 0 30px;
+            overflow: hidden;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .tools-part a,.tools-part label{
+            margin:0 10px;
+        }
+
+        .image-item-wrap{
+            margin: 10px 0;
+            padding: 15px;
+            height:250px;
+        }
+
+        .image-item-wrap:hover {
+            -webkit-box-shadow: 0 0 10px rgba(100,100,100, 0.5);
+            -moz-box-shadow: 0 0 10px rgba(100,100,100, 0.5);
+            box-shadow: 0 0 10px rgba(100,100,100, 0.5);
+            padding:10px;
+        }
+
+        .image-item-wrap:hover{
+            
+        }
+
+        .info-part {
+            border: 1px solid #eee;
+            height: 35px;
+            line-height: 25px;
+            padding: 5px 10px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .item-tools-part {
+            height: 35px;
+            background: #eee;
+            text-align: center;
+            line-height: 35px;
+        }
+
+        .item-tools-part a {
+            color: #999;
+        }
+
+        .item-tools-part .col-sm-6:hover{
+            background:#ccc;
+        }
+      
+block content
+    div.content-wrap
+        div.header-part
+            h2 图片素材管理
+            div.tools-part
+                label(for="published") 全选
+                    input(type="checkbox",id="checked-all")
+                a.btn.btn-info 删除所选
+                a.btn.btn-success#add-img 添加图片
+        div.col-sm-12
+            each image in images
+                .col-sm-2.image-item-wrap
+                    .content-part
+                        img(src='../../../uploads/image/'+image.filename)
+                    .info-part
+                        input(type="checkbox",id="checked-all",name="image-item")
+                        span(title=image.originalname)= image.originalname
+                    .item-tools-part
+                        .col-sm-6
+                            a(href="javascript:;")
+                                i.glyphicon.glyphicon-pencil
+                        .col-sm-6
+                            a(href="javascript:;")
+                                i.glyphicon.glyphicon-trash
+
+block scripts
+    script.
+
+        $("#add-img").on("click",function(){
+
+            var div = '<div id="image-upload"></div>'
+
+            BootstrapDialog.show({
+                title: '添加图片',
+                message: div,
+                onshown: function(dialogRef){
+                    initImageUpload();
+                },
+                buttons: [{
+                    label: '关闭',
+                    action: function(dialogItself){
+                        dialogItself.close();
+                    }
+                }]
+            });
+        })
+
+        function initImageUpload(){
+            $("#image-upload").uploadFile({
+                url:"/fileupload1/",
+                fileName:"imageFile",
+                preview:true,
+                allowedTypes : 'gif,jpg,png',
+                acceptFiles:'gif,jpg,png',
+                allowDuplicates:false,
+                multiple:true,
+                dragDrop:true,
+                showDownload:false,
+                showDelete: true,
+                maxFileSize : 52428800,
+                statusBarWidth:"100%",
+                dragdropWidth:"100%",
+                showPreview:true,
+                onSuccess: function (files, response, xhr, pd) {
+                    var fileArray = [];
+                    for(var i=0;i<response.length;i++){
+                        fileArray.push(response[i]);
+                    }
+
+                    $.postJSON(urlData.file.add,fileArray,function(result){
+                        if(result.code === 1){
+                            alert("图片添加成功");
+                            //location.pathname = '/admin/resourcesLibrary/imageLibrary' 
+                        }else{
+                            alert(result.msg);
+                        }
+                    });
+                },
+                deleteCallback: function (data, pd) {
+                    removeFile(data,pd);
+                }
+            });
+        }

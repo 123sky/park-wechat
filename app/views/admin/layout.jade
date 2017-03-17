@@ -1,10 +1,5 @@
 extend ./baseLayout
 
-append css
-    link(rel='stylesheet',href='/css/blogAdmin.css')
-    link(rel='stylesheet',href='/components/font-awesome/css/font-awesome.css')
-    
-
 block main
 
     block nav
@@ -27,12 +22,6 @@ block main
                                 a(href='/admin/users/logout')
                                      i.fa.fa-sign-out
                                      |&nbsp;注销
-                        li
-                            a(href='/admin/users/help')
-                                 i.fa.fa-question-circle-o
-                                 |&nbsp;帮助
-                //-     form.navbar-form.navbar-right
-                //-         input.form-control(type='text', placeholder='查找...')
 
     .container-fluid
         .row
@@ -88,13 +77,21 @@ block main
                         a(href='/admin/users/add')
                             i.fa.fa-plus
                             |&nbsp;添加用户
+                ul.nav.nav-sidebar
+                    li.nav-header 素材库管理
+                    li(class={active: pageName==='/admin/resourcesLibrary/imageLibrary'})
+                        a(href='/admin/resourcesLibrary/imageLibrary')
+                            i.fa.fa-th-large
+                            |&nbsp;图片库
+                    li(class={active: pageName==='/admin/resourcesLibrary/voiceLibrary'})
+                        a(href='/admin/resourcesLibrary/voiceLibrary')
+                            i.fa.fa-plus
+                            |&nbsp;音频库
+
                 
             .col-sm-9.col-sm-offset-3.col-md-10.col-md-offset-2.main
                 != messages()
                 block content
-
-
-block scripts
     
 
                     
