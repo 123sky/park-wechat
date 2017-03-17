@@ -13,11 +13,11 @@ block content
 
         div.form-group
             label(for="title") 景点名称：
-            input.form-control(name="title", id="title", required="true", placeholder="请输入景点名称...", value=scenicIntroduction.title)
+            input.form-control(name="title", id="title", required,data-rule-maxlength=20, placeholder="请输入景点名称...", value=scenicIntroduction.title)
 
         div.form-group
             label(for="info") 简介：
-            textarea.form-control(name="info", id="info", required="true")= scenicIntroduction.info
+            textarea.form-control(name="info", id="info", required,data-rule-maxlength=140)= scenicIntroduction.info
 
         div.form-group.image-part
             label(for="image") 图片：

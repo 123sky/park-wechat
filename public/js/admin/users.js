@@ -4,8 +4,10 @@ $(function () {
     $("#user-form").validate();
     //提交表单
     $("#submit-btn").on('click',function(){
-
-        if($("#_id").val()){
+        if($("#user-form").valid() === false){
+            
+        }
+        else if($("#_id").val()){
             //更新
             var newObj = {
                 obj:{
@@ -19,7 +21,7 @@ $(function () {
             $.each(delImage,function(i,n){
                 newObj.oldDelImage.push($(n).attr("data-id"));
             });
-            console.log(newObj);
+            //console.log(newObj);
             $.postJSON(urlData.users.edit,newObj,function(result){
                 if(result.code === 1){
                     alert("用户信息更新成功");
@@ -36,10 +38,10 @@ $(function () {
                 username:$("#username").val(),
                 password:$("#password").val(),
             }
-            console.log(obj);
+            //console.log(obj);
             $.postJSON(urlData.users.add,obj,function(result){
-                console.log(obj);
-                console.log(urlData.users.add);
+                //console.log(obj);
+                //console.log(urlData.users.add);
 
                 if(result.code === 1){
                     alert("用户信息添加成功");

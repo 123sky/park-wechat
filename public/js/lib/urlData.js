@@ -4,6 +4,26 @@ var urlData = {
 		add : '/admin/scenicIntroduction/add',
 		edit : '/admin/scenicIntroduction/edit',
 		delFile : '/admin/scenicIntroduction/delFile'
-	}	
+	},
+	users:{
+		add : '/admin/users/add',
+		edit : '/admin/users/edit'
+		
+	},
+	infor:{
+		add : '/admin/information/add',
+		edit : '/admin/information/edit',
+		delFile : '/admin/information/delFile'
+	},
+	route:{
+		add : '/admin/routeRecommend/add',
+		edit : '/admin/routeRecommend/edit',
+		delFile : '/admin/routeRecommend/delFile'
+	},
+	service:{
+		add : '/admin/parkService/add',
+		edit : '/admin/parkService/edit',
+		delFile : '/admin/parkService/delFile'
+	}						
 }
 

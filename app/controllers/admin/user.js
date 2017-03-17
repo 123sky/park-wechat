@@ -12,15 +12,14 @@ module.exports = function (app) {
         app.use('/admin/users', router);
 };
 //权限校验
-module.exports.requireLogin = function(req, res, next){
-        if (req.user){
-                next();
-        }else {
-            req.flash('error','登录用户才能使用')
-            res.redirect('/admin/users/signin');  
-        }
+module.exports.requireLogin = function(req, res, next){  
+    if (req.user){
+            next();
+    }else {
+        req.flash('error','登录用户才能使用')
+        res.redirect('/admin/users/signin');  
+    }
 };
-
 router.get('/', module.exports.requireLogin,function (req, res, next) {
     var sortby = req.query.sortby?req.query.sortby:"created";
     var sortdir = req.query.sortdir?req.query.sortdir:"desc";
@@ -75,15 +74,26 @@ router.post('/signin', passport.authenticate('local',{
         failureFlash: '用户名或密码错误'
         }) ,function (req, res, next) {
 
-        console.log('user sign in success:');
-         
-
-
+        console.log('user sign in success:');         
 });
 
 router.get('/logout', function(req, res){
     req.logout();
     res.redirect('/admin/users/signin');
+});
+
+//验证用户是否已存在
+router.get('/checkOnly/:value', function(req, res,next){
+    User.findOne({username: req.params.value.replace(/\s/g, "")}, function(err, user){
+        if (err) return next(err);
+        if(!user){
+            return res.send(true);
+        }else{
+            return res.send(false);
+        }
+       
+    });
+    
 });
 //添加用户
 router.get('/add',module.exports.requireLogin, function (req, res, next) {
@@ -107,8 +117,8 @@ router.post('/add', module.exports.requireLogin, function (req, res, next) {
     }
 
     //保存文字信息
-    var username = request.username.trim();
-    var password = md5(request.password);
+    var username = request.username.replace(/\s/g, "");
+    var password = md5(request.password.trim());
     
     var users = new User({
         username: username,
