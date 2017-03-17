@@ -16,7 +16,7 @@ block content
             input.form-control(name="title", id="title",required, placeholder="请输入公告标题...", value=information.title)
         div.form-group
             label(for="info") 简介(必填)：
-            textarea.form-control(name="info", id="info", required)= information.info
+            textarea.form-control(name="info", id="info",required,mainRequire,data-rule-maxlength=5)= information.info
 
         div.form-group.image-part
             label(for="image") 图片：
@@ -32,7 +32,7 @@ block content
                                     span.fa.fa-times-circle 移除
         div.form-group
             label(for="content") 内容(必填)：
-            textarea.form-control(name="content", id="content")= information.content
+            textarea.form-control(name="content", id="content", required,data-rule-maxlength=10)= information.content
 
         div.form-group
             label(for="published") 是否发布：
@@ -45,5 +45,5 @@ block scripts
     script(src="/components/jquery-upload-file/js/jquery.form.js")
     script(src="/components/jquery-upload-file/js/jquery.uploadfile.js")
     script(src="/js/lib/ajaxUtil.js")
-    script(src='/js/lib/infor-urlData.js')
+    script(src='/js/lib/urlData.js')
     script(src="/js/admin/information.js")

@@ -31,10 +31,13 @@ module.exports = function(app, config, connection) {
   app.use(session({
     secret: 'nodeblog',
     resave: false,
+    rolling:true,
     saveUninitialized: true,
-    cookie: { secure: false },
+    cookie: {secure: true},
     store: new MongoStore({mongooseConnection: connection})
   }));
+
+
   app.use(passport.initialize());
   app.use(passport.session());
 

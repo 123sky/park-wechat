@@ -13,11 +13,11 @@ block content
 
         div.form-group
             label(for="title") 路线名称：
-            input.form-control(name="title", id="title", required="true", placeholder="请输入路线名称...", value=routeRecommend.title)
+            input.form-control(name="title", id="title", required,data-rule-maxlength=20, placeholder="请输入路线名称...", value=routeRecommend.title)
 
         div.form-group
             label(for="info") 简介：
-            textarea.form-control(name="info", id="info", required="true")= routeRecommend.info
+            textarea.form-control(name="info", id="info", required,data-rule-maxlength=140)= routeRecommend.info
 
         div.form-group.image-part
                 label(for="image") 图片：
@@ -52,5 +52,5 @@ block scripts
     script(src="/components/jquery-upload-file/js/jquery.form.js")
     script(src="/components/jquery-upload-file/js/jquery.uploadfile.js")
     script(src="/js/lib/ajaxUtil.js")
-    script(src='/js/lib/route-urlData.js')
+    script(src='/js/lib/urlData.js')
     script(src="/js/admin/routeRecommend.js")

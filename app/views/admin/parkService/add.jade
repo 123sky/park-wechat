@@ -13,10 +13,10 @@ block content
 
         div.form-group
             label(for="title") 园区服务标题
-            input.form-control(name="title", id="title", required="true", placeholder="请输入公告标题...", value=parkService.title)
+            input.form-control(name="title", id="title", required,data-rule-maxlength=20, placeholder="请输入公告标题...", value=parkService.title)
         div.form-group
             label(for="info") 简介：
-            textarea.form-control(name="info", id="info", required="true")= parkService.info
+            textarea.form-control(name="info", id="info", required,data-rule-maxlength=140)= parkService.info
 
         div.form-group
             label(for="type") 类别：
@@ -54,5 +54,5 @@ block scripts
     script(src="/components/jquery-upload-file/js/jquery.form.js")
     script(src="/components/jquery-upload-file/js/jquery.uploadfile.js")
     script(src="/js/lib/ajaxUtil.js")
-    script(src='/js/lib/service-urlData.js')
+    script(src='/js/lib/urlData.js')
     script(src="/js/admin/parkService.js")

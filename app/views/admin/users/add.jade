@@ -19,11 +19,12 @@ block content
 
         div.form-group
             label(for="username") 用户账号
-            input.form-control(name="username", id="username", required="true", placeholder="请输入用户名...", value=users.username)
+            input.form-control(name="username", id="username", required="true",data-rule-ajax="/admin/users/checkOnly",mainRequire ,placeholder="请输入用户名...", value=users.username)
 
         div.form-group
             label(for="password") 密码
-            textarea.form-control(name="password", id="password", required="true")= users.password
+            input.form-control(name="password", type="password", id="password", required="true")= users.password
+
 
         
         div.form-group
@@ -34,5 +35,5 @@ block scripts
     script(src="/components/jquery-upload-file/js/jquery.form.js")
     script(src="/components/jquery-upload-file/js/jquery.uploadfile.js")
     script(src="/js/lib/ajaxUtil.js")
-    script(src='/js/lib/users-urlData.js')
+    script(src='/js/lib/urlData.js')
     script(src="/js/admin/users.js")

@@ -109,6 +109,8 @@ $(function () {
     //提交表单
     $("#submit-btn").on('click',function(){
 
+        
+
         if($("#_id").val()){
             //更新
             var newObj = {
