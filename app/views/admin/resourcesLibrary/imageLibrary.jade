@@ -76,7 +76,7 @@ block content
             each image in images
                 .col-sm-2.image-item-wrap
                     .content-part
-                        img(src='../../../uploads/image/'+image.filename)
+                        img(src='/uploads/image/'+image.filename)
                     .info-part
                         input(type="checkbox",id="checked-all",name="image-item")
                         span(title=image.originalname)= image.originalname
@@ -102,9 +102,10 @@ block scripts
                     initImageUpload();
                 },
                 buttons: [{
-                    label: '关闭',
+                    label: '确定',
                     action: function(dialogItself){
                         dialogItself.close();
+                        location.pathname = '/admin/resourcesLibrary/imageLibrary' 
                     }
                 }]
             });
@@ -134,8 +135,7 @@ block scripts
 
                     $.postJSON(urlData.file.add,fileArray,function(result){
                         if(result.code === 1){
-                            alert("图片添加成功");
-                            //location.pathname = '/admin/resourcesLibrary/imageLibrary' 
+                            
                         }else{
                             alert(result.msg);
                         }

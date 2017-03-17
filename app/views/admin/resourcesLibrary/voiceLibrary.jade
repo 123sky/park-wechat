@@ -1,0 +1,173 @@
+extends ../layout
+
+append css
+    link(rel='stylesheet',href='/components/jquery-upload-file/css/uploadfile.css')
+
+    style.
+
+        .content-wrap{
+            position:relative;
+        }
+
+        .header-part{
+            padding: 0 30px;
+            overflow: hidden;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .tools-part a,.tools-part label{
+            margin:0 10px;
+        }
+
+        .play-part {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            width: 100%;
+            z-index: 1000;
+            background: white;
+            padding: 20px 50px;
+            border-top: 1px solid #ccc;
+        }
+
+        .play-part audio{
+            width: 100%;
+        }
+      
+block content
+    div.content-wrap
+        div.header-part
+            h2 音频素材管理
+            div.tools-part
+                label(for="published") 全选
+                    input(type="checkbox",id="checked-all")
+                a.btn.btn-info 删除所选
+                a.btn.btn-success#add-voice 添加音频
+        div.col-sm-12
+            table.table.table-bordered
+                thead
+                    tr
+                        th 名称
+                            //- if sortby === 'title'
+                            //-     if(sortdir === 'desc')
+                            //-         a(href="/admin/resourcesLibrary/voiceLibrary?page="+pageNum+"&sortby=title&sortdir=asc")
+                            //-             i.fa.fa-arrow-down &nbsp;名称
+                            //-     else
+                            //-         a(href="/admin/scenicIntroduction?page="+pageNum+"&sortby=title&sortdir=desc")
+                            //-             i.fa.fa-arrow-up &nbsp;名称
+                            //- else
+                            //-     a(href="/admin/resourcesLibrary/voiceLibrary?page="+pageNum+"&sortby=title&sortdir=desc") 名称
+                        th 文件大小
+                            //- if sortby === 'favorite'
+                            //-     if(sortdir === 'desc')
+                            //-         a(href="/admin/resourcesLibrary/voiceLibrary?page=" + pageNum + "&sortby=favorite&sortdir=asc")
+                            //-             i.fa.fa-arrow-down &nbsp;文件大小
+                            //-     else
+                            //-         a(href="/admin/resourcesLibrary/voiceLibrary?page=" + pageNum + "&sortby=favorite&sortdir=desc")
+                            //-             i.fa.fa-arrow-up &nbsp;文件大小
+                            //- else
+                            //-     a(href="/admin/resourcesLibrary/voiceLibrary?page=" + pageNum + "&sortby=favorite&sortdir=desc") 文件大小
+                        th
+                            if sortby === 'created'
+                                if(sortdir === 'desc')
+                                    a(href="/admin/resourcesLibrary/voiceLibrary?page=" + pageNum + "&sortby=created&sortdir=asc")
+                                        i.fa.fa-arrow-down &nbsp;创建时间
+                                else
+                                    a(href="/admin/resourcesLibrary/voiceLibrary?page=" + pageNum + "&sortby=created&sortdir=desc")
+                                        i.fa.fa-arrow-up &nbsp;创建时间
+                            else
+                                a(href="/admin/resourcesLibrary/voiceLibrary?page=" + pageNum + "&sortby=created&sortdir=desc") 创建时间
+                        th(width="250px") 管理
+                tbody
+                each voice in voices
+                    tr
+                        td
+                            a.play-audio(href="javascript:;",data-url='/uploads/voice/'+voice.filename)= voice.originalname
+                        td= voice.size + "B"
+                        td= moment(voice.created).format("YYYY-MM-DD HH:mm:ss")
+                        td
+                            a.play-audio(href="javascript:;",class="btn btn-sm btn-default",data-url='/uploads/voice/'+voice.filename) 播放
+                            span &nbsp;&nbsp;
+                            a(href="/admin/resourcesLibrary/edit/"+voice._id,class="btn btn-sm btn-default") 编辑
+                            span &nbsp;&nbsp;
+                            a(href="/admin/resourcesLibrary/delete/"+voice._id,class="btn btn-sm btn-default") 删除
+            if pageCount>1
+                nav
+                    ul.pagination
+                        -var currentPage = 1
+                        while currentPage <= pageCount
+                            if(currentPage === pageNum)
+                                li.active
+                                    a(href="/admin/scenicIntroduction?page="+currentPage+"&sortby="+sortby+"&sortdir="+sortdir)= currentPage++
+                            else
+                                li
+                                    a(href="/admin/scenicIntroduction?page="+currentPage+"&sortby="+sortby+"&sortdir="+sortdir)= currentPage++
+
+        div.play-part
+            audio#play(controls="controls",loop="loop",preload="auto") 你的浏览器不支持audio标签
+                    
+
+block scripts
+    script.
+
+        $(".play-audio").on("click",function(){
+            $("#play").attr("src",$(this).attr("data-url"));
+            $("#play")[0].play();
+        })
+
+        $("#add-voice").on("click",function(){
+
+            var div = '<div id="voice-upload"></div>'
+
+            BootstrapDialog.show({
+                title: '添加音频',
+                message: div,
+                onshown: function(dialogRef){
+                    initVoiceUpload();
+                },
+                buttons: [{
+                    label: '关闭',
+                    action: function(dialogItself){
+                        dialogItself.close();
+                    }
+                }]
+            });
+        })
+
+        function initVoiceUpload(){
+            $("#voice-upload").uploadFile({
+                url:"/fileupload2/",
+                fileName:"voiceFile",
+                preview:true,
+                allowedTypes : 'mp3',
+                acceptFiles:'mp3',
+                multiple:false,
+                dragDrop:true,
+                showDownload:false,
+                showDelete: true,
+                statusBarWidth:"100%",
+                dragdropWidth:"100%",
+                maxFileSize : 52428800,
+                maxFileCount: 1,
+                onSuccess: function (files, response, xhr, pd) {
+                    var fileArray = [];
+                    for(var i=0;i<response.length;i++){
+                        fileArray.push(response[i]);
+                    }
+
+                    $.postJSON(urlData.file.add,fileArray,function(result){
+                        if(result.code === 1){
+                            location.pathname = '/admin/resourcesLibrary/voiceLibrary' 
+                        }else{
+                            alert(result.msg);
+                        }
+                    });
+                },
+                deleteCallback: function (data, pd) {
+                    removeFile(data,pd);
+                }
+            });
+        }

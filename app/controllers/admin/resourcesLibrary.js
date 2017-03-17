@@ -44,15 +44,30 @@ router.get('/imageLibrary', user.requireLogin, function (req, res, next) {
 
 /*音频管理界面*/
 router.get('/voiceLibrary', user.requireLogin, function (req, res, next) {
+
   var sortObj = {created:'desc'};
   File.find({fieldname:'voiceFile'})
     .sort(sortObj)
-    .exec(function (err, images) {
+    .exec(function (err, voices) {
       if (err) 
-        return next(err);      
-      res.render('admin/resourcesLibrary/imageLibrary', {
-        images: images,
-        pageTitle:'图片素材库',
+        return next(err); 
+
+      var pageNum = Math.abs(parseInt(req.query.page || 1,10));
+      var pageSize = 1000;
+      var totalCount = voices.length;
+      var pageCount = Math.ceil(totalCount / pageSize);
+
+      if(pageNum>pageCount){
+        pageNum = pageCount;
+      }
+
+      res.render('admin/resourcesLibrary/voiceLibrary', {
+        voices: voices,
+        pageTitle:'音频素材库',
+        pageNum:pageNum,
+        pageCount:pageCount,
+        sortby:'created',
+        sortdir:'desc',
         pretty: true
       });
     });
