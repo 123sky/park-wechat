@@ -7,7 +7,7 @@ block content
     h2.page-header= information._id?'修改公告信息':'保存公告信息'
 
     form.vertical-form#info-form
-        //div.form-group.hide
+        div.form-group.hide
             label(for="title") ID
             input.form-control(name="_id", id="_id", value=information.id)
 
@@ -17,6 +17,7 @@ block content
         div.form-group
             label(for="info") 简介(必填)：
             textarea.form-control(name="info", id="info",required,mainRequire,data-rule-maxlength=5)= information.info
+            input.form-control(name="title", id="title",required, placeholder="请输入公告标题...", value=information.title)
 
         div.form-group.image-part
             label(for="image") 图片：
