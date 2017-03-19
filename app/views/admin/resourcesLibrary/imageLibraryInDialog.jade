@@ -123,16 +123,11 @@ html(lang='en')
             div.content-wrap
                 div.header-part
                     span 图片素材管理
-                    div.tools-part
-                        label(for="published") 全选
-                            input(type="checkbox",id="checked-all")
-                        a.btn.btn-info 删除所选
-                        a.btn.btn-success 上传图片
                 div.col-sm-12.center-part
                     each image in images
                         .col-sm-2.image-item-wrap
                             .image-item-content
-                                .select-cover.hide(data-name=image.originalname,data-url=image.destination+image.filename)
+                                .select-cover.hide(data-name=image.originalname,data-id=image.id ,data-url=image.destination+image.filename)
                                     a(href="javascript:;")
                                         span.glyphicon.glyphicon-ok
                                 .content-part
@@ -165,6 +160,7 @@ html(lang='en')
                         //在确定按钮存储选中的url
                         var url = location.origin+'/'+thisClick.attr("data-url").replace('public/','');
                         $("#submit").attr("data-url",url);
+                        $("#submit").attr("data-id",thisClick.attr("data-id"));
                         //切换选中效果
                         if(thisClick.hasClass("hide")){
                             thisClick.removeClass("hide");
@@ -186,8 +182,9 @@ html(lang='en')
                         }else{
                             //给其他返回值
                             var id = location.search.split(":")[1];
-                            console.log($('#'+id, window.top.opener.document));
+                            
                             $('#'+id, window.top.opener.document).css({"background-image":'url('+that.attr("data-url")+')'});
+                            $('#'+id+" input", window.top.opener.document).attr("value",that.attr("data-id"));
                         }
                         window.top.close();
                     })

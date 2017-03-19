@@ -10,7 +10,7 @@ module.exports = function (app) {
   app.use('/admin/resourcesLibrary', router);
 };
 
-/*ckeditor中的弹窗*/
+/*弹窗中选择图片*/
 router.get('/imageLibraryInDialog', user.requireLogin, function (req, res, next) {
   var sortObj = {created:'desc'};
   File.find({fieldname:'imageFile'})
@@ -37,6 +37,36 @@ router.get('/imageLibrary', user.requireLogin, function (req, res, next) {
       res.render('admin/resourcesLibrary/imageLibrary', {
         images: images,
         pageTitle:'图片素材库',
+        pretty: true
+      });
+    });
+});
+
+/*弹窗中选择音频*/
+router.get('/voiceLibraryInDialog', user.requireLogin, function (req, res, next) {
+  var sortObj = {created:'desc'};
+  File.find({fieldname:'voiceFile'})
+    .sort(sortObj)
+    .exec(function (err, voices) {
+      if (err) 
+        return next(err); 
+
+      var pageNum = Math.abs(parseInt(req.query.page || 1,10));
+      var pageSize = 1000;
+      var totalCount = voices.length;
+      var pageCount = Math.ceil(totalCount / pageSize);
+
+      if(pageNum>pageCount){
+        pageNum = pageCount;
+      }
+
+      res.render('admin/resourcesLibrary/voiceLibraryInDialog', {
+        voices: voices,
+        pageTitle:'音频素材库',
+        pageNum:pageNum,
+        pageCount:pageCount,
+        sortby:'created',
+        sortdir:'desc',
         pretty: true
       });
     });

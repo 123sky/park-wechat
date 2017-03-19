@@ -1,0 +1,171 @@
+doctype html
+html(lang='en')
+    head
+        meta(charset='UTF-8')
+        meta(name='viewport', content='width=device-width')
+        title= pageTitle
+        block css
+            link(rel='stylesheet', href='/components/bootstrap/dist/css/bootstrap.css')
+
+        style.
+
+            .content-wrap{
+                position:relative;
+            }
+
+            .header-part{
+                padding: 0 30px;
+                overflow: hidden;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+
+            .tdSelecte{
+                background: #ccc;
+            }
+
+            .foot-part {
+                position: fixed;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                background: #bfbfbf;
+                border-top: 1px solid #ccc;
+                height: 50px;
+                line-height: 34px;
+                padding: 8px 30px;
+            }
+
+            .foot-part a{
+                float:right;
+            }
+
+    body
+        block content
+            div.content-wrap
+                div.header-part
+                    h2 音频素材管理
+                div.col-sm-12
+                    table.table.table-bordered
+                        thead
+                            tr
+                                th 名称
+                                    //- if sortby === 'title'
+                                    //-     if(sortdir === 'desc')
+                                    //-         a(href="/admin/resourcesLibrary/voiceLibrary?page="+pageNum+"&sortby=title&sortdir=asc")
+                                    //-             i.fa.fa-arrow-down &nbsp;名称
+                                    //-     else
+                                    //-         a(href="/admin/scenicIntroduction?page="+pageNum+"&sortby=title&sortdir=desc")
+                                    //-             i.fa.fa-arrow-up &nbsp;名称
+                                    //- else
+                                    //-     a(href="/admin/resourcesLibrary/voiceLibrary?page="+pageNum+"&sortby=title&sortdir=desc") 名称
+                                th 文件大小
+                                    //- if sortby === 'favorite'
+                                    //-     if(sortdir === 'desc')
+                                    //-         a(href="/admin/resourcesLibrary/voiceLibrary?page=" + pageNum + "&sortby=favorite&sortdir=asc")
+                                    //-             i.fa.fa-arrow-down &nbsp;文件大小
+                                    //-     else
+                                    //-         a(href="/admin/resourcesLibrary/voiceLibrary?page=" + pageNum + "&sortby=favorite&sortdir=desc")
+                                    //-             i.fa.fa-arrow-up &nbsp;文件大小
+                                    //- else
+                                    //-     a(href="/admin/resourcesLibrary/voiceLibrary?page=" + pageNum + "&sortby=favorite&sortdir=desc") 文件大小
+                                th
+                                    //- if sortby === 'created'
+                                    //-     if(sortdir === 'desc')
+                                    //-         a(href="/admin/resourcesLibrary/voiceLibrary?page=" + pageNum + "&sortby=created&sortdir=asc")
+                                    //-             i.fa.fa-arrow-down &nbsp;创建时间
+                                    //-     else
+                                    //-         a(href="/admin/resourcesLibrary/voiceLibrary?page=" + pageNum + "&sortby=created&sortdir=desc")
+                                    //-             i.fa.fa-arrow-up &nbsp;创建时间
+                                    //- else
+                                    //-     a(href="/admin/resourcesLibrary/voiceLibrary?page=" + pageNum + "&sortby=created&sortdir=desc") 创建时间
+                                th(width="50px") 操作
+                        tbody
+                        each voice in voices
+                            tr.voice-item(data-name=voice.originalname,data-id=voice.id ,data-url=voice.destination+voice.filename)
+                                td
+                                    a.play-audio(href="javascript:;",data-url='/uploads/voice/'+voice.filename)= voice.originalname
+                                td= voice.size + "B"
+                                td= moment(voice.created).format("YYYY-MM-DD HH:mm:ss")
+                                td
+                                    a.play-audio(href="javascript:;",class="btn btn-sm btn-default",data-url='/uploads/voice/'+voice.filename,data-status='stop') 
+                                        span.glyphicon.glyphicon-headphones
+                                    
+                    audio#play.hide(controls="controls",loop="loop",preload="auto") 你的浏览器不支持audio标签
+
+                    if pageCount>1
+                        nav
+                            ul.pagination
+                                -var currentPage = 1
+                                while currentPage <= pageCount
+                                    if(currentPage === pageNum)
+                                        li.active
+                                            a(href="/admin/scenicIntroduction?page="+currentPage+"&sortby="+sortby+"&sortdir="+sortdir)= currentPage++
+                                    else
+                                        li
+                                            a(href="/admin/scenicIntroduction?page="+currentPage+"&sortby="+sortby+"&sortdir="+sortdir)= currentPage++
+                div.col-sm-12.foot-part.hide
+                    span#select-voice-name
+                    a.btn.btn-danger#submit 确定 
+                    
+    block js
+            script(src='/components/jquery/dist/jquery.js')
+            script(src='/components/bootstrap/dist/js/bootstrap.js')
+        if ENV_DEVELOPMENT
+            script(src='http://localhost:35729/livereload.js')
+
+    block scripts
+        script.
+            $(function(){
+
+                $(".play-audio").on("click",function(){
+                    if($(this).attr("data-status")==='stop'){
+                        $(this).attr("data-status","playing");
+                        $("#play").attr("src",$(this).attr("data-url"));
+                        $("#play")[0].play();
+                    }else{
+                        $(this).attr("data-status","stop");
+                        $("#play")[0].pause();
+                    }
+                })
+
+                $(".voice-item").on("click",function(){
+                    
+                    var thisClick = $(this);
+
+                    //清除其他选中的效果
+                    $(".voice-item").removeClass("tdSelecte");
+                    //显示底部工具栏
+                    $(".foot-part").removeClass("hide");
+                    
+                    //在确定按钮存储选中的url
+                    var url = location.origin+'/'+thisClick.attr("data-url").replace('public/','');
+                    $("#submit").attr("data-url",url);
+                    $("#submit").attr("data-name",thisClick.attr("data-name"));
+                    $("#submit").attr("data-id",thisClick.attr("data-id"));
+                    //切换选中效果
+                    if(thisClick.hasClass("tdSelecte")){
+                        thisClick.removeClass("tdSelecte");
+                    }else{
+                        thisClick.addClass("tdSelecte");
+                    }
+                    //填充底部信息
+                    $("#select-voice-name").html(thisClick.attr("data-name"));
+                })
+
+                //确定选中
+                $("#submit").on("click",function(){
+
+                    var that = $(this);
+
+                    //给其他返回值
+                    var id = location.search.split(":")[1];
+                    
+                    $('#'+id+" p", window.top.opener.document).html(that.attr('data-name')+'</span>');
+                    $('#'+id+" input", window.top.opener.document).attr("value",that.attr("data-id"));
+
+                    window.top.close();
+                })
+            })
+            

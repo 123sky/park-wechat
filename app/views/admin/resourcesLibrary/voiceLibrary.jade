@@ -4,7 +4,6 @@ append css
     link(rel='stylesheet',href='/components/jquery-upload-file/css/uploadfile.css')
 
     style.
-
         .content-wrap{
             position:relative;
         }
@@ -70,16 +69,16 @@ block content
                             //-             i.fa.fa-arrow-up &nbsp;文件大小
                             //- else
                             //-     a(href="/admin/resourcesLibrary/voiceLibrary?page=" + pageNum + "&sortby=favorite&sortdir=desc") 文件大小
-                        th
-                            if sortby === 'created'
-                                if(sortdir === 'desc')
-                                    a(href="/admin/resourcesLibrary/voiceLibrary?page=" + pageNum + "&sortby=created&sortdir=asc")
-                                        i.fa.fa-arrow-down &nbsp;创建时间
-                                else
-                                    a(href="/admin/resourcesLibrary/voiceLibrary?page=" + pageNum + "&sortby=created&sortdir=desc")
-                                        i.fa.fa-arrow-up &nbsp;创建时间
-                            else
-                                a(href="/admin/resourcesLibrary/voiceLibrary?page=" + pageNum + "&sortby=created&sortdir=desc") 创建时间
+                        th 创建时间
+                            //- if sortby === 'created'
+                            //-     if(sortdir === 'desc')
+                            //-         a(href="/admin/resourcesLibrary/voiceLibrary?page=" + pageNum + "&sortby=created&sortdir=asc")
+                            //-             i.fa.fa-arrow-down &nbsp;创建时间
+                            //-     else
+                            //-         a(href="/admin/resourcesLibrary/voiceLibrary?page=" + pageNum + "&sortby=created&sortdir=desc")
+                            //-             i.fa.fa-arrow-up &nbsp;创建时间
+                            //- else
+                            //-     a(href="/admin/resourcesLibrary/voiceLibrary?page=" + pageNum + "&sortby=created&sortdir=desc") 创建时间
                         th(width="250px") 管理
                 tbody
                 each voice in voices

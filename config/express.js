@@ -33,7 +33,7 @@ module.exports = function(app, config, connection) {
     resave: false,
     rolling:true,
     saveUninitialized: true,
-    cookie: {secure: true},
+    cookie: {secure: false},
     store: new MongoStore({mongooseConnection: connection})
   }));
 

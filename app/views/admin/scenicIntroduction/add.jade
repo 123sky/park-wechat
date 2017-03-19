@@ -11,16 +11,24 @@ block content
 
             div.form-group
                 label(for="title") 景点名称：
-                input.form-control(name="title", id="title", required="true", placeholder="请输入景点名称...", value=scenicIntroduction.title)
+                input.form-control(name="title", id="title", required, placeholder="请输入景点名称...", value=scenicIntroduction.title)
 
             div.form-group
                 label(for="info") 简介：
                 textarea.form-control(name="info", id="info", required="true")= scenicIntroduction.info
 
             div.form-group
-                label(for="info") 封面图片：
+                label(for="") 封面图片：
                 a.Recommend-image#add-cover(title="单击添加图片")
                     span.fa.fa-plus
+                    input.form-control.hide(name="cover-image-id", id="cover-image-id",required)
+
+            div.form-group
+                label(for="") 语音文件：
+                a.Recommend-voice#add-voice(title="单击添加语音")
+                    span.fa.fa-plus
+                        p
+                    input.form-control.hide(name="cover-voice-id", id="cover-voice-id",required)
             
             //- div.form-group
             //-     label(for="favorite") 点赞人数：
@@ -30,13 +38,6 @@ block content
                 label(for="published") 是否发布：
                 input(name="published", id="published", type="checkbox", checked=scenicIntroduction.published)
             
-            //- div.form-group
-            //-     label(for="voice") 语音：
-            //-     #voice
-            //-     #voice-preview
-            //-         if !!scenicIntroduction.voices
-            //-             div(class="voice-item" data-id=scenicIntroduction.voices[0]._id)= scenicIntroduction.voices[0].originalname
-            //-             audio(controls="controls",loop="loop",preload="auto",src='../../../uploads/voice/'+scenicIntroduction.voices[0].filename) 你的浏览器不支持audio标签
         .col-lg-5.col-lg-offset-1
             div.form-group
                 label(for="content") 内容：

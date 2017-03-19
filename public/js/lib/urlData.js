@@ -4,6 +4,7 @@ var urlData = {
 
 	weather:'http://api.yytianqi.com/observe?city=CH240101&key=e3o19t9mvgmsbb43',
 	imageLibrary:'/admin/resourcesLibrary/imageLibraryInDialog',
+	voiceLibrary:'/admin/resourcesLibrary/voiceLibraryInDialog',
 	
 	file:{
 		add:'/admin/resourcesLibrary/add',

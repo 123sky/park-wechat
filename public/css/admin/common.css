@@ -1,6 +1,6 @@
 /*公共样式库*/
 
-/*添加推荐图片*/
+/*添加封面图片*/
 .Recommend-image{
 	display: block;
 	width: 400px;
@@ -11,7 +11,31 @@
 	line-height: 250px;
 	text-align: center;
 	color: #bbb;
-	font-size: 50px;
 	background-repeat: no-repeat;
     background-size: cover;
+    text-align: center;
+}
+
+/*添加语音*/
+.Recommend-voice{
+	display: block;
+	width: 400px;
+	height: 100px;
+	border: 1px solid #ccc;
+	border-radius: 5px;
+	background: #eee;
+	line-height: 100px;
+	text-align: center;
+	color: #bbb;
+	background-repeat: no-repeat;
+    background-size: cover;
+    text-align: center;
+}
+
+.Recommend-voice span,.Recommend-image span{
+	font-size: 50px;
+}
+
+.Recommend-voice span p,.Recommend-image span p{
+	font-size: 15px;
 }

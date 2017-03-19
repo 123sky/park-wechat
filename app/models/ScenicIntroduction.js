@@ -9,8 +9,8 @@ var ScenicIntroductionSchema = new Schema({
     recommend: {type:Boolean,deafault:false},
     favorite: {type:Number,deafault:0},
     created: {type:Date},
-    images: [{ type: Schema.Types.ObjectId, ref: 'File' }],
-    voices: [{ type: Schema.Types.ObjectId, ref: 'File' }]
+    coverImage: { type: Schema.Types.ObjectId, ref: 'File'},
+    voice: { type: Schema.Types.ObjectId, ref: 'File' }
 });
 
 mongoose.model('ScenicIntroduction', ScenicIntroductionSchema);

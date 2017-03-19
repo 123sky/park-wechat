@@ -64,7 +64,7 @@ jssdk.getAccessToken(function(err,token){
         return console.error.log("获取access_token失败");
     }
 
-    console.log({token:token});
+    //console.log({token:token});
 
     /*var sch = schedule.scheduleJob({second:0},function(){
         console.log((new Date())+"：start to refresh menu");
@@ -80,7 +80,7 @@ jssdk.getAccessToken(function(err,token){
                 return console.log('菜单删除失败',delErr);
             }
 
-            console.log('菜单删除成功',delBody);
+            console.log('菜单删除成功');
 
             var createObj = {
                 url:"https://api.weixin.qq.com/cgi-bin/menu/create?access_token="+token,
@@ -91,7 +91,7 @@ jssdk.getAccessToken(function(err,token){
                     return console.log('菜单创建失败',createErr);
                 }
 
-                console.log('菜单创建成功',createBody);
+                console.log('菜单创建成功');
             })
         })
     };

@@ -12,7 +12,7 @@ module.exports = function (app) {
         app.use('/admin/users', router);
 };
 //权限校验
-module.exports.requireLogin = function(req, res, next){  
+module.exports.requireLogin = function(req, res, next){ 
     if (req.user){
             next();
     }else {
@@ -68,14 +68,19 @@ router.get('/signin', function (req, res, next) {
         });
 });
 
-router.post('/signin', passport.authenticate('local',{
-        successRedirect: '/admin/scenicIntroduction',
-        failureRedirect: '/admin/users/signin',
-        failureFlash: '用户名或密码错误'
-        }) ,function (req, res, next) {
-
-        console.log('user sign in success:');         
-});
+router.post(
+        '/signin', 
+        passport.authenticate(
+            'local',
+            {
+                successRedirect: '/admin/scenicIntroduction',
+                failureRedirect: '/admin/users/signin',
+                failureFlash: '用户名或密码错误'
+            }
+        ) ,
+        function (req, res, next) {
+            console.log('user sign in success:');         
+        });
 
 router.get('/logout', function(req, res){
     req.logout();

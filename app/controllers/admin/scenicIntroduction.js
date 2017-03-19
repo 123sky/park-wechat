@@ -78,55 +78,44 @@ router.post('/add', user.requireLogin, function (req, res, next) {
     return res.send({code:0,error:errors});
   }
 
-    //保存文件信息
-    File.insertMany(request.file, (err, fileArray)=>{
-      if (err) {
-        console.log('文件信息添加失败:', err);
-        return res.send({code:0,msg:'文件信息添加失败'});
-      } else {
-        console.log('文件信息添加成功');
+  var title = request.title.trim();
+  var content = request.content;
+  var info = request.info;
+  var coverImage = request.coverImageId;
+  var voice = request.voice;
+  //var favorite = request.favorite;
+  var published = request.published;
 
-        //区分图片和语音
-        var images = [];
-        var voices = [];
-        for(var i=0;i<fileArray.length;i++){
-            if(fileArray[i].fieldname === 'imageFile'){
-              images.push(new mongoose.Types.ObjectId(fileArray[i]._id));
-            }
-            if(fileArray[i].fieldname === 'voiceFile'){
-              voices.push(new mongoose.Types.ObjectId(fileArray[i]._id));
-            }
+  //添加新的景点
+  var scenicIntroduction = new ScenicIntroduction({
+    title: title,
+    info: info,
+    content: content,
+    published: published,
+    //favorite: favorite,
+    created: new Date(),
+    coverImage:coverImage,
+    voice:voice
+  });
+  scenicIntroduction.save(function (err, scenicIntroduction) {
+    if (err) {
+      console.log('文字信息添加失败:', err);
+      return res.send({code:0,msg:'文字信息添加失败'});
+    } else {
+
+      console.log('文字信息添加成功');
+
+      //在文件信息中被引用的图片，标记好被谁引用
+      File.findByIdAndUpdate(coverImage,{$addToSet:{quote:scenicIntroduction._id}},function(err,newFile){
+        if(err){
+          return res.send({code:0,error:"图片增加关联关系失败"})
         }
-
-        //保存文字信息
-        var title = request.title.trim();
-        var content = request.content;
-        var info = request.info;
-        var favorite = request.favorite;
-        var published = request.published;
-        var scenicIntroduction = new ScenicIntroduction({
-          title: title,
-          info: info,
-          content: content,
-          published: published,
-          favorite: favorite,
-          created: new Date(),
-          images:images,
-          voices:voices
-        });
-        scenicIntroduction.save(function (err, scenicIntroduction) {
-          if (err) {
-            console.log('文字信息添加失败:', err);
-            return res.send({code:0,msg:'文字信息添加失败'});
-          } else {
-            console.log('文字信息添加成功');
-            return res.send({code:1,msg:'文字信息添加成功'});
-
-            res.redirect('/admin/scenicIntroduction');
-          }
-        });
-      }
-    })
+        console.log('图片增加关联关系成功');
+        return res.send({code:1});
+      }); 
+    }
+  });
+      
 });
 
 router.post('/delFile', user.requireLogin,function (req, res, next) {
