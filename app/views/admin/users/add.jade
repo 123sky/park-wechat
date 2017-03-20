@@ -25,15 +25,13 @@ block content
             label(for="password") 密码
             input.form-control(name="password", type="password", id="password", required="true")= users.password
 
+        div.form-group
+            label(for="password") 确认密码
+            input.form-control(name="password-conform", type="password", id="password-conform", required="true", equalTo="#password")= users.password
 
         
         div.form-group
             a.btn.btn-info(type="submit",id='submit-btn',href="javascript:;")= users._id?'修改用户信息':'保存用户信息'
 
 block scripts
-    script(src="/js/ckeditor/ckeditor.js")
-    script(src="/components/jquery-upload-file/js/jquery.form.js")
-    script(src="/components/jquery-upload-file/js/jquery.uploadfile.js")
-    script(src="/js/lib/ajaxUtil.js")
-    script(src='/js/lib/urlData.js')
     script(src="/js/admin/users.js")

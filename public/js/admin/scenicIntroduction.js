@@ -1,7 +1,17 @@
 $(function () {
 
     //前端校验
-    $("#scenic-form").validate();
+    //$("#scenic-form").validate();
+    var validator = $("#scenic-form").validate({
+        errorPlacement: function(error, element){
+            // Append error within linked label
+            $( element )
+                .closest( "#scenic-form" )
+                    .find( "label" )
+                        .append( error );
+        },
+        errorElement: "h",
+    });
     //富文本编辑器
     if (typeof CKEDITOR !== 'undefined') {
         CKEDITOR.replace('content');
@@ -14,7 +24,9 @@ $(function () {
 
     //提交表单
     $("#submit-btn").on('click',function(){
+        if($("#scenic-form").valid() === false){
 
+        }else
         if($("#_id").val()){
             //更新
             var newObj = {

@@ -7,52 +7,53 @@ block content
     h2.page-header= parkService._id?'修改园区服务':'保存园区服务'
 
     form.vertical-form#service-form
-        div.form-group.hide
-            label(for="title") ID
-            input.form-control(name="_id", id="_id", value=parkService.id)
+        .col-lg-6
+            div.form-group.hide
+                label(for="title") ID
+                input.form-control(name="_id", id="_id", value=parkService.id)
 
-        div.form-group
-            label(for="title") 园区服务标题
-            input.form-control(name="title", id="title", required,data-rule-maxlength=20, placeholder="请输入公告标题...", value=parkService.title)
-        div.form-group
-            label(for="info") 简介：
-            textarea.form-control(name="info", id="info", required,data-rule-maxlength=140)= parkService.info
+            div.form-group
+                label(for="title") 园区服务标题
+                input.form-control(name="title", id="title", required,data-rule-maxlength=20, placeholder="请输入公告标题...", value=parkService.title)
+            div.form-group
+                label(for="info") 简介：
+                textarea.form-control(name="info", id="info", required,data-rule-maxlength=140)= parkService.info
 
-        div.form-group
-            label(for="type") 类别：
-            select.form-control(name="type", id="type", required="true")
-                option 请选择服务类别
-                option(value="bike",selected=(parkService.type==='bike')) 自行车租赁
-                option(value="parking",selected=(parkService.type==='parking')) 停车服务
-                option(value="toilet",selected=(parkService.type==='toilet')) 公厕服务
+            div.form-group
+                label(for="type") 类别：
+                select.form-control(name="type", id="type", required="true")
+                    option 请选择服务类别
+                    option(value="bike",selected=(parkService.type==='bike')) 自行车租赁
+                    option(value="parking",selected=(parkService.type==='parking')) 停车服务
+                    option(value="toilet",selected=(parkService.type==='toilet')) 公厕服务
 
-        div.form-group.image-part
-            label(for="image") 图片：
-            #image
-            #img-preview
-                if !!parkService.images
-                    each image in parkService.images
-                        .image-item(data-id=image.id)
-                            img(src='../../../uploads/image/'+image.filename)
-                            .image-info
-                                span= image.originalname
-                                a(href='javascript:;',data-destination=image.destination,data-filename=image.filename,data-id=image.id,class='remove-image',title='移除')
-                                    span.fa.fa-times-circle 移除
-        div.form-group
-            label(for="content") 内容：
-            textarea.form-control(name="content", id="content", required="true")= parkService.content
+            //  div.form-group.image-part
+                    label(for="image") 图片：
+                    #image
+                    #img-preview
+                        if !!parkService.images
+                            each image in parkService.images
+                                .image-item(data-id=image.id)
+                                    img(src='../../../uploads/image/'+image.filename)
+                                    .image-info
+                                        span= image.originalname
+                                        a(href='javascript:;',data-destination=image.destination,data-filename=image.filename,data-id=image.id,class='remove-image',title='移除')
+                                            span.fa.fa-times-circle 移除
+            div.form-group
+                    label(for="") 封面图片
+                    a.Recommend-image#add-cover(title="单击添加图片")
+                        span.fa.fa-plus
 
-        div.form-group
-            label(for="published") 是否发布：
-            input(name="published", id="published", type="checkbox", checked=parkService.published)
-
-        div.form-group
-            a.btn.btn-info(type="submit",id='submit-btn',href="javascript:;")= parkService._id?'修改园区服务':'保存园区服务'
+            div.form-group
+                label(for="published") 是否发布：
+                input(name="published", id="published", type="checkbox", checked=parkService.published)
+        .col-lg-5.col-lg-offset-1
+            div.form-group
+                label(for="content") 内容：
+                textarea.form-control(name="content", id="content", required="true")= parkService.content            
+        .col-lg-12
+            div.form-group
+                a.btn.btn-info(type="submit",id='submit-btn',href="javascript:;")= parkService._id?'修改园区服务':'保存园区服务'
 
 block scripts
-    script(src="/js/ckeditor/ckeditor.js")
-    script(src="/components/jquery-upload-file/js/jquery.form.js")
-    script(src="/components/jquery-upload-file/js/jquery.uploadfile.js")
-    script(src="/js/lib/ajaxUtil.js")
-    script(src='/js/lib/urlData.js')
     script(src="/js/admin/parkService.js")

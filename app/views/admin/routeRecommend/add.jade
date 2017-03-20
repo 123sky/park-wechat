@@ -7,45 +7,45 @@ block content
     h2.page-header= routeRecommend._id?'修改路线信息':'保存路线信息'
 
     form.vertical-form#route-form
-        div.form-group.hide
-            label(for="title") ID
-            input.form-control(name="_id", id="_id", value=routeRecommend.id)
+        .col-lg-6
+            div.form-group.hide
+                label(for="title") ID
+                input.form-control(name="_id", id="_id", value=routeRecommend.id)
 
-        div.form-group
-            label(for="title") 路线名称：
-            input.form-control(name="title", id="title", required,data-rule-maxlength=20, placeholder="请输入路线名称...", value=routeRecommend.title)
-
-        div.form-group
-            label(for="info") 简介：
-            textarea.form-control(name="info", id="info", required,data-rule-maxlength=140)= routeRecommend.info
-
-        div.form-group.image-part
-                label(for="image") 图片：
-                #image
-                #img-preview
-                    if !!routeRecommend.images
-                        each image in routeRecommend.images
-                            .image-item(data-id=image.id)
-                                img(src='../../../uploads/image/'+image.filename)
-                                .image-info
-                                    span= image.filename
-                                    a(href='javascript:;',data-destination=image.destination,data-filename=image.filename,data-id=image.id,class='remove-image',title='移除')
-                                        span.fa.fa-times-circle 移除        
-        div.form-group
-            label(for="content") 内容：
-            textarea.form-control(name="content", id="content", required="true")= routeRecommend.content
-
-        //
             div.form-group
-                label(for="favorite") 点赞人数：
-                input.form-control(name="favorite", id="favorite", required="true", type="number", value=routeRecommend.favorite)
+                label(for="title") 路线名称：
+                input.form-control(name="title", id="title", required,data-rule-maxlength=20, placeholder="请输入路线名称...", value=routeRecommend.title)
 
-        div.form-group
-            label(for="published") 是否发布：
-            input(name="published", id="published", type="checkbox", checked=routeRecommend.published)       
+            div.form-group
+                label(for="info") 简介：
+                textarea.form-control(name="info", id="info", required,data-rule-maxlength=140)= routeRecommend.info
 
-        div.form-group
-            a.btn.btn-info(type="submit",id='submit-btn',href="javascript:;")= routeRecommend._id?'修改路线信息':'保存路线信息'
+            //  div.form-group.image-part
+                        label(for="image") 图片：
+                        #image
+                        #img-preview
+                            if !!routeRecommend.images
+                                each image in routeRecommend.images
+                                    .image-item(data-id=image.id)
+                                        img(src='../../../uploads/image/'+image.filename)
+                                        .image-info
+                                            span= image.filename
+                                            a(href='javascript:;',data-destination=image.destination,data-filename=image.filename,data-id=image.id,class='remove-image',title='移除')
+                                                span.fa.fa-times-circle 移除        
+            div.form-group
+                label(for="") 封面图片
+                a.Recommend-image#add-cover(title="单击添加图片")
+                    span.fa.fa-plus
+            div.form-group
+                label(for="published") 是否发布：
+                input(name="published", id="published", type="checkbox", checked=routeRecommend.published)       
+        .col-lg-5.col-lg-offset-1    
+            div.form-group
+                label(for="content") 内容：
+                textarea.form-control(name="content", id="content", required="true")= routeRecommend.content
+        .col-lg-12
+            div.form-group
+                a.btn.btn-info(type="submit",id='submit-btn',href="javascript:;")= routeRecommend._id?'修改路线信息':'保存路线信息'
 
 block scripts
     script(src="/js/ckeditor/ckeditor.js")

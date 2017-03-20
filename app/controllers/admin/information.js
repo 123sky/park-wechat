@@ -63,57 +63,29 @@ router.post('/add', user.requireLogin, function (req, res, next) {
 
   //后端校验
   req.checkBody('title', '公告标题不能为空').notEmpty();
+  req.checkBody('info', '公告简介不能为空').notEmpty();
   req.checkBody('content', '内容不能为空').notEmpty();
+  req.checkBody('coverImage', '封面图片不能为空').notEmpty();
   var errors = req.validationErrors();
   if (errors) {
     console.log(errors);
     return res.send({code:0,error:errors});
   }
 
-  saveFile();
-
-  function saveFile(){
-    if(request.file.length !==0){
-      //保存文件信息
-      File.insertMany(request.file, (err, fileArray)=>{
-        if (err) {
-          console.log('文件信息添加失败:', err);
-          return res.send({code:0,msg:'文件信息添加失败'});
-        } else {
-          console.log('文件信息添加成功');
-
-          //区分图片和语音
-          var images = [];
-          var voices = [];
-          for(var i=0;i<fileArray.length;i++){
-              if(fileArray[i].fieldname === 'imageFile'){
-                images.push(new mongoose.Types.ObjectId(fileArray[i]._id));
-              }
-              if(fileArray[i].fieldname === 'voiceFile'){
-                voices.push(new mongoose.Types.ObjectId(fileArray[i]._id));
-              }
-          }
-          saveWord(images);
-        }
-      })
-    }else{
-      saveWord();
-    }
-  }
-
-  function saveWord(images){
     //保存文字信息
     var title = request.title.trim();
     var info = request.info;       
     var content = request.content;
     var published = request.published;
+    var coverImage = request.coverImageId;
+    //添加新的信息服务
     var information = new Information({
       title: title,
       info: info,
       content: content,
       published: published,
       created: new Date(),
-      images:images?images:[],
+      coverImage:coverImage,
     });
     information.save(function (err, information) {
       if (err) {
@@ -122,9 +94,17 @@ router.post('/add', user.requireLogin, function (req, res, next) {
       } else {
         console.log('文字信息添加成功');
         return res.send({code:1,msg:'文字信息添加成功'});
+        //在文件信息中被引用的图片，标记好被谁引用
+        File.findByIdAndUpdate(coverImage,{$addToSet:{quote:information._id}},function(err,newFile){
+          if(err){
+            return res.send({code:0,error:"图片增加关联关系失败"})
+          }
+          console.log('图片增加关联关系成功');
+          return res.send({code:1});
+        }); 
       }
     });
-  } 
+
 });
 
 router.post('/delFile', user.requireLogin, function (req, res, next) {

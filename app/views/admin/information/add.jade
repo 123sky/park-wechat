@@ -7,44 +7,32 @@ block content
     h2.page-header= information._id?'修改公告信息':'保存公告信息'
 
     form.vertical-form#info-form
-        col-lg-6
+        .col-lg-6
             div.form-group.hide
                 label(for="title") ID
                 input.form-control(name="_id", id="_id", value=information.id)
 
             div.form-group
-                label(for="title") 公告标题(必填)：
+                label(for="title") 公告标题 *：
                 input.form-control(name="title", id="title",required, placeholder="请输入公告标题...", value=information.title)
             
             div.form-group
-                label(for="info") 简介(必填)：
+                label(for="info") 简介 *：
                 textarea.form-control(name="info", id="info",required,mainRequire,data-rule-maxlength=5)= information.info
 
-            //  div.form-group.image-part
-                    label(for="image") 图片：
-                    #image
-                    #img-preview
-                        if !!information.images
-                            each image in information.images
-                                .image-item(data-id=image.id)
-                                    img(src='../../../uploads/image/'+image.filename)
-                                    .image-info
-                                        span= image.originalname
-                                        a(href='javascript:;',data-destination=image.destination,data-filename=image.filename,data-id=image.id,class='remove-image',title='移除')
-                                            span.fa.fa-times-circle 移除
             div.form-group
-                labal(for="image") 封面图片
-                a.Recommend-image#add-cover(title="单击添加图片")
+                label(for="") 封面图片 *:
+                a.Recommend-image#add-cover(title="单击添加图片",name="coverImage",required)
                     span.fa.fa-plus
 
             div.form-group
-                label(for="published") 是否发布：
+                label(for="published") 是否发布 *：
                 input(name="published", id="published", type="checkbox", checked=information.published)
             
         .col-lg-5.col-lg-offset-1
             div.form-group
-                label(for="content") 内容(必填)：
-                textarea.form-control(name="content", id="content", required,data-rule-maxlength=10)= information.content
+                label(for="content") 内容 *：
+                textarea.form-control(name="content", id="content", required,mainRequire,data-rule-maxlength=10)= information.content
         .col-lg-12
             div.form-group
                 a.btn.btn-info(id='submit-btn',href="javascript:;")= information._id?'修改公告信息':'保存公告信息'

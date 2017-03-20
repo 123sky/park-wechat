@@ -71,7 +71,8 @@ router.post('/add', user.requireLogin, function (req, res, next) {
 
   //后端校验
   req.checkBody('title', '景点名称不能为空').notEmpty();
-  req.checkBody('content', '内容简介不能为空').notEmpty();
+  req.checkBody('content', '内容不能为空').notEmpty();
+  req.checkBody('info', '简介不能为空').notEmpty();
   var errors = req.validationErrors();
   if (errors) {
     console.log(errors);
