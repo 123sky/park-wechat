@@ -19,16 +19,16 @@ block content
 
             div.form-group
                 label(for="") 封面图片：
-                a.Recommend-image#add-cover(title="单击添加图片" ,style='background-image:url(/uploads/image/'+scenicIntroduction.coverImage.filename+')')
+                a.Recommend-image#add-cover(title="单击添加图片" ,style= scenicIntroduction.coverImage?'background-image:url(/uploads/image/'+scenicIntroduction.coverImage.filename+')':'')
                     span.fa.fa-plus
-                    input.form-control.hide(name="cover-image-id", id="cover-image-id",required,value=scenicIntroduction.coverImage._id)
+                    input.form-control.hide(name="cover-image-id", id="cover-image-id",required,value= scenicIntroduction.coverImage?scenicIntroduction.coverImage._id:'')
 
             div.form-group
                 label(for="") 语音文件：
                 a.Recommend-voice#add-voice(title="单击添加语音")
                     span.fa.fa-plus
-                        p= scenicIntroduction.voice.originalname
-                    input.form-control.hide(name="cover-voice-id", id="cover-voice-id",required,value=scenicIntroduction.voice._id)
+                        p= scenicIntroduction.voice?scenicIntroduction.voice.originalname:''
+                    input.form-control.hide(name="cover-voice-id", id="cover-voice-id",required,value= scenicIntroduction.voice?scenicIntroduction.voice._id:'')
             
             //- div.form-group
             //-     label(for="favorite") 点赞人数：
