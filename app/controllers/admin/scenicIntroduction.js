@@ -143,11 +143,12 @@ router.get('/edit/:id', user.requireLogin, function (req, res, next) {
   }
 
   ScenicIntroduction.find(obj)
-    .populate('images')
-    .populate('voices')
+    .populate('coverImage')
+    .populate('voice')
     .exec(function (err, scenics) {
       if (err) 
         return next(err);
+      console.log(scenics);
       res.render('admin/scenicIntroduction/add', {
         pretty: true,
         pageTitle:'修改景点',
