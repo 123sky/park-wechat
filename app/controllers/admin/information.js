@@ -65,7 +65,6 @@ router.post('/add', user.requireLogin, function (req, res, next) {
   req.checkBody('title', '公告标题不能为空').notEmpty();
   req.checkBody('info', '公告简介不能为空').notEmpty();
   req.checkBody('content', '内容不能为空').notEmpty();
-  req.checkBody('coverImage', '封面图片不能为空').notEmpty();
   var errors = req.validationErrors();
   if (errors) {
     console.log(errors);

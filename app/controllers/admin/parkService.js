@@ -133,7 +133,7 @@ router.get('/edit/:id', user.requireLogin, function (req, res, next) {
     }
 
     ParkService.find(obj)
-        .populate('images')
+        .populate('coverImage')
         .exec(function (err, services) {
             if (err) 
                 return next(err);

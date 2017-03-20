@@ -13,14 +13,14 @@ block content
                 input.form-control(name="_id", id="_id", value=parkService.id)
 
             div.form-group
-                label(for="title") 园区服务标题
+                label(for="title") 园区服务标题 *
                 input.form-control(name="title", id="title", required,data-rule-maxlength=20, placeholder="请输入公告标题...", value=parkService.title)
             div.form-group
-                label(for="info") 简介：
+                label(for="info") 简介 *：
                 textarea.form-control(name="info", id="info", required,data-rule-maxlength=140)= parkService.info
 
             div.form-group
-                label(for="type") 类别：
+                label(for="type") 类别 *：
                 select.form-control(name="type", id="type", required="true")
                     option 请选择服务类别
                     option(value="bike",selected=(parkService.type==='bike')) 自行车租赁
@@ -28,7 +28,7 @@ block content
                     option(value="toilet",selected=(parkService.type==='toilet')) 公厕服务
 
             //  div.form-group.image-part
-                    label(for="image") 图片：
+                    label(for="image") 图片 *：
                     #image
                     #img-preview
                         if !!parkService.images
@@ -40,16 +40,17 @@ block content
                                         a(href='javascript:;',data-destination=image.destination,data-filename=image.filename,data-id=image.id,class='remove-image',title='移除')
                                             span.fa.fa-times-circle 移除
             div.form-group
-                    label(for="") 封面图片
-                    a.Recommend-image#add-cover(title="单击添加图片")
+                    label(for="") 封面图片 *:
+                    a.Recommend-image#add-cover(title="单击添加图片" ,style= parkService.coverImage?'background-image:url(/uploads/image/'+parkService.coverImage.filename+')':'')
                         span.fa.fa-plus
+                        input.form-control.hide(name="cover-image-id", id="cover-image-id",required,value= parkService.coverImage?parkService.coverImage._id:'')
 
             div.form-group
-                label(for="published") 是否发布：
+                label(for="published") 是否发布 *：
                 input(name="published", id="published", type="checkbox", checked=parkService.published)
         .col-lg-5.col-lg-offset-1
             div.form-group
-                label(for="content") 内容：
+                label(for="content") 内容 *：
                 textarea.form-control(name="content", id="content", required="true")= parkService.content            
         .col-lg-12
             div.form-group

@@ -10,21 +10,21 @@ block content
                 input.form-control(name="_id", id="_id", value=scenicIntroduction.id)
 
             div.form-group
-                label(for="title") 景点名称：
+                label(for="title") 景点名称 *：
                 input.form-control(name="title", id="title", required, placeholder="请输入景点名称...", value=scenicIntroduction.title)
 
             div.form-group
-                label(for="info") 简介：
+                label(for="info") 简介 *：
                 textarea.form-control(name="info", id="info", required="true")= scenicIntroduction.info
 
             div.form-group
-                label(for="") 封面图片：
+                label(for="") 封面图片 *：
                 a.Recommend-image#add-cover(title="单击添加图片" ,style= scenicIntroduction.coverImage?'background-image:url(/uploads/image/'+scenicIntroduction.coverImage.filename+')':'')
                     span.fa.fa-plus
                     input.form-control.hide(name="cover-image-id", id="cover-image-id",required,value= scenicIntroduction.coverImage?scenicIntroduction.coverImage._id:'')
 
             div.form-group
-                label(for="") 语音文件：
+                label(for="") 语音文件 *：
                 a.Recommend-voice#add-voice(title="单击添加语音")
                     span.fa.fa-plus
                         p= scenicIntroduction.voice?scenicIntroduction.voice.originalname:''
@@ -40,7 +40,7 @@ block content
             
         .col-lg-5.col-lg-offset-1
             div.form-group
-                label(for="content") 内容：
+                label(for="content") 内容 *：
                 textarea.form-control(name="content", id="content", required="true")= scenicIntroduction.content
         
         .col-lg-12

@@ -1,7 +1,8 @@
 $(function () {
 
     //前端校验
-    var validator = $("#info-form").validate({
+    $("#info-form").validate();
+    /*var validator = $("#info-form").validate({
         errorPlacement: function(error, element){
             // Append error within linked label
             $( element )
@@ -10,7 +11,7 @@ $(function () {
                         .append( error );
         },
         errorElement: "h",
-    });
+    });*/
     
     //富文本编辑器
     if (typeof CKEDITOR !== 'undefined') {
@@ -29,6 +30,7 @@ $(function () {
             //更新
             var newObj = {
                 obj:{
+                    id:$("#_id").val(),
                     title:$("#title").val(),
                     info:$("#info").val(),
                     content:CKEDITOR.instances.content.getData(),
@@ -36,14 +38,7 @@ $(function () {
                     published:$("#published").prop("checked"),
                     coverImageId:$("#add-cover input").val(),
                 },
-                id:$("#_id").val(),
-                oldDelImage:[]
             };
-            var delImage = $("#img-preview .image-item.hide");
-            $.each(delImage,function(i,n){
-                newObj.oldDelImage.push($(n).attr("data-id"));
-            });
-            console.log(newObj);
             $.postJSON(urlData.infor.edit,newObj,function(result){
                 if(result.code === 1){
                     alert("信息更新成功");
@@ -60,6 +55,7 @@ $(function () {
                 info:$("#info").val(),
                 title:$("#title").val(),
                 content:CKEDITOR.instances.content.getData(),
+                recommend:false,
                 published:$("#published").prop("checked"),
                 coverImageId:$("#add-cover input").val(),
             }

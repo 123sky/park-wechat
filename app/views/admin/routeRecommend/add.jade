@@ -13,15 +13,15 @@ block content
                 input.form-control(name="_id", id="_id", value=routeRecommend.id)
 
             div.form-group
-                label(for="title") 路线名称：
+                label(for="title") 路线名称 *：
                 input.form-control(name="title", id="title", required,data-rule-maxlength=20, placeholder="请输入路线名称...", value=routeRecommend.title)
 
             div.form-group
-                label(for="info") 简介：
+                label(for="info") 简介 *：
                 textarea.form-control(name="info", id="info", required,data-rule-maxlength=140)= routeRecommend.info
 
             //  div.form-group.image-part
-                        label(for="image") 图片：
+                        label(for="image") 图片 *：
                         #image
                         #img-preview
                             if !!routeRecommend.images
@@ -33,24 +33,20 @@ block content
                                             a(href='javascript:;',data-destination=image.destination,data-filename=image.filename,data-id=image.id,class='remove-image',title='移除')
                                                 span.fa.fa-times-circle 移除        
             div.form-group
-                label(for="") 封面图片
-                a.Recommend-image#add-cover(title="单击添加图片")
+                label(for="") 封面图片 *:
+                a.Recommend-image#add-cover(title="单击添加图片" ,style= routeRecommend.coverImage?'background-image:url(/uploads/image/'+routeRecommend.coverImage.filename+')':'')
                     span.fa.fa-plus
+                    input.form-control.hide(name="cover-image-id", id="cover-image-id",required,value= routeRecommend.coverImage?routeRecommend.coverImage._id:'')
             div.form-group
                 label(for="published") 是否发布：
                 input(name="published", id="published", type="checkbox", checked=routeRecommend.published)       
         .col-lg-5.col-lg-offset-1    
             div.form-group
-                label(for="content") 内容：
+                label(for="content") 内容 *：
                 textarea.form-control(name="content", id="content", required="true")= routeRecommend.content
         .col-lg-12
             div.form-group
                 a.btn.btn-info(type="submit",id='submit-btn',href="javascript:;")= routeRecommend._id?'修改路线信息':'保存路线信息'
 
 block scripts
-    script(src="/js/ckeditor/ckeditor.js")
-    script(src="/components/jquery-upload-file/js/jquery.form.js")
-    script(src="/components/jquery-upload-file/js/jquery.uploadfile.js")
-    script(src="/js/lib/ajaxUtil.js")
-    script(src='/js/lib/urlData.js')
     script(src="/js/admin/routeRecommend.js")

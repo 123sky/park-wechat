@@ -1,8 +1,8 @@
 $(function () {
 
     //前端校验
-    //$("#scenic-form").validate();
-    var validator = $("#scenic-form").validate({
+    $("#scenic-form").validate();
+    /*var validator = $("#scenic-form").validate({
         errorPlacement: function(error, element){
             // Append error within linked label
             $( element )
@@ -11,7 +11,7 @@ $(function () {
                         .append( error );
         },
         errorElement: "h",
-    });
+    });*/
     //富文本编辑器
     if (typeof CKEDITOR !== 'undefined') {
         CKEDITOR.replace('content');

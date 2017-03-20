@@ -18,12 +18,13 @@ block content
             
             div.form-group
                 label(for="info") 简介 *：
-                textarea.form-control(name="info", id="info",required,mainRequire,data-rule-maxlength=5)= information.info
+                textarea.form-control(name="info", id="info",required,mainRequire)= information.info
 
             div.form-group
                 label(for="") 封面图片 *:
-                a.Recommend-image#add-cover(title="单击添加图片",name="coverImage",required)
+                a.Recommend-image#add-cover(title="单击添加图片" ,style= information.coverImage?'background-image:url(/uploads/image/'+information.coverImage.filename+')':'')
                     span.fa.fa-plus
+                    input.form-control.hide(name="cover-image-id", id="cover-image-id",required,value= information.coverImage?information.coverImage._id:'')
 
             div.form-group
                 label(for="published") 是否发布 *：
@@ -32,7 +33,7 @@ block content
         .col-lg-5.col-lg-offset-1
             div.form-group
                 label(for="content") 内容 *：
-                textarea.form-control(name="content", id="content", required,mainRequire,data-rule-maxlength=10)= information.content
+                textarea.form-control(name="content", id="content", required,mainRequire)= information.content
         .col-lg-12
             div.form-group
                 a.btn.btn-info(id='submit-btn',href="javascript:;")= information._id?'修改公告信息':'保存公告信息'

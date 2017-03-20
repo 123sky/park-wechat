@@ -28,22 +28,16 @@ $(function () {
             //更新
             var newObj = {
                 obj:{
+                    id:$("#_id").val(),
                     title:$("#title").val(),
                     info:$("#info").val(),
                     type:$("#type").val(),
+                    coverImageId:$("#add-cover input").val(),
                     content:CKEDITOR.instances.content.getData(),
                     recommend:false,
                     published:$("#published").prop("checked")
                 },
-                id:$("#_id").val(),
-                file:fileArray,
-                oldDelImage:[]
-            };
-            var delImage = $("#img-preview .image-item.hide");
-            $.each(delImage,function(i,n){
-                newObj.oldDelImage.push($(n).attr("data-id"));
-            });
-            console.log(newObj);
+            };    
             $.postJSON(urlData.service.edit,newObj,function(result){
                 if(result.code === 1){
                     alert("信息更新成功");

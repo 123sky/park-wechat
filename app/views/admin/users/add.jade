@@ -18,15 +18,15 @@ block content
             input.form-control(name="_id", id="_id", value=users.id)
 
         div.form-group
-            label(for="username") 用户账号
+            label(for="username") 用户账号 *：
             input.form-control(name="username", id="username", required="true",data-rule-ajax="/admin/users/checkOnly",mainRequire ,placeholder="请输入用户名...", value=users.username)
 
         div.form-group
-            label(for="password") 密码
+            label(for="password") 密码 *：
             input.form-control(name="password", type="password", id="password", required="true")= users.password
 
         div.form-group
-            label(for="password") 确认密码
+            label(for="password") 确认密码 *：
             input.form-control(name="password-conform", type="password", id="password-conform", required="true", equalTo="#password")= users.password
 
         
