@@ -159,123 +159,40 @@ router.get('/edit/:id', user.requireLogin, function (req, res, next) {
 });
 
 router.post('/edit', user.requireLogin, function (req, res, next) {
-  //关于图片文件的更新在delFile的接口中已经做了，所以这里不用更新了
+  
   var request = req.body;
-  //console.log(request);
   var scenicId = request.id;//景点ID
-  var file = request.file;//新添加的文章数组
-  var oldDelImage = request.oldDelImage;//被移除的旧的图片ID字符串数组
-  var oldDelImageObjId = [];//被移除的旧的图片objectID数组
+  var oldCoverImageId = request.oldCoverImageId
+  var oldVoice = request.oldVoice
   var newObj = request.obj;//修改后的景点
-  
-  for(var i=0;i<oldDelImage.length;i++){
-    oldDelImageObjId.push(new mongoose.Types.ObjectId(oldDelImage[i]))
-  }
 
-  removeImage();
-  
-  //删除旧的图片
-  function removeImage(){
-    //如果存在被删除的图片
-    if(oldDelImage.length>0){
-      ScenicIntroduction.findById(scenicId)
-        .populate('images')
-        .populate('voices')
-        .exec(function (err, scenic) {
-          if(err){
-            return res.send({code:0,error:"没有查到相应内容"})
-          }
-          //移除旧图片的关联
-          var images = scenic.images;
-          var newImageArray = [];
-          for(var i=0;i<images.length;i++){
-              if(oldDelImage.indexOf(images[i].id)<0){
-                newImageArray.push(new mongoose.Types.ObjectId(images[i].id));
-              }
-          }
-          if(newImageArray.length>0){
-            newObj.images = newImageArray;
-          }
-          //删除旧图片记录
-          console.log(oldDelImageObjId);
-          File.find({"_id":{ $in: oldDelImageObjId}},function(err,delFile){
-            if(err){
-              return res.send({code:0,error:"获取文件信息出错"})
-            }
-            console.log(delFile);
-            File.remove({"_id":{$in: oldDelImageObjId}},function(err,rowsRemoved){
-              if(err){
-                return res.send({code:0,error:"删除文件信息出错"})
-              }
-              console.log("成功删除文件信息:"+rowsRemoved);
-              //移除目录中文件
-              for(var i=0;i<delFile.length;i++){
-                var filePath = delFile[i].destination+delFile[i].filename;
-                fs.unlink(filePath, function(err){
-                  if(err){
-                    console.log(err) ;
-                    return res.send({code:0,error:err});
-                  }else{
-                    console.log('文件删除成功') ;
-                    addNewImage();
-                  }
-                }) ;
-              }
-            })
-          });
-        });
-    }else{
-      addNewImage()
-    }
-  }
-
-  //添加新的图片
-  function addNewImage(){
-    //如果有新的文件
-    if(file.length>0){
-      File.insertMany(file, (err, fileArray)=>{
-        if (err) {
-          console.log('文件信息添加失败:', err);
-          return res.send({code:0,msg:'文件信息添加失败'});
-        } else {
-          console.log('文件信息添加成功');
-          var tempImage = [],tempVoice = [];
-          for(var i=0;i<fileArray.length;i++){
-            if(fileArray[i].fieldname === 'imageFile'){
-              tempImage.push(new mongoose.Types.ObjectId(fileArray[i]._id));
-            }
-            else if(fileArray[i].fieldname === 'voiceFile'){
-              tempVoice.push(new mongoose.Types.ObjectId(fileArray[i]._id));
-            }
-          }
-          if(tempImage.length>0){
-            if(newObj.images){
-              newObj.images = newObj.images.concat(tempImage);//合并新图片和旧图片两个数组
-            }else{
-              newObj.images = tempImage;//只有新图片
-            }
-          }
-          if(tempVoice.length>0){
-            newObj.voices = tempVoice;
-          }
-          updateScenic();
-        }
-      })
-    }else{
-      updateScenic();
-    }
-  }
-
-  //更新文章内容
-  function updateScenic(){
-    ScenicIntroduction.findByIdAndUpdate(scenicId,{$set:newObj},function(err,newScenic){
+  /*if(oldCoverImageId !== newObj.coverImageId){
+    File.findByIdAndUpdate(coverImage,{$pull:{quote:oldCoverImageId},$addToSet:{quote:newObj.coverImageId}},function(err,newFile){
       if(err){
-        return res.send({code:0,error:"更新文章失败"})
+        return res.send({code:0,error:"图片增加关联关系失败"})
       }
-      console.log('更新文章成功');
+      console.log('图片增加关联关系成功');
       return res.send({code:1});
     }); 
-  }      
+  }
+
+  if(oldVoice !== newObj.voice){
+    File.findByIdAndUpdate(coverImage,{$pull:{quote:oldCoverImageId},$addToSet:{quote:newObj.coverImageId}},function(err,newFile){
+      if(err){
+        return res.send({code:0,error:"图片增加关联关系失败"})
+      }
+      console.log('图片增加关联关系成功');
+      return res.send({code:1});
+    });
+  }*/
+
+  ScenicIntroduction.findByIdAndUpdate(scenicId,{$set:newObj},function(err,newScenic){
+    if(err){
+      return res.send({code:0,error:"更新文章失败"})
+    }
+    console.log('更新文章成功');
+    return res.send({code:1});
+  });    
 });
 
 

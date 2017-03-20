@@ -30,15 +30,19 @@ $(function () {
         if($("#_id").val()){
             //更新
             var newObj = {
-                id:$("#_id").val(),
-                title:$("#title").val(),
-                info:$("#info").val(),
-                content:CKEDITOR.instances.content.getData(),
-                //favorite:$("#favorite").val(),
-                recommend:false,
-                coverImageId:$("#add-cover input").val(),
-                voice:$("#add-voice input").val(),
-                published:$("#published").prop("checked")
+                obj:{
+                    id:$("#_id").val(),
+                    title:$("#title").val(),
+                    info:$("#info").val(),
+                    content:CKEDITOR.instances.content.getData(),
+                    //favorite:$("#favorite").val(),
+                    recommend:false,
+                    coverImageId:$("#add-cover input").val(),
+                    voice:$("#add-voice input").val(),
+                    published:$("#published").prop("checked")
+                },
+                oldCoverImageId:$("#add-cover input").attr("data-old"),
+                oldVoice:$("#add-voice input").attr("data-old")
             };
             $.postJSON(urlData.scenic.edit,newObj,function(result){
                 if(result.code === 1){
