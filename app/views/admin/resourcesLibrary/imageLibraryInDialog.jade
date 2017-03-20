@@ -158,7 +158,7 @@ html(lang='en')
                         
                         var thisClick = $(this).find('.select-cover');
                         //在确定按钮存储选中的url
-                        var url = location.origin+'/'+thisClick.attr("data-url").replace('public/','');
+                        var url = thisClick.attr("data-url").replace('public/','/');
                         $("#submit").attr("data-url",url);
                         $("#submit").attr("data-id",thisClick.attr("data-id"));
                         //切换选中效果

@@ -9,8 +9,8 @@ module.exports = function (app) {
 router.get('/', function (req, res, next) {
     ScenicIntroduction.find()
     .sort({'created':'desc'})
-    .populate('images')
-    .populate('voices')
+    .populate('coverImage')
+    .populate('voice')
     .exec(function (err, scenics) {
         if (err) 
             return next(err);
@@ -24,8 +24,8 @@ router.get('/', function (req, res, next) {
 
 router.get('/:id', function (req, res, next) {
     ScenicIntroduction.findById(req.params.id)
-    .populate('images')
-    .populate('voices')
+    .populate('coverImage')
+    .populate('voice')
     .exec(function (err, scenic) {
         if (err) 
             return next(err);

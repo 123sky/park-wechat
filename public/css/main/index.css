@@ -147,8 +147,17 @@ html,body{
 .post-title {
     margin: 5px 15px;
     padding: 10px 0;
-    border-bottom: 1px solid #ccc;
+    margin-bottom: 10px;
     position:relative;
+}
+.info-part {
+    overflow: hidden;
+    height: 30px;
+    line-height: 30px;
+}
+.info-part span{
+    margin-right: 10px;
+    color: #aaa;
 }
 .post-content {
     padding: 10px 15px;
@@ -158,9 +167,7 @@ html,body{
 }
 .ctrlVoice{
     font-size: 15px;
-    position: absolute;
-    top: 0;
-    right: 5px;
+    float: right;
 }
 
 
