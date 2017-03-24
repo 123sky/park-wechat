@@ -147,9 +147,9 @@ router.get('/edit/:id', user.requireLogin, function (req, res, next) {
     .populate('coverImage')
     .populate('voice')
     .exec(function (err, scenics) {
+      console.log(scenics);
       if (err) 
         return next(err);
-      console.log(scenics);
       res.render('admin/scenicIntroduction/add', {
         pretty: true,
         pageTitle:'修改景点',
@@ -173,6 +173,7 @@ router.post('/edit', user.requireLogin, function (req, res, next) {
       if(err){
         return res.send({code:0,error:"图片增加关联关系失败"})
       }
+      
       console.log('图片增加关联关系成功');
       return res.send({code:1});
     }); 
