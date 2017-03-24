@@ -38,6 +38,7 @@ $(function () {
                     published:$("#published").prop("checked"),
                     coverImageId:$("#add-cover input").val(),
                 },
+                oldCoverImageId:$("#add-cover input").attr("data-old"),
             };
             $.postJSON(urlData.infor.edit,newObj,function(result){
                 if(result.code === 1){

@@ -25,7 +25,7 @@ router.get('/', user.requireLogin, function (req, res, next) {
   sortObj[sortby] = sortdir;
   
   Information.find()
-    .populate('images')
+    .populate('coverImage')
     .exec(function (err, infors) {
       if (err) return next(err);      
       res.render('admin/information/index', {
@@ -131,7 +131,7 @@ router.get('/edit/:id', user.requireLogin, function (req, res, next) {
   }
 
   Information.find(obj)
-    .populate('images')
+    .populate('coverImage')
     .exec(function (err, infors) {
       if (err) 
         return next(err);
@@ -147,13 +147,15 @@ router.post('/edit', user.requireLogin, function (req, res, next) {
   //关于图片文件的更新在delFile的接口中已经做了，所以这里不用更新了
   var request = req.body;
   console.log(request);
-  var inforId = request.id;//路线ID
-  var file = request.file;//新添加的文章数组
-  var oldDelImage = request.oldDelImage;//被移除的旧的图片ID字符串数组
-  var oldDelImageObjId = [];//被移除的旧的图片objectID数组
+  //var inforId = request.id;//路线ID
+  //var file = request.file;//新添加的文章数组
+  //var oldDelImage = request.oldDelImage;//被移除的旧的图片ID字符串数组
+  //var oldDelImageObjId = [];//被移除的旧的图片objectID数组
+  var oldCoverImageId = request.oldCoverImageId;
   var newObj = request.obj;//修改后的景点
-  
-  console.log(oldDelImage);
+  var inforId = newObj.id;//路线id
+
+ /* console.log(oldDelImage);
   for(var i=0;i<oldDelImage.length;i++){
     oldDelImageObjId.push(new mongoose.Types.ObjectId(oldDelImage[i]))
   }
@@ -252,15 +254,14 @@ router.post('/edit', user.requireLogin, function (req, res, next) {
   }
 
   //更新文章内容
-  function updateInformation(){
+  function updateInformation(){*/
     Information.findByIdAndUpdate(inforId,{$set:newObj},function(err,newInfor){
       if(err){
         return res.send({code:0,error:"更新文章失败"})
       }
       console.log('更新文章成功');
       return res.send({code:1});
-    }); 
-  }      
+    });      
 });
 
 

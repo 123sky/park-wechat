@@ -27,7 +27,7 @@ router.get('/', user.requireLogin,function (req, res, next) {
   
   ScenicIntroduction.find()
     .sort(sortObj)
-    .populate('images')
+    .populate('coverImage')
     .populate('voices')
     .exec(function (err, scenics) {
       //console.log(scenics);
@@ -161,10 +161,12 @@ router.get('/edit/:id', user.requireLogin, function (req, res, next) {
 router.post('/edit', user.requireLogin, function (req, res, next) {
   
   var request = req.body;
-  var scenicId = request.id;//景点ID
+  console.log(request);
+  //var scenicId = request.id;//景点ID
   var oldCoverImageId = request.oldCoverImageId
   var oldVoice = request.oldVoice
   var newObj = request.obj;//修改后的景点
+  var scenicId = newObj.id;//景点ID
 
   /*if(oldCoverImageId !== newObj.coverImageId){
     File.findByIdAndUpdate(coverImage,{$pull:{quote:oldCoverImageId},$addToSet:{quote:newObj.coverImageId}},function(err,newFile){

@@ -116,7 +116,7 @@ router.post('/add', module.exports.requireLogin, function (req, res, next) {
         //后端校验
         req.checkBody('username', '用户名不能为空').notEmpty();
         req.checkBody('password', '密码不能为空').notEmpty();
-        req.checkBody('password-conform', '密码不能为空').notEmpty();
+        //req.checkBody('password-conform', '密码不能为空').notEmpty();
         var errors = req.validationErrors();
         if (errors) {
                 console.log(errors);
@@ -130,7 +130,7 @@ router.post('/add', module.exports.requireLogin, function (req, res, next) {
         var users = new User({
                 username: username,
                 password: password,
-                created: new Date(),         
+                created: new Date()        
         });
         users.save(function (err, users) {
                 if (err) {

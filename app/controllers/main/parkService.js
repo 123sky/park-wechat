@@ -13,7 +13,7 @@ router.get('/bike', function (req, res, next) {
   };
   
   ParkService.findOne({type:'bike'})
-    .populate('images')
+    .populate('coverImage')
     .exec(function (err, service) {
       if (err) return next(err);      
       res.render('main/ParkService/ParkService', {
@@ -30,7 +30,7 @@ router.get('/parking', function (req, res, next) {
   };
   
   ParkService.findOne({type:'parking'})
-    .populate('images')
+    .populate('coverImage')
     .exec(function (err, service) {
       if (err) return next(err);      
       res.render('main/ParkService/ParkService', {
@@ -47,7 +47,7 @@ router.get('/toilet', function (req, res, next) {
   };
   
   ParkService.findOne({type:'toilet'})
-    .populate('images')
+    .populate('coverImage')
     .exec(function (err, service) {
       if (err) return next(err);      
       res.render('main/ParkService/ParkService', {

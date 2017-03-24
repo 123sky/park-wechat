@@ -14,10 +14,11 @@ router.get('/', function (req, res, next) {
   
   RouteRecommend.find()
     .sort(sortObj)
-    .populate('images')
+    .populate('coverImage')
     .exec(function (err, routes) {
       if (err) return next(err);
 
+      console.log(routes);
       res.render('main/routeRecommend/list', {
         routes: routes,
         pageTitle:'路线推荐列表',
@@ -29,7 +30,7 @@ router.get('/', function (req, res, next) {
 router.get('/:id',function (req, res, next){
 
   RouteRecommend.findById(req.params.id)
-    .populate('images')
+    .populate('coverImage')
     .exec(function (err, route) {
       if (err) 
         return next(err);

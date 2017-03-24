@@ -32,7 +32,7 @@ block main
             each route in routes
                 li.list-item
                     a(href="routeRecommend/"+route.id)
-                        img(src='../../../uploads/image/'+route.images[0].filename)
+                        img(src='/uploads/image/'+route.coverImage[0].filename)
                         h3= route.title
                         .am-list-item-text.text-indent= route.info
                             

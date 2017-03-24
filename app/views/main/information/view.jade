@@ -7,14 +7,11 @@ block main
 
     style.
     
-    if info.images.length!==0
-        div(class="am-slider am-slider-default",data-am-flexslider)
-            ul.am-slides
-                each image in info.images
-                    li
-                        img(src="../../../uploads/image/"+image.filename)
     div.post-title
-        h3= info.title
+        h1= info.title
+        .info-part
+            span= moment(info.created).format("YYYY-MM-DD")
+            span 实习小编
     div.post-content
         != info.content
 

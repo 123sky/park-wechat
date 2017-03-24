@@ -24,10 +24,11 @@ $(function () {
                     info:$("#info").val(),
                     coverImageId:$("#add-cover input").val(),
                     content:CKEDITOR.instances.content.getData(),
-                    favorite:$("#favorite").val(),
+                    //favorite:$("#favorite").val(),
                     recommend:false,
                     published:$("#published").prop("checked")
                 },
+                oldCoverImageId:$("#add-cover input").attr("data-old")
             };
             $.postJSON(urlData.route.edit,newObj,function(result){
                 if(result.code === 1){
@@ -45,7 +46,7 @@ $(function () {
                 title:$("#title").val(),
                 info:$("#info").val(),
                 content:CKEDITOR.instances.content.getData(),
-                favorite:$("#favorite").val(),
+                //favorite:$("#favorite").val(),
                 published:$("#published").prop("checked"),
                 coverImageId:$("#add-cover input").val(),
             }

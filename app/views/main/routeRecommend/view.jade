@@ -6,14 +6,13 @@ append css
 block main
 
     style.
-        
-    div(class="am-slider am-slider-default",data-am-flexslider)
-        ul.am-slides
-            each image in route.images
-                li
-                    img(src="../../../uploads/image/"+image.filename)
+    
     div.post-title
-        h3= route.title
+        h1= route.title
+        .info-part
+            span= moment(route.created).format("YYYY-MM-DD")
+            span 实习小编
+            
     div.post-content
         != route.content
 

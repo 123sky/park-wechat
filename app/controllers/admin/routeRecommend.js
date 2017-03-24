@@ -27,7 +27,7 @@ router.get('/', user.requireLogin, function (req, res, next) {
     
     RouteRecommend.find()
         .sort(sortObj)
-        .populate('images')
+        .populate('coverImage')
         .exec(function (err, routes) {
             if (err) return next(err);
 
@@ -146,8 +146,9 @@ router.get('/edit/:id', user.requireLogin, function (req, res, next) {
     }
 
     RouteRecommend.find(obj)
-        .populate('images')
+        .populate('coverImage')
         .exec(function (err, routes) {
+            console.log(routes);
             if (err) 
                 return next(err);
             res.render('admin/routeRecommend/add', {
@@ -161,14 +162,17 @@ router.get('/edit/:id', user.requireLogin, function (req, res, next) {
 router.post('/edit', user.requireLogin, function (req, res, next) {
     //关于图片文件的更新在delFile的接口中已经做了，所以这里不用更新了
     var request = req.body;
-    console.log(request);
-    var routeId = request.id;//路线ID
-    var file = request.file;//新添加的文章数组
-    var oldDelImage = request.oldDelImage;//被移除的旧的图片ID字符串数组
-    var oldDelImageObjId = [];//被移除的旧的图片objectID数组
+    //var routeId = request.id;//路线ID
+    //var file = request.file;//新添加的文章数组
+    //var oldDelImage = request.oldDelImage;//被移除的旧的图片ID字符串数组
+    //var oldDelImageObjId = [];//被移除的旧的图片objectID数组
+    var oldCoverImageId = request.oldCoverImageId;
     var newObj = request.obj;//修改后的景点
+    var routeId = newObj.id;//路线ID
+
+
     
-    console.log(oldDelImage);
+    /*console.log(oldDelImage);
     for(var i=0;i<oldDelImage.length;i++){
         oldDelImageObjId.push(new mongoose.Types.ObjectId(oldDelImage[i]))
     }
@@ -267,15 +271,14 @@ router.post('/edit', user.requireLogin, function (req, res, next) {
     }
 
     //更新文章内容
-    function updateRoute(){
+    function updateRoute(){*/
         RouteRecommend.findByIdAndUpdate(routeId,{$set:newObj},function(err,newRoute){
             if(err){
                 return res.send({code:0,error:"更新文章失败"})
             }
             console.log('更新文章成功');
             return res.send({code:1});
-        }); 
-    }      
+        });     
 });
 
 

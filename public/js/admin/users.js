@@ -12,9 +12,9 @@ $(function () {
             var newObj = {
                 obj:{
                     username:$("#username").val(),
-                    password:$("#password").val(),
+                    password:$("#password").val()
                 },
-                id:$("#_id").val(),
+                id:$("#_id").val()
              
             };
             var delImage = $("#img-preview .image-item.hide");
@@ -36,7 +36,7 @@ $(function () {
             var obj={
                 _id:$("#_id").val(),
                 username:$("#username").val(),
-                password:$("#password").val(),
+                password:$("#password").val()
             }
             //console.log(obj);
             $.postJSON(urlData.users.add,obj,function(result){

@@ -13,7 +13,7 @@ router.get('/', function (req, res, next) {
   };
   
   Information.find()
-    .populate('images')
+    .populate('coverImage')
     .exec(function (err, infos) {
       if (err) 
       	return next(err);      
@@ -28,7 +28,7 @@ router.get('/', function (req, res, next) {
 router.get('/:id',function (req, res, next){
 
 	Information.findById(req.params.id)
-    .populate('images')
+    .populate('coverImage')
     .exec(function (err, info) {
 	    if (err) 
 	        return next(err);
