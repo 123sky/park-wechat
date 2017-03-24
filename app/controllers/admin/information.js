@@ -154,7 +154,7 @@ router.post('/edit', user.requireLogin, function (req, res, next) {
   var oldCoverImageId = request.oldCoverImageId;
   var newObj = request.obj;//修改后的景点
   var inforId = newObj.id;//路线id
-
+  
  /* console.log(oldDelImage);
   for(var i=0;i<oldDelImage.length;i++){
     oldDelImageObjId.push(new mongoose.Types.ObjectId(oldDelImage[i]))

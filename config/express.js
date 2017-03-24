@@ -31,10 +31,10 @@ module.exports = function(app, config, connection) {
   app.use(session({
     secret: 'nodeblog',
     resave: false,
-    rolling:true,
+    rolling: true,
     saveUninitialized: true,
-    cookie: {secure: false},
-    store: new MongoStore({mongooseConnection: connection})
+    cookie: {maxAge: 1000*60*30},
+    store: new MongoStore({mongooseConnection: connection, ttl: 60*30})
   }));
 
 
