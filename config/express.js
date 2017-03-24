@@ -34,7 +34,7 @@ module.exports = function(app, config, connection) {
     rolling: true,
     saveUninitialized: true,
     cookie: {maxAge: 1000*60*30},
-    store: new MongoStore({mongooseConnection: connection, ttl: 60*30})
+    store: new MongoStore({mongooseConnection: connection, ttl: 30*60})
   }));
 
 
