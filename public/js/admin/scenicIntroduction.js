@@ -37,7 +37,7 @@ $(function () {
                     content:CKEDITOR.instances.content.getData(),
                     //favorite:$("#favorite").val(),
                     recommend:false,
-                    coverImageId:$("#add-cover input").val(),
+                    coverImage:$("#add-cover input").val(),
                     voice:$("#add-voice input").val(),
                     published:$("#published").prop("checked")
                 },

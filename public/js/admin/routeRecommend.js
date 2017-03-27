@@ -22,7 +22,7 @@ $(function () {
                     id:$("#_id").val(),
                     title:$("#title").val(),
                     info:$("#info").val(),
-                    coverImageId:$("#add-cover input").val(),
+                    coverImage:$("#add-cover input").val(),
                     content:CKEDITOR.instances.content.getData(),
                     //favorite:$("#favorite").val(),
                     recommend:false,

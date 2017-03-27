@@ -32,7 +32,7 @@ $(function () {
                     title:$("#title").val(),
                     info:$("#info").val(),
                     type:$("#type").val(),
-                    coverImageId:$("#add-cover input").val(),
+                    coverImage:$("#add-cover input").val(),
                     content:CKEDITOR.instances.content.getData(),
                     recommend:false,
                     published:$("#published").prop("checked")

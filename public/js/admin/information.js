@@ -36,7 +36,7 @@ $(function () {
                     content:CKEDITOR.instances.content.getData(),
                     recommend:false,
                     published:$("#published").prop("checked"),
-                    coverImageId:$("#add-cover input").val(),
+                    coverImage:$("#add-cover input").val()
                 },
                 oldCoverImageId:$("#add-cover input").attr("data-old"),
             };
@@ -58,7 +58,7 @@ $(function () {
                 content:CKEDITOR.instances.content.getData(),
                 recommend:false,
                 published:$("#published").prop("checked"),
-                coverImageId:$("#add-cover input").val(),
+                coverImageId:$("#add-cover input").val()
             }
             $.postJSON(urlData.infor.add,obj,function(result){
                 if(result.code === 1){
