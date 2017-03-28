@@ -23,7 +23,7 @@ block main
                 li.list-item
                     a(href="information/"+info.id)
                         if info.coverImage.length!==0
-                            img(src='/uploads/image/'+info.coverImage[0].filename)
+                            img(src='/uploads/image/'+info.coverImage.filename)
                         h3= info.title
                         .am-list-item-text.text-indent= info.info
     
