@@ -9,8 +9,8 @@ var urlData = {
 	
 	file:{
 		add:'/admin/resourcesLibrary/add',
-		edit:'admin/resourcesLibrary/edit',
-		delFile:'admin/resourcesLibrary/del'
+		edit:'/admin/resourcesLibrary/edit',
+		delFile:'/admin/resourcesLibrary/del'
 	},
 	scenic:{
 		add : '/admin/scenicIntroduction/add',

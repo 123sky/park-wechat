@@ -9,10 +9,16 @@ block main
 
     div(class="am-slider am-slider-default",data-am-flexslider)
         ul.am-slides
-            li
-                img(src="http://s.amazeui.org/media/i/demos/bing-1.jpg")
-            li
-                img(src="http://s.amazeui.org/media/i/demos/bing-2.jpg")
+            each scenic in scenics
+                if(scenic.recommend === true&&scenic.published === true)                    
+                    li
+                        a(href="scenicIntroduction/"+scenic.id)
+                            img(src='/uploads/image/'+scenic.coverImage.filename)
+                            div.am-slider-desc
+                                //
+                                    div.am-slider-content
+                                        h2.am-slider-title 推荐景点
+                                a.am-slider-more 点击图片了解更多                            
 
     div(class="part-title")
         h3 景点列表
@@ -20,13 +26,14 @@ block main
     div(class="list-wrap")
         ul.list-content
             each scenic in scenics
-                li.list-item
-                    a(href="scenicIntroduction/"+scenic.id)
-                        .am-u-sm-7.no-padding-lr
-                            h3= scenic.title
-                            .am-list-item-text= scenic.info
-                        .am-u-sm-5.no-padding-r
-                            img(src='/uploads/image/'+scenic.coverImage.filename)
+                if(scenic.published === true)
+                    li.list-item
+                        a(href="scenicIntroduction/"+scenic.id)
+                            .am-u-sm-7.no-padding-lr
+                                h3= scenic.title
+                                .am-list-item-text= scenic.info
+                            .am-u-sm-5.no-padding-r
+                                img(src='/uploads/image/'+scenic.coverImage.filename)
 
     
 block scripts

@@ -9,10 +9,16 @@ block main
 
     div(class="am-slider am-slider-default",data-am-flexslider)
         ul.am-slides
-            li
-                img(src="http://s.amazeui.org/media/i/demos/bing-1.jpg")
-            li
-                img(src="http://s.amazeui.org/media/i/demos/bing-2.jpg")
+            each info in infos
+                if(info.recommend === true&&info.published ===true)                    
+                    li
+                        a(href="information/"+info.id)
+                            img(src='/uploads/image/'+info.coverImage.filename)
+                            div.am-slider-desc
+                                //
+                                    div.am-slider-content
+                                        h2.am-slider-title 推荐景点
+                                a.am-slider-more 点击图片了解更多                            
 
     div(class="part-title")
         h3 信息发布
@@ -20,11 +26,13 @@ block main
     div(class="list-wrap")
         ul.list-content
             each info in infos
-                li.list-item
-                    a(href="information/"+info.id)
-                        if info.coverImage.length!==0
-                            img(src='/uploads/image/'+info.coverImage[0].filename)
-                        h3= info.title
-                        .am-list-item-text.text-indent= info.info
+                if(info.published === true)
+                    li.list-item
+                        a(href="information/"+info.id)
+                            .am-u-sm-7.no-padding-lr
+                                h3= info.title
+                                .am-list-item-text= info.info
+                            .am-u-sm-5.no-padding-r
+                                img(src='/uploads/image/'+info.coverImage.filename)
     
 block scripts

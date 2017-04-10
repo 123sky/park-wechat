@@ -43,7 +43,7 @@ block content
                     label(for="") 封面图片 *:
                     a.Recommend-image#add-cover(title="单击添加图片" ,style= parkService.coverImage?'background-image:url(/uploads/image/'+parkService.coverImage.filename+')':'')
                         span.fa.fa-plus
-                        input.form-control.hide(name="cover-image-id", id="cover-image-id",required,value= parkService.coverImage?parkService.coverImage._id:'')
+                        input.form-control.hide(name="cover-image-id", id="cover-image-id",required,data-old=parkService.coverImage?parkService.coverImage._id:'',value= parkService.coverImage?parkService.coverImage._id:'')
 
             div.form-group
                 label(for="published") 是否发布 *：

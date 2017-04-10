@@ -108,7 +108,6 @@ router.post('/add', user.requireLogin, function (req, res, next) {
             return res.send({code:0,msg:'文字信息添加失败'});
         } else {
             console.log('文字信息添加成功');
-            return res.send({code:1,msg:'文字信息添加成功'});
             //在文件信息中被引用的图片，标记好被谁引用
             File.findByIdAndUpdate(coverImage,{$addToSet:{quote:routeRecommend._id}},function(err,newFile){
                 if(err){
@@ -166,9 +165,15 @@ router.post('/edit', user.requireLogin, function (req, res, next) {
     //var file = request.file;//新添加的文章数组
     //var oldDelImage = request.oldDelImage;//被移除的旧的图片ID字符串数组
     //var oldDelImageObjId = [];//被移除的旧的图片objectID数组
-    var oldCoverImageId = request.oldCoverImageId;
+    var oldCoverImageId = request.oldCoverImageId.replace(/\"/g,"");
     var newObj = request.obj;//修改后的景点
     var routeId = newObj.id;//路线ID
+    var coverImage = newObj.coverImage;
+    console.log(request);
+    //console.log(oldCoverImageId);
+    //console.log(coverImage);
+
+
 
 
     
@@ -277,6 +282,24 @@ router.post('/edit', user.requireLogin, function (req, res, next) {
                 return res.send({code:0,error:"更新文章失败"})
             }
             console.log('更新文章成功');
+            if(oldCoverImageId !== coverImage){
+                File.findByIdAndUpdate(coverImage,{$addToSet:{quote:routeId}}, function(err, newFile){
+                if(err){
+                return res.send({code:0,error:"图片增加关联关系失败"})
+                }
+                console.log('图片增加关联关系成功');
+                console.log(newFile);
+                //return res.send({code:1});
+                })
+                File.findByIdAndUpdate(oldCoverImageId,{$pull:{quote:routeId}}, function(err, newFile){
+                if(err){
+                return res.send({code:0,error:"图片删除关联关系失败"})
+                }
+                console.log('图片删除关联关系成功');
+                console.log(newFile);
+                
+                });
+            }
             return res.send({code:1});
         });     
 });
@@ -290,7 +313,25 @@ router.get('/delete/:id', user.requireLogin, function (req, res, next) {
     var conditions = {
         _id:new mongoose.Types.ObjectId(req.params.id)
     };
-
+    //删除文章引用图片和语音的关联
+    RouteRecommend.find(conditions)
+    .populate('coverImage')
+    .exec(function(err, route){
+        console.log(route);
+        if(err){
+        return next(err);
+        }
+        var coverImage = route[0].coverImage;
+        var voice = route[0].voice;
+        var routeId = route[0]._id;
+        console.log(coverImage);
+        File.findByIdAndUpdate(coverImage,{$pull:{quote:routeId}}, function(err, newFile){
+         if(err){
+        return res.send({code:0,error:"图片删除关联关系失败"});
+         } 
+         console.log('图片删除关联关系成功');
+        });
+    });
     RouteRecommend.remove(conditions).exec(function (err, rowsRemoved) {
         if (err) {
             return next(err);

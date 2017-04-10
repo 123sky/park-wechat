@@ -87,14 +87,14 @@ router.post('/add', user.requireLogin, function (req, res, next) {
       coverImage:coverImage,
     });
     information.save(function (err, information) {
+      console.log(information);
       if (err) {
         console.log('文字信息添加失败:', err);
         return res.send({code:0,msg:'文字信息添加失败'});
       } else {
         console.log('文字信息添加成功');
-        return res.send({code:1,msg:'文字信息添加成功'});
         //在文件信息中被引用的图片，标记好被谁引用
-        File.findByIdAndUpdate(coverImage,{$addToSet:{quote:information._id}},function(err,newFile){
+        File.findByIdAndUpdate(coverImage,{$addToSet:{quote:information._id}},function(err,newFile){         
           if(err){
             return res.send({code:0,error:"图片增加关联关系失败"})
           }
@@ -151,10 +151,11 @@ router.post('/edit', user.requireLogin, function (req, res, next) {
   //var file = request.file;//新添加的文章数组
   //var oldDelImage = request.oldDelImage;//被移除的旧的图片ID字符串数组
   //var oldDelImageObjId = [];//被移除的旧的图片objectID数组
-  var oldCoverImageId = request.oldCoverImageId;
+  var oldCoverImageId = request.oldCoverImageId.replace(/\"/g,"");
   var newObj = request.obj;//修改后的景点
   var inforId = newObj.id;//路线id
-  
+  var coverImage = newObj.coverImage;
+  console.log(oldCoverImageId);
  /* console.log(oldDelImage);
   for(var i=0;i<oldDelImage.length;i++){
     oldDelImageObjId.push(new mongoose.Types.ObjectId(oldDelImage[i]))
@@ -260,7 +261,24 @@ router.post('/edit', user.requireLogin, function (req, res, next) {
         return res.send({code:0,error:"更新文章失败"})
       }
       console.log('更新文章成功');
-      return res.send({code:1});
+      if(oldCoverImageId !== coverImage){
+        File.findByIdAndUpdate(coverImage,{$addToSet:{quote:inforId}}, function(err, newFile){
+        if(err){
+        return res.send({code:0,error:"图片增加关联关系失败"})
+        }
+        console.log('图片增加关联关系成功');
+        console.log(newFile);
+        //return res.send({code:1});
+        })
+        File.findByIdAndUpdate(oldCoverImageId,{$pull:{quote:inforId}}, function(err, newFile){
+          if(err){
+          return res.send({code:0,error:"图片删除关联关系失败"})
+          }
+          console.log('图片删除关联关系成功');
+          console.log(newFile);
+          return res.send({code:1});
+        });
+      }   
     });      
 });
 
@@ -274,13 +292,33 @@ router.get('/delete/:id', user.requireLogin, function (req, res, next) {
     _id:new mongoose.Types.ObjectId(req.params.id)
   };
 
+  //删除文章引用图片的关联
+  Information.find(conditions)
+    .populate('coverImage')
+    .exec(function(err, infor){
+      console.log(infor);
+      if(err){
+        return next(err);
+      }
+      var coverImage = infor[0].coverImage;
+      var inforId = infor[0]._id;
+      console.log(coverImage);
+      console.log(inforId);
+      File.findByIdAndUpdate(coverImage,{$pull:{quote:inforId}}, function(err, newFile){
+       if(err){
+        return res.send({code:0,error:"图片删除关联关系失败"});
+       } 
+       console.log('图片删除关联关系成功');
+       console.log(newFile);
+      });
+    });
   Information.remove(conditions).exec(function (err, rowsRemoved) {
     if (err) {
       return next(err);
     }
 
     if (rowsRemoved) {
-      console.log('删除成功');
+      console.log('删除成功');      
     } else {
       console.log('删除失败');
     }

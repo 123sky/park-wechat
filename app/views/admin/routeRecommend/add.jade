@@ -36,7 +36,7 @@ block content
                 label(for="") 封面图片 *:
                 a.Recommend-image#add-cover(title="单击添加图片" ,style= routeRecommend.coverImage?'background-image:url(/uploads/image/'+routeRecommend.coverImage.filename+')':'')
                     span.fa.fa-plus
-                    input.form-control.hide(name="cover-image-id", id="cover-image-id",required,value= routeRecommend.coverImage?routeRecommend.coverImage._id:'')
+                    input.form-control.hide(name="cover-image-id", id="cover-image-id",required,data-old=routeRecommend.coverImage?routeRecommend.coverImage._id:'',value= routeRecommend.coverImage?routeRecommend.coverImage._id:'')
             div.form-group
                 label(for="published") 是否发布：
                 input(name="published", id="published", type="checkbox", checked=routeRecommend.published)       

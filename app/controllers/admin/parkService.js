@@ -95,15 +95,14 @@ router.post('/add', user.requireLogin, function (req, res, next) {
             return res.send({code:0,msg:'文字信息添加失败'});
         } else {
             console.log('文字信息添加成功');
-            return res.send({code:1,msg:'文字信息添加成功'});
-            //在文件信息中被引用的图片，标记好被谁引用
-            File.findByIdAndUpdate(coverImage,{$addToSet:{quote:parkService._id}},function(err,newFile){
+                //在文件信息中被引用的图片，标记好被谁引用
+                File.findByIdAndUpdate(coverImage,{$addToSet:{quote:parkService._id}},function(err,newFile){
                 if(err){
                     return res.send({code:0,error:"图片增加关联关系失败"})
                 }
                 console.log('图片增加关联关系成功');
                 return res.send({code:1});
-            });             
+                });             
         }
     });
 });
@@ -152,9 +151,10 @@ router.post('/edit', user.requireLogin, function (req, res, next) {
     //var file = request.file;//新添加的文章数组
     //var oldDelImage = request.oldDelImage;//被移除的旧的图片ID字符串数组
     //var oldDelImageObjId = [];//被移除的旧的图片objectID数组
-    var oldCoverImage = request.oldCoverImage
+    var oldCoverImageId = request.oldCoverImageId.replace(/\"/g,"");
     var newObj = request.obj;//修改后的景点
     var serviceId = newObj.id;//服务ID
+    var coverImage = newObj.coverImage;
     
     /*console.log(oldDelImage);
     for(var i=0;i<oldDelImage.length;i++){
@@ -261,6 +261,24 @@ router.post('/edit', user.requireLogin, function (req, res, next) {
                 return res.send({code:0,error:"更新文章失败"})
             }
             console.log('更新文章成功');
+            if(oldCoverImageId !== coverImage){
+                File.findByIdAndUpdate(coverImage,{$addToSet:{quote:serviceId}}, function(err, newFile){
+                if(err){
+                return res.send({code:0,error:"图片增加关联关系失败"})
+                }
+                console.log('图片增加关联关系成功');
+                console.log(newFile);
+                //return res.send({code:1});
+                })
+                File.findByIdAndUpdate(oldCoverImageId,{$pull:{quote:serviceId}}, function(err, newFile){
+                console.log("111");
+                if(err){
+                return res.send({code:0,error:"图片删除关联关系失败"})
+                }
+                console.log('图片删除关联关系成功');
+                console.log(newFile);
+                });
+            }
             return res.send({code:1});
         });     
 });
@@ -273,7 +291,26 @@ router.get('/delete/:id', user.requireLogin, function (req, res, next) {
     var conditions = {
         _id:new mongoose.Types.ObjectId(req.params.id)
     };
-
+    //删除文章引用图片和语音的关联
+    ParkService.find(conditions)
+    .populate('coverImage')
+    .exec(function(err, service){
+        console.log(service);
+        if(err){
+        return next(err);
+        }
+        var coverImage = service[0].coverImage;
+        var voice = service[0].voice;
+        var serviceId = service[0]._id;
+        console.log(coverImage);
+        console.log(serviceId);
+        File.findByIdAndUpdate(coverImage,{$pull:{quote:serviceId}}, function(err, newFile){
+         if(err){
+        return res.send({code:0,error:"图片删除关联关系失败"});
+         } 
+         console.log('图片删除关联关系成功');
+        });
+    });
     ParkService.remove(conditions).exec(function (err, rowsRemoved) {
         if (err) {
             return next(err);

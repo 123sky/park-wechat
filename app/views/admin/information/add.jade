@@ -24,7 +24,7 @@ block content
                 label(for="") 封面图片 *:
                 a.Recommend-image#add-cover(title="单击添加图片" ,style= information.coverImage?'background-image:url(/uploads/image/'+information.coverImage.filename+')':'')
                     span.fa.fa-plus
-                    input.form-control.hide(name="cover-image-id", id="cover-image-id",required,value= information.coverImage?information.coverImage._id:'')
+                    input.form-control.hide(name="cover-image-id", id="cover-image-id",required,data-old=information.coverImage?information.coverImage._id:'',value= information.coverImage?information.coverImage._id:'')
 
             div.form-group
                 label(for="published") 是否发布 *：

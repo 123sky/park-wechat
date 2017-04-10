@@ -99,6 +99,7 @@ router.post('/add', user.requireLogin, function (req, res, next) {
     voice:voice
   });
   scenicIntroduction.save(function (err, scenicIntroduction) {
+    console.log(scenicIntroduction);
     if (err) {
       console.log('文字信息添加失败:', err);
       return res.send({code:0,msg:'文字信息添加失败'});
@@ -114,6 +115,13 @@ router.post('/add', user.requireLogin, function (req, res, next) {
         console.log('图片增加关联关系成功');
         return res.send({code:1});
       }); 
+      File.findByIdAndUpdate(voice,{$addToSet:{quote:scenicIntroduction._id}}, function(err, newFile){
+        if(err){
+          return res.send({code:0,error:"语音文件增加关联关系失败"});
+        }
+        console.log('语音文件增加关联关系成功');
+        return res.send({code:1});
+      })
     }
   });
       
@@ -163,10 +171,12 @@ router.post('/edit', user.requireLogin, function (req, res, next) {
   var request = req.body;
   console.log(request);
   //var scenicId = request.id;//景点ID
-  var oldCoverImageId = request.oldCoverImageId
-  var oldVoice = request.oldVoice
+  var oldCoverImageId = request.oldCoverImageId.replace(/\"/g,"");
+  var oldVoice = request.oldVoice.replace(/\"/g,"");
   var newObj = request.obj;//修改后的景点
   var scenicId = newObj.id;//景点ID
+  var coverImage = newObj.coverImage;
+  var voice = newObj.voice;
 
   /*if(oldCoverImageId !== newObj.coverImageId){
     File.findByIdAndUpdate(coverImage,{$pull:{quote:oldCoverImageId},$addToSet:{quote:newObj.coverImageId}},function(err,newFile){
@@ -190,10 +200,48 @@ router.post('/edit', user.requireLogin, function (req, res, next) {
   }*/
 
   ScenicIntroduction.findByIdAndUpdate(scenicId,{$set:newObj},function(err,newScenic){
+    console.log(newObj);
     if(err){
       return res.send({code:0,error:"更新文章失败"})
     }
     console.log('更新文章成功');
+    console.log(oldVoice);
+    console.log(voice);
+    if(oldCoverImageId !== coverImage){
+      File.findByIdAndUpdate(coverImage,{$addToSet:{quote:scenicId}}, function(err, newFile){
+        if(err){
+        return res.send({code:0,error:"图片增加关联关系失败"})
+        }
+        console.log('图片增加关联关系成功');
+        console.log(newFile);
+        //return res.send({code:1});
+      })
+      File.findByIdAndUpdate(oldCoverImageId,{$pull:{quote:scenicId}}, function(err, newFile){
+        console.log("111");
+        if(err){
+        return res.send({code:0,error:"图片删除关联关系失败"})
+        }
+        console.log('图片删除关联关系成功');
+        console.log(newFile);
+      });
+    }
+    if(oldVoice !== voice){
+      File.findByIdAndUpdate(voice,{$addToSet:{quote:scenicId}}, function(err, newFile){
+        if(err){
+        return res.send({code:0,error:"语音增加关联关系失败"})
+        }
+        console.log('语音增加关联关系成功');
+        console.log(newFile);
+      });
+      File.findByIdAndUpdate(oldVoice,{$pull:{quote:scenicId}}, function(err, newFile){
+        console.log("222");
+        if(err){
+        return res.send({code:0,error:"语音删除关联关系失败"})
+        }
+        console.log('语音删除关联关系成功');
+        console.log(newFile);
+      });
+    }
     return res.send({code:1});
   });    
 });
@@ -207,7 +255,34 @@ router.get('/delete/:id', user.requireLogin, function (req, res, next) {
   var conditions = {
     _id:new mongoose.Types.ObjectId(req.params.id)
   };
-
+  //删除文章引用图片和语音的关联
+  ScenicIntroduction.find(conditions)
+    .populate('coverImage')
+    .populate('voice')
+    .exec(function(err, scenic){
+      console.log(scenic);
+      if(err){
+        return next(err);
+      }
+      var coverImage = scenic[0].coverImage;
+      var voice = scenic[0].voice;
+      var scenicId = scenic[0]._id;
+      console.log(coverImage);
+      console.log(scenicId);
+      File.findByIdAndUpdate(coverImage,{$pull:{quote:scenicId}}, function(err, newFile){
+       if(err){
+        return res.send({code:0,error:"图片删除关联关系失败"});
+       } 
+       console.log('图片删除关联关系成功');
+      });
+      File.findByIdAndUpdate(voice,{$pull:{quote:scenicId}}, function(err, newFile){
+       if(err){
+        return res.send({code:0,error:"语音删除关联关系失败"});
+       } 
+       console.log('语音删除关联关系成功');
+      });
+    });
+  
   ScenicIntroduction.remove(conditions).exec(function (err, rowsRemoved) {
     if (err) {
       return next(err);

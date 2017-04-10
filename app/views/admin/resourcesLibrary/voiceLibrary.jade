@@ -90,7 +90,8 @@ block content
                         td
                             a.play-audio(href="javascript:;",class="btn btn-sm btn-default",data-url='/uploads/voice/'+voice.filename) 播放
                             span &nbsp;&nbsp;
-                            a(href="/admin/resourcesLibrary/edit/"+voice._id,class="btn btn-sm btn-default") 编辑
+                            //
+                                a(href="/admin/resourcesLibrary/edit/"+voice._id,class="btn btn-sm btn-default") 编辑
                             span &nbsp;&nbsp;
                             a(href="/admin/resourcesLibrary/delete/"+voice._id,class="btn btn-sm btn-default") 删除
             if pageCount>1
